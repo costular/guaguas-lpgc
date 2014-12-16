@@ -47,6 +47,7 @@ public class RoutesFragment extends Fragment{
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
                 .getDisplayMetrics());
         mViewPager.setPageMargin(pageMargin);
+        // Cambio hehco?
 
         return result;
     }
