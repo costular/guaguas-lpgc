@@ -1,0 +1,31 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.0.2"
+
+    defaultConfig {
+        applicationId "com.costular.guaguaslaspalmas"
+        minSdkVersion 10
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.jpardogo.materialtabstrip:library:1.0.6'
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    compile 'com.melnykov:floatingactionbutton:1.1.0'
+    compile 'com.nispok:snackbar:2.5.2'
+    compile 'com.github.ksoichiro:android-observablescrollview:1.3.0'
+}

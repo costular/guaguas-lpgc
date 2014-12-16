@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="De lunes a viernes"
+        style="@android:style/TextAppearance.Material.Headline"/>
+
+    <TextView
+        android:id="@+id/week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:text="Horarios de entre semana"
+        style="@android:style/TextAppearance.Material.Body2"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sábados, domingos y festivos"
+        style="@android:style/TextAppearance.Material.Headline"
+        android:paddingTop="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Horarios de finde"
+        android:paddingTop="16dp"
+        style="@android:style/TextAppearance.Material.Body2"/>
+
+
+
+</LinearLayout>

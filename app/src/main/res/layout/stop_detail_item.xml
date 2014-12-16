@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="72dp">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="18dp"
+        android:layout_gravity="center_vertical">
+
+        <com.costular.guaguaslaspalmas.widget.views.CircleView
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="1"
+            app:circleRadius="21dp"
+            app:strokeWidth="0dp"
+            app:circleGap="0dp"
+            app:fillColor="@android:color/holo_orange_light"
+            app:strokeColor="@android:color/holo_purple"/>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_marginLeft="72dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Título personalizado"
+            style="@style/TextAppearance.Body1"/>
+
+
+        <TextView
+            android:id="@+id/minutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Título personalizado"
+            style="@style/TextAppearance.Body2"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

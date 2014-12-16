@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string-array name="drawer_items_array">
+        <item>@string/routes</item>
+        <item>@string/stops</item>
+        <item>@string/map</item>
+
+    </string-array>
+
+    <string-array name="drawer_item_icons">
+        <item>@drawable/ic_action_maps_directions_bus</item>
+        <item>@drawable/ic_action_image_nature_people</item>
+        <item>@drawable/ic_action_maps_map</item>
+    </string-array>
+
+    <string-array name="second_list_array">
+        <item>@string/contact_with_us</item>
+        <item>@string/settings</item>
+    </string-array>
+
+    <!-- Theme array -->
+    <string-array name="theme_array">
+        <item>@string/indigo</item>
+        <item>@string/pink</item>
+        <item>@string/purple</item>
+        <item>@string/red</item>
+        <item>@string/blue</item>
+        <item>@string/green</item>
+        <item>@string/orange</item>
+        <item>@string/yellow</item>
+        <item>@string/gray</item>
+    </string-array>
+
+    <string-array name="theme_array_values">
+        <item name="indigo">Indigo</item>
+        <item name="pink">Pink</item>
+        <item name="purple">purple</item>
+        <item name="red">Red</item>
+        <item name="blue">Blue</item>
+        <item name="green">Green</item>
+        <item name="orange">Orange</item>
+        <item name="yellow">Yellow</item>
+        <item name="gray">Gray</item>
+    </string-array>
+
+</resources>

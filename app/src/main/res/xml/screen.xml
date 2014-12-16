@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="General"
+        android:key="general">
+
+        <ListPreference
+            android:title="@string/theme"
+            android:summary="@string/theme_summary"
+            android:key="theme"
+            android:entryValues="@array/theme_array_values"
+            android:entries="@array/theme_array"
+            android:defaultValue="0">
+
+        </ListPreference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Notificaciones"
+        android:key="notification_category">
+
+        <SwitchPreference
+            android:title="@string/preferences_notification_title"
+            android:key="notifications"
+            android:summary="@string/preferences_notification_message"
+            android:defaultValue="true"/>
+
+        <CheckBoxPreference
+            android:title="@string/preferences_notification_sound_title"
+            android:summary="@string/preferences_notification_sound_message"
+            android:key="notification_sound"
+            android:defaultValue="true"/>
+
+        <CheckBoxPreference
+            android:title="@string/preferences_notification_vibrate_title"
+            android:summary="@string/preferences_notification_vibrate_message"
+            android:key="notification_vibrate"
+            android:defaultValue="true"/>
+
+
+    </PreferenceCategory>
+</PreferenceScreen>

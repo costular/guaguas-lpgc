@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Las Palmas Bus</string>
+
+    <!-- Menú drawer -->
+    <string name="routes">Routes</string>
+    <string name="stops">Stops</string>
+    <string name="map">Map</string>
+    <!-- Menú secundario -->
+    <string name="contact_with_us">Contact with us</string>
+    <string name="settings">Settings</string>
+
+    <!-- Pantalla de ajustes -->
+    <string name="theme">Theme</string>
+    <string name="theme_summary">Choose the color theme.</string>
+    <string name="indigo">Indigo</string>
+    <string name="pink">Pink</string>
+    <string name="purple">Purple</string>
+    <string name="red">Red</string>
+    <string name="blue">Blue</string>
+    <string name="green">Green</string>
+    <string name="orange">Orange</string>
+    <string name="yellow">Yellow</string>
+    <string name="gray">Gray</string>
+
+</resources>

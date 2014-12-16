@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="api_key_googleplus">AIzaSyDF5dXMotwrX0c3gtxZk_-UBIqWCfA52sk</string>
+
+    <string name="app_name">Guaguas Las Palmas</string>
+
+    <!-- Menú drawer -->
+    <string name="routes">Líneas</string>
+    <string name="favorites">Favoritas</string>
+    <string name="stops">Paradas</string>
+    <string name="map">Mapa</string>
+    <!-- Menú secundario -->
+    <string name="contact_with_us">Contacta con nosotros</string>
+    <string name="settings">Ajustes</string>
+    <string name="menu">Menú</string>
+
+    <!-- Pantalla de ajustes -->
+    <string name="theme">Tema</string>
+    <string name="theme_summary">Escoge el color para usar como tema</string>
+    <string name="indigo">Indigo</string>
+    <string name="pink">Rosa</string>
+    <string name="purple">Violeta</string>
+    <string name="red">Rojo</string>
+    <string name="blue">Azul</string>
+    <string name="green">Verde</string>
+    <string name="orange">Naranja</string>
+    <string name="yellow">Amarillo</string>
+    <string name="gray">Gris</string>
+
+    <!-- Notificaciones -->
+    <string name="preferences_notification_title">Notificaciones</string>
+    <string name="preferences_notification_message">Activar las notificaciones.</string>
+    <string name="preferences_notification_sound_title">Sonido</string>
+    <string name="preferences_notification_sound_message">Notificaciones con sonido.</string>
+    <string name="preferences_notification_vibrate_title">Vibración</string>
+    <string name="preferences_notification_vibrate_message">Notificaciones con vibración.</string>
+
+</resources>

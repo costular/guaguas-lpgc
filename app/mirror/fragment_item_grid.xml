@@ -1,0 +1,37 @@
+<!-- [ Mirror metadata ] generatedAt: 1416507988335 -->
+<!-- Generated screen file. Fill the id tags below with content with
+which to populate your previewed layout. For a complete specification
+of sample data, please see http://jimulabs.com/sample-data-specifications/ -->
+<screen>
+    <_content layout="@layout/fragment_item_grid">
+        <android-list>
+            <items layout="@android:layout/simple_list_item_1" >
+                <_item>
+                    <text1>Vancouver</text1>
+                </_item>
+                <_item>
+                    <text1>Cairo</text1>
+                </_item>
+                <_item>
+                    <text1>New York</text1>
+                </_item>
+                <_item>
+                    <text1>San Francisco</text1>
+                </_item>
+                <_item>
+                    <text1>Seattle</text1>
+                </_item>
+                <_item>
+                    <text1>Hong Kong</text1>
+                </_item>
+                <_item>
+                    <text1>Tokyo</text1>
+                </_item>
+            </items>
+                </android-list>
+        <!-- TextView Examples:
+        <android-empty text="@string/string_resource" />
+        <android-empty text="Text literal" textSize="14sp" /> -->
+        <android-empty />
+    </_content>
+</screen>
