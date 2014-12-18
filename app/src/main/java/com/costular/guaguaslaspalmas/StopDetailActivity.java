@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.EditFavoriteStop;
 import com.costular.guaguaslaspalmas.widget.RouteFavoriteDialog;
 import com.costular.guaguaslaspalmas.widget.adapters.StopsTimeListAdapter;
+import com.melnykov.fab.FloatingActionButton;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.listeners.ActionClickListener;
 
@@ -42,6 +44,8 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
     public static final String ID = "ID";
 
     public static final int FAVORITE_MENU = 1;
+
+    private FloatingActionButton fab;
 
     private ListView mListView;
     private StopsTimeListAdapter mAdapter;
@@ -77,6 +81,17 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
         TypedArray a = getTheme().obtainStyledAttributes(R.style.AppTheme, new int[] {android.R.attr.colorPrimary});
         int color = a.getColor(0, 0);
         a.recycle();
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(mStop.isFavorite(getApplicationContext())) {
+                    EditFavoriteStop.newInstance(mStop.getId()).show(getSupportFragmentManager(), "");
+                }
+            }
+        });
 
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(this);
