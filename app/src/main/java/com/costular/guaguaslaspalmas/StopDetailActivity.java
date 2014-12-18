@@ -177,6 +177,7 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
 
     @Override
     public void onStopFavorited() {
+        // Jeje
         star.setIcon(R.drawable.ic_action_star);
 
         getSupportActionBar().setTitle(mStop.getFavoriteNameStop(getApplicationContext()));
