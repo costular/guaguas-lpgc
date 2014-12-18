@@ -42,7 +42,6 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
     public static final String ID = "ID";
 
     public static final int FAVORITE_MENU = 1;
-    public static final int EDIT_MENU = 2;
 
     private ListView mListView;
     private StopsTimeListAdapter mAdapter;
@@ -50,7 +49,6 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
     private Stop mStop;
     private int mStopCode;
 
-    private MenuItem edit;
     private MenuItem star;
 
     private SwipeRefreshLayout swipeLayout;
@@ -119,13 +117,9 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         star = menu.add(Menu.NONE, FAVORITE_MENU, Menu.NONE, "Favorita");
-        edit = menu.add(Menu.NONE, EDIT_MENU, Menu.NONE, "Editar").setVisible(false);
 
         if(mStop.isFavorite(getApplicationContext())) {
-
-            MenuItemCompat.setShowAsAction(edit.setIcon(R.drawable.ic_action_image_edit), MenuItem.SHOW_AS_ACTION_IF_ROOM);
             MenuItemCompat.setShowAsAction(star.setIcon(R.drawable.ic_action_star), MenuItem.SHOW_AS_ACTION_IF_ROOM);
-            edit.setVisible(true);
         }else {
             MenuItemCompat.setShowAsAction(star.setIcon(R.drawable.ic_action_star_outline), MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
@@ -169,16 +163,12 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
                 if(mStop.removeFromFavorites(getApplicationContext())) {
                     mStop.removeFromFavorites(getApplicationContext());
                     item.setIcon(R.drawable.ic_action_star_outline);
-                    edit.setVisible(false);
                     Toast.makeText(getApplicationContext(), "Eliminada de favoritos", Toast.LENGTH_SHORT).show();
                 }
             }else {
                 // Mostramos el diálogo para obtener el nombre de la línea favorita
                 RouteFavoriteDialog.newInstance(mStop).show(getSupportFragmentManager(), "");
             }
-                break;
-            case EDIT_MENU:
-                EditFavoriteStop.newInstance(mStop.getId()).show(getSupportFragmentManager(), "");
                 break;
         }
 
@@ -188,8 +178,6 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
     @Override
     public void onStopFavorited() {
         star.setIcon(R.drawable.ic_action_star);
-        edit.setVisible(true);
-
 
         getSupportActionBar().setTitle(mStop.getFavoriteNameStop(getApplicationContext()));
     }
