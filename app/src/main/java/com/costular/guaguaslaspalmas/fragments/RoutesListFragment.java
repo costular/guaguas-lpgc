@@ -68,7 +68,9 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
         isFavorite = getArguments().getBoolean("favorites");
 
         mListView = (ObservableListView) getActivity().findViewById(R.id.list);
-        mListView.setScrollViewCallbacks(this);
+
+        //Cuando hacemos scroll se esconde el toolbar, pero lo hemos quitado ya que no es necesario.
+        //mListView.setScrollViewCallbacks(this);
 
         getBar().setShowHideAnimationEnabled(true);
 
