@@ -70,7 +70,7 @@ public class Stop {
         SQLiteDatabase db = helper.getWritableDatabase();
 
         try{
-            db.delete("stops_favorites", "_id = ?", new String[]{String.valueOf(id)});
+            db.delete("stops_favorites", "stop_route = ?", new String[]{String.valueOf(id)});
             return true;
         }catch(Exception e) {
             return false;
