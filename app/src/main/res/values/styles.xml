@@ -7,7 +7,6 @@
         <item name="colorPrimary">@color/main_indigo</item>
         <item name="colorPrimaryDark">@color/main_indigo_dark</item>
         <item name="windowActionBar">false</item>
-
     </style>
 
     <style name="AppTheme.Indigo" parent="Theme.AppCompat.Light.DarkActionBar">
