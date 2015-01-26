@@ -4,7 +4,6 @@
         <item name="colorAccent">@color/main_indigo</item>
         <item name="colorPrimary">@color/main_indigo</item>
         <item name="colorPrimaryDark">@color/main_indigo_dark</item>
-        <item name="android:navigationBarColor">@color/main_indigo</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>

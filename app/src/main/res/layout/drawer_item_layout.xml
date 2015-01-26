@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="48dp" android:minHeight="48dp">
 
 
     <ImageView android:id="@+id/icon"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:paddingLeft="16dp"
-        android:minHeight="48dp"
-        android:contentDescription="Image of menu"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:contentDescription="Image of menu"
+        android:layout_centerVertical="true"/>
 
         <!--
     <guaguas.costular.com.guaguas.widget.RobotoTextView android:id="@+id/title"
@@ -31,13 +25,13 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:minHeight="48dp"
-            android:paddingLeft="72dp"
-            android:gravity="center_vertical"
-            style="@android:style/TextAppearance.Material.Body2"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="72dp"
+            android:layout_marginRight="16dp"
+            android:textSize="14sp"
+            android:textColor="@color/primary_text_default_material_light"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
 
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

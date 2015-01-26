@@ -8,14 +8,17 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.costular.guaguaslaspalmas.R;
+import com.costular.guaguaslaspalmas.utils.Utils;
 
 /**
  * Created by Diego on 20/11/2014.
  */
 public class CircleView extends AbstractBaseView
 {
+    private static final int YELLOW = Color.parseColor("#FFDD00");
 
     private String number = "0";
     private int circleRadius = 20;
@@ -99,9 +102,23 @@ public class CircleView extends AbstractBaseView
     }
 
     private Paint getTextPaint() {
+
+        int color;
+
+        if(fillColor == YELLOW) {
+            color = Color.BLACK;
+        } else {
+            color = Color.WHITE;
+        }
+
+        // Tamaño de la letra
+        int size = 18;
+
+        float pixels = Utils.getPixelsByDP(size, getContext().getResources());
+
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-        p.setTextSize(50f);
-        p.setColor(Color.WHITE);
+        p.setTextSize(pixels);
+        p.setColor(color);
         p.setTextAlign(Paint.Align.CENTER);
 
         return p;

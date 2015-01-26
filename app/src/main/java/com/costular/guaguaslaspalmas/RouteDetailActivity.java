@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -14,14 +13,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.astuetz.PagerSlidingTabStrip;
-import com.costular.guaguaslaspalmas.fragments.AddStopByCodeFragment;
+import com.costular.guaguaslaspalmas.fragments.MapFragment;
 import com.costular.guaguaslaspalmas.fragments.RouteDetailScheduleFragment;
 import com.costular.guaguaslaspalmas.fragments.RoutesDetailStopsFragment;
-import com.costular.guaguaslaspalmas.fragments.RoutesFragment;
-import com.costular.guaguaslaspalmas.fragments.RoutesListFragment;
 import com.costular.guaguaslaspalmas.model.Route;
 import com.costular.guaguaslaspalmas.utils.PrefUtils;
 import com.costular.guaguaslaspalmas.utils.Utils;
@@ -103,6 +102,14 @@ public class RouteDetailActivity extends ActionBarActivity{
 
     private void loadToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplication(), "Hi", Toast.LENGTH_SHORT);
+            }
+        });
+
         setSupportActionBar(toolbar);
     }
 
@@ -182,7 +189,7 @@ public class RouteDetailActivity extends ActionBarActivity{
                 case SCHEDULE_TAB:
                     return RouteDetailScheduleFragment.newInstance(mContext, localId);
                 case MAP_TAB:
-                    return RoutesDetailStopsFragment.newInstance(mContext, localId);
+                    return MapFragment.newInstance(mContext, mRoute.getId());
             }
 
             return null;

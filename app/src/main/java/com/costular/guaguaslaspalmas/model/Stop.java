@@ -42,6 +42,25 @@ public class Stop {
         return stop;
     }
 
+    public static int getStopIdFromCode(final Context context, int code) {
+
+        DatabaseHelper helper = DatabaseHelper.getInstance(context);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT _id FROM " + Provider.TABLE_STOPS + " WHERE " + Provider.Stops.CODE_COL + " = '"+code+"'", null);
+
+        // Movemos el cursor al principio para leerlo.
+        cursor.moveToFirst();
+
+        // Guardamos en una variable la id
+        int id = cursor.getInt(0);
+
+        // Cerramos el cursor
+        cursor.close();
+
+        return id;
+    }
+
     public static boolean isFavorite(final Context context, Stop stop) {
         return isFavorite(context, stop.getId());
     }

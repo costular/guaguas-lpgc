@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="primary_text_default_material_light">#de000000</color> <!-- Black 87% -->
-    <color name="secondary_text_material_light">#8a000000</color> <!-- Black 54% -->
+    <color name="primary_text_default_material_light" type="color">#de000000</color> <!-- Black 87% -->
+    <color name="secondary_text_material_light" type="color">#8a000000</color> <!-- Black 54% -->
+
+    <color name="list_selected_color" type="color">#e8e8e8</color>
 
     <item name="main_indigo" type="color">#3F51B5</item>
     <item name="main_indigo_dark" type="color">#303F9F</item>

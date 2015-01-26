@@ -23,14 +23,17 @@ public class DrawerListAdapter extends BaseAdapter {
 
     private Context context;
     private int mSelectedItem;
+    private boolean select;
 
     private List<DrawerListItem> items;
 
-    public DrawerListAdapter(Context context, List<DrawerListItem> _items) {
+    public DrawerListAdapter(Context context, List<DrawerListItem> _items, final boolean select) {
         this.context = context;
 
         items = new ArrayList<DrawerListItem>();
         items.addAll(_items);
+
+        this.select = select;
     }
 
     public int getmSelectedItem() {
@@ -75,7 +78,7 @@ public class DrawerListAdapter extends BaseAdapter {
         icon.setImageResource(item.getIcon());
         title.setText(item.getTitle());
 
-        if (position == mSelectedItem) {
+        if (position == mSelectedItem && select) {
             title.setTextColor(context.getResources().getColor(PrefUtils.color));
             title.setTypeface(Typeface.DEFAULT_BOLD);
             icon.setColorFilter(context.getResources().getColor(PrefUtils.color));

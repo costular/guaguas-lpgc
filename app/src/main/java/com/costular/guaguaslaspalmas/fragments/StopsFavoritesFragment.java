@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -31,27 +33,34 @@ import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
 import com.costular.guaguaslaspalmas.utils.Provider;
 import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.AddToFavoriteDialog;
+import com.costular.guaguaslaspalmas.widget.CheckStopCodeDialog;
 import com.costular.guaguaslaspalmas.widget.adapters.FavoriteStopsListAdapter;
 import com.melnykov.fab.FloatingActionButton;
 
 /**
  * Created by Diego on 30/11/2014.
  */
-public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<Cursor>, AbsListView.MultiChoiceModeListener {
+public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<Cursor>, AbsListView.MultiChoiceModeListener{
 
     private ListView mListView;
     private FavoriteStopsListAdapter mAdapter;
+
+    private ActionBar bar;
 
     private boolean started = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+
         return inflater.inflate(R.layout.fragment_stops_favorites, null);
     }
 
     @Override
     public void onStart() {
         super.onStart();
+
+        bar = ((ActionBarActivity)getActivity()).getSupportActionBar();
 
         mListView = (ListView) getActivity().findViewById(R.id.listview);
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
@@ -100,6 +109,28 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
         if(started) {
             getLoaderManager().restartLoader(0, null, this);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        // Limpiamos el ActionBar
+        menu.clear();
+
+        inflater.inflate(R.menu.stops_favorites_default, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == R.id.check_stop_by_code) {
+
+            new CheckStopCodeDialog().show(getActivity().getSupportFragmentManager(), "");
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -184,4 +215,5 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
     private void deleteStop(final Cursor cursor) {
         Stop.removeFromFavorites(getActivity(), cursor.getInt(cursor.getColumnIndex(Provider.FavoritesStops.ID_COL)));
     }
+
 }

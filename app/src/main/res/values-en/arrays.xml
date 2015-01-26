@@ -15,9 +15,15 @@
         <item>@drawable/ic_action_maps_map</item>
     </string-array>
 
-    <string-array name="second_list_array">
-        <item>@string/contact_with_us</item>
-        <item>@string/settings</item>
+    <!-- Lista secundaria del NavigationDrawer-->
+    <string-array name="navigation_drawer_second_list">
+        <item>Contact</item>
+        <item>Settings</item>
+    </string-array>
+
+    <string-array name="navigation_drawer_second_list_icons">
+    <item>@drawable/ic_action_communication_email</item>
+    <item>@drawable/ic_action_action_settings</item>
     </string-array>
 
     <!-- Theme array -->

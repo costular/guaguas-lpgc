@@ -21,7 +21,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.costular.guaguaslaspalmas.R;
 import com.costular.guaguaslaspalmas.RouteDetailActivity;
@@ -51,7 +54,7 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
     }
 
     private RoutesListAdapter mAdapter;
-    private ObservableListView mListView;
+    private ListView mListView;
 
     private boolean isFavorite;
 
@@ -67,7 +70,7 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
 
         isFavorite = getArguments().getBoolean("favorites");
 
-        mListView = (ObservableListView) getActivity().findViewById(R.id.list);
+        mListView = (ListView) getActivity().findViewById(R.id.list);
 
         //Cuando hacemos scroll se esconde el toolbar, pero lo hemos quitado ya que no es necesario.
         //mListView.setScrollViewCallbacks(this);
@@ -94,6 +97,10 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
 
         if(isFavorite) {
             getLoaderManager().initLoader(FAVORITE_ROUTES, null, this);
+
+            // Mostramos cuando no tenga líneas
+            mListView.setEmptyView(((RelativeLayout) getActivity().findViewById(R.id.empty_favorite_routes)));
+
         } else {
             getLoaderManager().initLoader(NORMAL_ROUTES, null, this);
         }

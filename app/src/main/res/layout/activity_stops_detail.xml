@@ -22,7 +22,9 @@
         <ListView
             android:id="@+id/stops_hour_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:dividerHeight="1dp"
+            android:divider="@drawable/navigation_list_separator"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

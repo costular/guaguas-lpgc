@@ -25,6 +25,7 @@ import com.costular.guaguaslaspalmas.model.StopTime;
 import com.costular.guaguaslaspalmas.utils.PrefUtils;
 import com.costular.guaguaslaspalmas.utils.StopsTimeLoader;
 import com.costular.guaguaslaspalmas.utils.Utils;
+import com.costular.guaguaslaspalmas.utils.ViewUtils;
 import com.costular.guaguaslaspalmas.widget.EditFavoriteStop;
 import com.costular.guaguaslaspalmas.widget.RouteFavoriteDialog;
 import com.costular.guaguaslaspalmas.widget.adapters.StopsTimeListAdapter;
@@ -59,8 +60,6 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        PrefUtils.loadTheme(this);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stops_detail);
 
@@ -76,11 +75,12 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(mStop.getFavoriteNameStop(getApplicationContext()));
-        getSupportActionBar().setSubtitle(mStop.getName());
 
-        TypedArray a = getTheme().obtainStyledAttributes(R.style.AppTheme, new int[] {android.R.attr.colorPrimary});
-        int color = a.getColor(0, 0);
-        a.recycle();
+        // Si es favorita adjuntamos el nombre de la parada real.
+        if(mStop.isFavorite(getApplicationContext())) {
+            getSupportActionBar().setSubtitle(mStop.getName());
+        }
+
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +95,7 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
 
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(this);
-        swipeLayout.setColorSchemeColors(color);
+        swipeLayout.setColorSchemeColors(R.color.main_indigo, R.color.main_red);
 
         mListView = (ListView) findViewById(R.id.stops_hour_list);
         mAdapter = new StopsTimeListAdapter(getApplicationContext());
@@ -105,8 +105,9 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
         checkInternet();
 
         // Empezamos a cargar
-        swipeLayout.setRefreshing(true);
         getSupportLoaderManager().initLoader(0, null, this);
+        swipeLayout.setRefreshing(true);
+
     }
 
     private void loadToolbar() {
@@ -115,8 +116,18 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
     }
 
     private void refresh() {
-        getSupportLoaderManager().restartLoader(0, null, this);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refreshLoader();
+                }}, 1000);
+
     }
+
+    private void refreshLoader() {
+        getSupportLoaderManager().restartLoader(0, null, this);
+            }
 
     @Override
     public void onRefresh() {
@@ -135,8 +146,11 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
 
         if(mStop.isFavorite(getApplicationContext())) {
             MenuItemCompat.setShowAsAction(star.setIcon(R.drawable.ic_action_star), MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
         }else {
             MenuItemCompat.setShowAsAction(star.setIcon(R.drawable.ic_action_star_outline), MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            fab.setVisibility(View.GONE);
+
         }
 
 
@@ -178,6 +192,15 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
                 if(mStop.removeFromFavorites(getApplicationContext())) {
                     mStop.removeFromFavorites(getApplicationContext());
                     item.setIcon(R.drawable.ic_action_star_outline);
+
+
+                    //Ocultamos el FAB de editar parada
+                    ViewUtils.hideViewByScale(getApplicationContext(), fab);
+
+                    //Escondemos el subtítulo del Toolbar
+                    getSupportActionBar().setSubtitle(null);
+                    getSupportActionBar().setTitle(mStop.getName());
+
                     Toast.makeText(getApplicationContext(), "Eliminada de favoritos", Toast.LENGTH_SHORT).show();
                 }
             }else {
@@ -196,6 +219,10 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
         star.setIcon(R.drawable.ic_action_star);
 
         getSupportActionBar().setTitle(mStop.getFavoriteNameStop(getApplicationContext()));
+        getSupportActionBar().setSubtitle(mStop.getName());
+
+        //Mostramos el FAB de editar parada
+        ViewUtils.showViewByScale(getApplicationContext(), fab);
     }
 
     @Override

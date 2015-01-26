@@ -34,5 +34,10 @@
     <string name="preferences_notification_sound_message">Notificaciones con sonido.</string>
     <string name="preferences_notification_vibrate_title">Vibración</string>
     <string name="preferences_notification_vibrate_message">Notificaciones con vibración.</string>
+    <string name="dialog_title_check_stop_by_code">Consultar parada</string>
+    <string name="dialog_message_check_stop_by_code">Introduce el código de la parada para consultar las guaguas.</string>
+    <string name="dialog_hint_message_check_stop_by_code">Código de la parada</string>
+    <string name="dialog_positive_check_stop_by_code">Consultar</string>
+    <string name="dialog_negative_check_stop_by_code">Cancelar</string>
 
 </resources>

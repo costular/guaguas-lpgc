@@ -2,10 +2,14 @@ package com.costular.guaguaslaspalmas.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.nispok.snackbar.Snackbar;
@@ -76,4 +80,8 @@ public class Utils {
         return (int) (Math.random()*(Max-Min))+Min;
     }
 
+    public static float getPixelsByDP(int dp, Resources resources) {
+         return (float) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                 dp, resources.getDisplayMetrics());
+    }
 }

@@ -44,6 +44,8 @@ public class EditFavoriteStop extends DialogFragment {
         final int id = getArguments().getInt("id");
 
         final EditText text = new EditText(getActivity());
+        // Introducimos el nombre actual en el EditText para facilitar la edición.
+        text.setText(Stop.createStopFromId(getActivity(), id).getFavoriteNameStop(getActivity()));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Cambia el nombre de la parada")

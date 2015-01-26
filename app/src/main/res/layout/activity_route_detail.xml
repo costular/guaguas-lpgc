@@ -17,7 +17,7 @@
         android:background="?attr/colorPrimary"
         android:orientation="vertical">
 
-        <include android:id="@+id/toolbar" layout="@layout/toolbar"/>
+       <include layout="@layout/toolbar"/>
 
         <com.costular.guaguaslaspalmas.widget.views.SlidingTabLayout
             android:id="@+id/sliding_tabs"

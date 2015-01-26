@@ -1,0 +1,11 @@
+-Avisar cuando falten tantos minutos para una guagua
+-Elegir la dirección de la ruta (aún no sé cómo)
+-Drawable para las paradas de las rutas en RouteDetailActivity.
+-Apartado "contacta con nosotros" del NavigationDrawer.
+-Búsqueda de paradas y de líneas.
+-MapFragment con todas las paradas.
+-Añadir paradas por código a través del FAB del menú de "paradas"
+    +########Consultar paradas por código sin añadirlas a favoritos.
+
+-Actualizar automáticamente los horarios de las rutas a través del programa que se ejecuta en el servidor.
+

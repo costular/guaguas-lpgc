@@ -61,7 +61,7 @@ public class MainActivity extends ActionBarActivity {
 
     // Navigation title and ActionBar title
     private CharSequence title;
-    private String[] secondListTitles;
+    private String[] secondItemTitles;
     private String[] itemTitles;
 
     // Position id of navigation menu
@@ -113,12 +113,9 @@ public class MainActivity extends ActionBarActivity {
             return;
         }
 
-        drawer.setStatusBarBackgroundColor(PrefUtils.color);
-
         listView = (ListView) findViewById(R.id.left_drawer);
         secondList = (ListView) findViewById(R.id.second_list);
 
-        secondListTitles = getResources().getStringArray(R.array.second_list_array);
         // El borde para que parezca que tiene volumen Z
         drawer.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
@@ -142,7 +139,7 @@ public class MainActivity extends ActionBarActivity {
         icons.recycle();
 
         // Añadimos el adapter
-        mAdapter = new DrawerListAdapter(this, items);
+        mAdapter = new DrawerListAdapter(this, items, true);
         listView.setAdapter(mAdapter);
         items.clear(); // Para ahorrar memoria :D
 
@@ -166,7 +163,22 @@ public class MainActivity extends ActionBarActivity {
         listView.setOnItemClickListener(new DrawerItemClickListener());
 
         //Second list
-        secondList.setAdapter(new ArrayAdapter<String>(this, R.layout.second_list_item, secondListTitles));
+        List<DrawerListItem> itemsSecond = new ArrayList<DrawerListItem>();
+        // Obtenemos el array con los nombres del menú
+        secondItemTitles = getResources().getStringArray(R.array.navigation_drawer_second_list);
+        // Obtenemos un array especial para pasar de String a Integer ya que contiene los ids de los drawables
+        TypedArray iconsSecond = getResources().obtainTypedArray(R.array.navigation_drawer_second_list_icons);
+
+        // Un bucle para cargar el list
+        for(int i = 0; i < secondItemTitles.length; i++) {
+            // Añadimos y si el título es avisos, añadimos el contador
+            itemsSecond.add(new DrawerListItem(secondItemTitles[i], iconsSecond.getResourceId(i, -1)));
+        }
+        // Borramos de memoria
+        iconsSecond.recycle();
+
+
+        secondList.setAdapter(new DrawerListAdapter(this, itemsSecond, false));
         secondList.setOnItemClickListener(new SecondListItemClickListener());
     }
 
