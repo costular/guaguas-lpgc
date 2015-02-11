@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="De lunes a viernes"
+        android:text="De Lunes a Viernes"
         style="@style/TextAppearance.Body1"/>
 
     <TextView
@@ -20,20 +20,23 @@
         android:layout_height="wrap_content"
         android:paddingTop="16dp"
         android:text="Horarios de entre semana"
+        android:inputType="textMultiLine"
         style="@style/TextAppearance.Body2"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sábados, domingos y festivos"
+        android:text="Sábados, Domingos y festivos"
         style="@style/TextAppearance.Body1"
         android:paddingTop="16dp"/>
 
     <TextView
+        android:id="@+id/weekend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Horarios de finde"
         android:paddingTop="16dp"
+        android:inputType="textMultiLine"
         style="@style/TextAppearance.Body2"/>
 
 

@@ -1,5 +1,5 @@
 ######-El MapFragment tira un error y cierra la aplicación en RouteDetailActivity, en las tabs en concreto. SOLUCIONADO.
--El toolbar se pone encima del fragment de los horarios.
+######El toolbar se pone encima del fragment de los horarios.
 -Cuando pones una parada de favorita el FAB de editar el nombre de la parada aparece con la animación y luego desaparece.
 -######Líneas favoritas no está centrado ni se ve bien.
 -Error en el layout de las paradas en RouteDetailActivity.

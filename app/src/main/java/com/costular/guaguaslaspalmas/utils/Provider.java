@@ -21,7 +21,7 @@ public class Provider extends ContentProvider{
     public static final String AUTHORITY = "com.costular.guaguaslaspalmas.utils";
 
     public static final String URI_ROUTES = "content://"+AUTHORITY+"/routes";
-    public static final String URI_STOPS = "content://"+AUTHORITY+"/VIEJASPARADAS";
+    public static final String URI_STOPS = "content://"+AUTHORITY+"/stops";
     public static final String URI_STOPS_FAVORITES = "content://"+AUTHORITY+"/stops_favorites";
 
     public static final Uri CONTENT_URI_ROUTES = Uri.parse(URI_ROUTES);
@@ -31,7 +31,7 @@ public class Provider extends ContentProvider{
     private DatabaseHelper database;
 
     public static final String TABLE_ROUTES = "routes";
-    public static final String TABLE_STOPS = "VIEJASPARADAS";
+    public static final String TABLE_STOPS = "stops";
     public static final String TABLE_FAVORITES_STOPS = "stops_favorites";
 
     public static UriMatcher uriMatcher;
@@ -143,11 +143,11 @@ public class Provider extends ContentProvider{
 
     public static final class Stops implements BaseColumns {
         public static final String ID_COL = "_id";
-        public static final String ROUTE_COL = "linea";
         public static final String LATITUDE_COL = "coord_lat";
         public static final String LONGITUDE_COL = "coord_long";
-        public static final String DIRECTION_COL = "direccion";
-        public static final String NAME_COL = "parada_name";
+        public static final String ORDER_COL = "order";
+        public static final String ROUTE_COL = "route";
+        public static final String NAME_COL = "name";
         public static final String CODE_COL = "code";
     }
 

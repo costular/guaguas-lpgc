@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.costular.guaguaslaspalmas.fragments.MapStopsFragment;
 import com.costular.guaguaslaspalmas.fragments.RoutesFragment;
 import com.costular.guaguaslaspalmas.fragments.RoutesListFragment;
 import com.costular.guaguaslaspalmas.fragments.StopsFavoritesFragment;
@@ -49,6 +51,10 @@ public class MainActivity extends ActionBarActivity {
 
     private static final int CONTACT = 0;
     private static final int SETTINGS = 1;
+
+    // Strict Mode
+    StrictMode.ThreadPolicy.Builder builder = new StrictMode.ThreadPolicy.Builder().detectAll();
+
 
     // Navigation
     private DrawerLayout drawer;
@@ -99,6 +105,16 @@ public class MainActivity extends ActionBarActivity {
             new serverService().execute();
         }
         */
+
+        // Cargamos el log para ver si hacemos alguna tarea pesada, que debería de hacerse en segundo plano, y la hacemos en el UI THREAD
+        if(BuildConfig.DEBUG) {
+            builder.penaltyDeath();
+        } else {
+            builder.penaltyLog();
+        }
+
+        // Tira algunos errores debido a ciertos fallos en nuestro código de la app.
+        //StrictMode.setThreadPolicy(builder.build());
 
     }
 
@@ -206,7 +222,7 @@ public class MainActivity extends ActionBarActivity {
 
             case MAP:
                 mPosition = MAP;
-
+                loadFragment(new MapStopsFragment());
                 break;
 
         }
@@ -282,7 +298,12 @@ public class MainActivity extends ActionBarActivity {
             switch (position) {
 
                 case CONTACT:
+                    Intent email = new Intent(Intent.ACTION_SEND);
 
+                    email.setType("text/plain");
+                    email.putExtra(Intent.EXTRA_EMAIL, "costular@gmail.com");
+
+                    startActivity(email);
                     break;
 
                 case SETTINGS:

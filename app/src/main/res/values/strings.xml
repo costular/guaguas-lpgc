@@ -39,5 +39,6 @@
     <string name="dialog_hint_message_check_stop_by_code">Código de la parada</string>
     <string name="dialog_positive_check_stop_by_code">Consultar</string>
     <string name="dialog_negative_check_stop_by_code">Cancelar</string>
+    <string name="destination">Destino</string>
 
 </resources>

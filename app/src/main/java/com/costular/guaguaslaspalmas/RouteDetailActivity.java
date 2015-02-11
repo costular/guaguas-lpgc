@@ -1,7 +1,10 @@
 package com.costular.guaguaslaspalmas;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,22 +17,28 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
-import com.costular.guaguaslaspalmas.fragments.MapFragment;
+import com.costular.guaguaslaspalmas.fragments.RouteMapFragment;
 import com.costular.guaguaslaspalmas.fragments.RouteDetailScheduleFragment;
 import com.costular.guaguaslaspalmas.fragments.RoutesDetailStopsFragment;
 import com.costular.guaguaslaspalmas.model.Route;
-import com.costular.guaguaslaspalmas.utils.PrefUtils;
 import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.views.SlidingTabLayout;
+import com.melnykov.fab.FloatingActionButton;
 
 /**
  * Created by Diego on 23/11/2014.
  */
-public class RouteDetailActivity extends ActionBarActivity{
+public class RouteDetailActivity extends ActionBarActivity {
+
+    // Constantes estáticas para decirle si es ida o vuelta·
+    public static final int IDA = 1;
+    public static final int VUELTA = 2;
+
+    private int type = IDA;
 
     // Tab ids
     public static final int STOPS_TAB = 0;
@@ -43,16 +52,23 @@ public class RouteDetailActivity extends ActionBarActivity{
     private SlidingTabLayout tabs;
     private ViewPager viewPager;
 
+    private FloatingActionButton fab;
+
     private int mId;
     private Route mRoute;
 
     private String mGoing, mReturn;
     private boolean mDoubleDestiny;
 
+    private boolean showingAnimation = false;
+
+    /*
+     * Fragments
+     */
+    RoutesDetailStopsFragment stopsFragment;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        PrefUtils.loadTheme(this);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_detail);
 
@@ -68,7 +84,7 @@ public class RouteDetailActivity extends ActionBarActivity{
 
         mDoubleDestiny = mRoute.getName().contains("-");
 
-        if(mDoubleDestiny) {
+        if (mDoubleDestiny) {
             String[] destinies = mRoute.getName().split("-");
             mGoing = destinies[0];
             mReturn = destinies[1];
@@ -80,36 +96,75 @@ public class RouteDetailActivity extends ActionBarActivity{
         getSupportActionBar().setElevation(0);
 
         getSupportActionBar().setTitle(mRoute.getNumber() + ": " + mRoute.getName());
+        getSupportActionBar().setSubtitle(getResources().getString(R.string.destination) + " " + mGoing);
 
-        if(mDoubleDestiny) {
-            // Tabs y ViewPager
-            tabs = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-            viewPager = (ViewPager) findViewById(R.id.pager);
+        // Tabs y ViewPager
+        tabs = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+        viewPager = (ViewPager) findViewById(R.id.pager);
 
-            viewPager.setAdapter(new MyPagerAdapter(this, getSupportFragmentManager(), mId));
-            tabs.setViewPager(viewPager);
+        // El botón flotante para cambiar la dirección de la línea
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-            final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
-                    .getDisplayMetrics());
-            viewPager.setPageMargin(pageMargin);
+                if(showingAnimation) {
+                    return;
+                }
+
+                fab.animate()
+                        .rotationBy(360f)
+                        .setDuration(250)
+                        .setInterpolator(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? AnimationUtils.loadInterpolator(getApplicationContext(), R.interpolator.fast_out_slow_in)
+                                : new LinearInterpolator())
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                showingAnimation = false;
+                            }
+                        })
+                        .start();
+
+                showingAnimation = true;
+
+                // Cambiamos la dirección
+                changeDirection();
+
+            }
+        });
+
+
+        viewPager.setAdapter(new MyPagerAdapter(this, getSupportFragmentManager(), mId));
+        tabs.setViewPager(viewPager);
+
+        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
+                .getDisplayMetrics());
+        viewPager.setPageMargin(pageMargin);
+
+    }
+
+    private void changeDirection() {
+        if(type == IDA) {
+            type = VUELTA;
+
+            //Actualizamos el título
+            getSupportActionBar().setSubtitle(getResources().getString(R.string.destination) + " " + mReturn);
 
         } else {
+            type = IDA;
 
-
+            //Actualizamos el título
+            getSupportActionBar().setSubtitle(getResources().getString(R.string.destination) + " " + mGoing);
         }
 
+        // Actualizamos
+        if(stopsFragment != null)
+        stopsFragment.changeDirection();
     }
 
     private void loadToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplication(), "Hi", Toast.LENGTH_SHORT);
-            }
-        });
-
         setSupportActionBar(toolbar);
     }
 
@@ -151,10 +206,6 @@ public class RouteDetailActivity extends ActionBarActivity{
                 }
             }
             return true;
-        } else if(item.getItemId() == SCHEDULE_MENU) {
-
-            // Esto es temporal
-
         }
 
         return false;
@@ -185,11 +236,14 @@ public class RouteDetailActivity extends ActionBarActivity{
 
             switch (position) {
                 case STOPS_TAB: // Fragment # 0 - This will show FirstFragment
-                    return RoutesDetailStopsFragment.newInstance(mContext, localId);
+                    if(stopsFragment == null) stopsFragment = RoutesDetailStopsFragment.newInstance(mContext, localId, type);
+
+                    return stopsFragment;
+
                 case SCHEDULE_TAB:
                     return RouteDetailScheduleFragment.newInstance(mContext, localId);
                 case MAP_TAB:
-                    return MapFragment.newInstance(mContext, mRoute.getId());
+                    return RouteMapFragment.newInstance(mContext, mRoute.getId());
             }
 
             return null;

@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.costular.guaguaslaspalmas.R;
 import com.costular.guaguaslaspalmas.StopDetailActivity;
 import com.costular.guaguaslaspalmas.model.Stop;
+import com.nispok.snackbar.Snackbar;
 
 /**
  * Created by Diego on 26/01/2015.
@@ -38,10 +40,21 @@ public class CheckStopCodeDialog extends DialogFragment {
                             return;
                         }
                         int code = Integer.parseInt(input.getText().toString());
+                        int id = Stop.getStopIdFromCode(getActivity(), code);
+
+                        if (id == -1) {
+                            Snackbar snackbar = Snackbar.with(getActivity());
+                            snackbar.text("No hay ninguna parada con ese código");
+
+                            snackbar.show(getActivity());
+
+                            dismiss();
+                            return;
+                        }
 
                         Intent intent = new Intent(getActivity(), StopDetailActivity.class);
                         intent.putExtra(StopDetailActivity.STOP, code);
-                        intent.putExtra(StopDetailActivity.ID, Stop.getStopIdFromCode(getActivity(), code));
+                        intent.putExtra(StopDetailActivity.ID, id);
 
                         startActivity(intent);
                     }

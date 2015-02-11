@@ -24,4 +24,6 @@
     <string name="yellow">Yellow</string>
     <string name="gray">Gray</string>
 
+    <string name="destination">Destination</string>
+
 </resources>

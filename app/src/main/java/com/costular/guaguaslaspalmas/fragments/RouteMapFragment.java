@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 /**
  * Created by Diego on 16/01/2015.
  */
-public class MapFragment extends Fragment {
+public class RouteMapFragment extends Fragment {
 
     /*
      * Mapa de Google
@@ -55,13 +55,13 @@ public class MapFragment extends Fragment {
     /*
      * Método para crear una nueva instancia.
      */
-    public static MapFragment newInstance(Context context, final int id) {
+    public static RouteMapFragment newInstance(Context context, final int id) {
 
         Bundle bundle = new Bundle();
         bundle.putInt("id", id);
 
-        Fragment fragment = Fragment.instantiate(context, MapFragment.class.getName(), bundle);
-        return (MapFragment) fragment;
+        Fragment fragment = Fragment.instantiate(context, RouteMapFragment.class.getName(), bundle);
+        return (RouteMapFragment) fragment;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -99,37 +99,9 @@ public class MapFragment extends Fragment {
         //Cargamos la ruta
         mRoute = Route.createFromCursor(Utils.getCursorFromRouteId(getActivity(), mId));
 
-        // Cargamos el array de paradas correspondientes a la línea para mostrar su posición en el mapa.
-        loadStops();
 
     }
 
-    private void loadStops() {
-
-        DatabaseHelper helper = DatabaseHelper.getInstance(getActivity());
-        SQLiteDatabase db = helper.getReadableDatabase();
-
-        // Creamos el cursor
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ Provider.TABLE_STOPS+" WHERE (linea = '"+mRoute.getNumber()+"' AND direccion LIKE 'ida%')", null);
-
-        // Asignamos el tamaño
-        stops = new Stop[cursor.getColumnCount()];
-
-        // Ahora recorremos el array para asignar todos los valores
-        for(int i = 0; i < stops.length; i++) {
-
-            if(cursor.moveToFirst()) {
-
-                do {
-                    stops[i] = Stop.createStopFromId(getActivity(), cursor.getInt(cursor.getColumnIndex("_id")));
-                } while (cursor.moveToNext());
-            }
-
-        }
-
-        //Cerramos el cursor
-        cursor.close();
-    }
 
     @Override
     public void onStart() {
@@ -147,16 +119,16 @@ public class MapFragment extends Fragment {
         // Activamos la posición
         map.setMyLocationEnabled(true);
 
-        // Ahora añadimos una marca por cada parada
-        for(int i = 0; i < stops.length; i++) {
-            // Añadimos la marca en la latitud y longitud de la parada.
-            map.addMarker(new MarkerOptions().title(stops[i].getName()).position(new LatLng(stops[i].getLatitude(), stops[i].getLongitude())));
+        Stop last = null;
 
+        for(Stop stop : Stop.getStopsByConcesion(getActivity(), mRoute.getConcesion(getActivity()))) {
+
+            map.addMarker(new MarkerOptions().title(stop.getName()).position(new LatLng(stop.getLatitude(), stop.getLongitude())));
+            last = stop;
         }
 
-
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(stops[0].getLatitude(),
-                stops[0].getLongitude()), 12.0f));
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(last.getLatitude(),
+                last.getLongitude()), 12.0f));
 
 
     }

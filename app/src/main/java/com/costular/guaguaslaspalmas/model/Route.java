@@ -30,6 +30,24 @@ public class Route {
         return route;
     }
 
+    public static int getConcesionFromRouteNumber(final Context context, int id) {
+
+        DatabaseHelper helper = DatabaseHelper.getInstance(context);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT id FROM VARIANTES WHERE concesion = '"+id+"'", null);
+
+        int concesion = 0;
+
+        if(cursor.moveToFirst()) {
+            concesion = cursor.getInt(0);
+        }
+
+        cursor.close();
+
+        return concesion;
+    }
+
     public static boolean isRouteFavorite(final Context context, final int id) {
 
         DatabaseHelper helper = DatabaseHelper.getInstance(context);
@@ -136,5 +154,9 @@ public class Route {
 
     public boolean addToFavorites(final Context context) {
         return addToFavorite(context, getId());
+    }
+
+    public int getConcesion(final Context  context) {
+        return getConcesionFromRouteNumber(context, getId());
     }
 }

@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
 import com.costular.guaguaslaspalmas.utils.Provider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Diego on 24/11/2014.
  */
@@ -16,30 +19,85 @@ public class Stop {
     private int id;
     private double longitude;
     private double latitude;
+    private int order;
     private String name;
     private int code;
-    private String route;
-    private String direccion;
+    private int route;
 
     public static Stop createStopFromId(final Context context, final int id) {
 
         DatabaseHelper helper = DatabaseHelper.getInstance(context);
         SQLiteDatabase db = helper.getReadableDatabase();
 
-        return createStopFromCursor(db.rawQuery("SELECT * FROM "+ Provider.TABLE_STOPS +" WHERE _id = ?", new String[]{String.valueOf(id)}));
+        return createStopFromCursor(db.rawQuery("SELECT * FROM "+ Provider.TABLE_STOPS +" WHERE _id = ?", new String[]{String.valueOf(id)}), true);
     }
 
-    private static Stop createStopFromCursor(Cursor cursor) {
-        cursor.moveToFirst();
+    private static Stop createStopFromCursor(Cursor cursor, boolean closeCursor) {
+
+        if(closeCursor) {
+            cursor.moveToFirst();
+        }
 
         Stop stop = new Stop(cursor.getInt(cursor.getColumnIndex(Provider.Stops.ID_COL)), cursor.getDouble(cursor.getColumnIndex(Provider.Stops.LONGITUDE_COL)), cursor.getDouble(cursor.getColumnIndex(Provider.Stops.LATITUDE_COL)),
-                cursor.getString(cursor.getColumnIndex(Provider.Stops.DIRECTION_COL)), cursor.getString(cursor.getColumnIndex(Provider.Stops.NAME_COL)),
-                cursor.getInt(cursor.getColumnIndex(Provider.Stops.CODE_COL)), cursor.getString(cursor.getColumnIndex(Provider.Stops.ROUTE_COL)));
+                cursor.getInt(cursor.getColumnIndex(Provider.Stops.ORDER_COL)), cursor.getString(cursor.getColumnIndex(Provider.Stops.NAME_COL)),
+                cursor.getInt(cursor.getColumnIndex(Provider.Stops.CODE_COL)), cursor.getInt(cursor.getColumnIndex(Provider.Stops.ROUTE_COL)));
 
         // Cerramos el cursor
-        cursor.close();
+        if(closeCursor) {
+            cursor.close();
+        }
 
         return stop;
+    }
+
+    /*
+     * Obtenemos todas las paradas de la base de datos.
+     */
+    public static List<Stop> getAllStops(Context context) {
+
+        DatabaseHelper helper = DatabaseHelper.getInstance(context);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        List<Stop> stops = new ArrayList<Stop>();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Provider.TABLE_STOPS, null);
+
+        if(cursor.moveToFirst()) {
+
+            do{
+                stops.add(createStopFromCursor(cursor, false));
+                // Movemos el cursor.
+                cursor.moveToNext();
+
+            }while(cursor.moveToNext());
+        }
+
+        return stops;
+    }
+
+    /*
+     * Obtenemos las paradas por concesion
+     */
+    public static List<Stop> getStopsByConcesion(Context context, int concesion) {
+
+        DatabaseHelper helper = DatabaseHelper.getInstance(context);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Provider.TABLE_STOPS + " WHERE " + Provider.Stops.ROUTE_COL + " = '"+concesion+"'", null);
+
+        List<Stop> stops = new ArrayList<Stop>();
+
+        if(cursor.moveToFirst()) {
+
+            do{
+                stops.add(createStopFromCursor(cursor, false));
+                cursor.moveToNext();
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+
+        return stops;
     }
 
     public static int getStopIdFromCode(final Context context, int code) {
@@ -52,13 +110,35 @@ public class Stop {
         // Movemos el cursor al principio para leerlo.
         cursor.moveToFirst();
 
+        int id;
         // Guardamos en una variable la id
-        int id = cursor.getInt(0);
+        if(cursor != null && cursor.getCount() >= 1) {
+            id = cursor.getInt(0);
+        } else {
+            id = -1;
+        }
 
         // Cerramos el cursor
         cursor.close();
 
         return id;
+    }
+
+    public static Stop getStopFromCode(final Context context, int code) {
+
+        DatabaseHelper helper = DatabaseHelper.getInstance(context);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        Cursor c = db.rawQuery("SELECT * FROM " + Provider.TABLE_STOPS + " WHERE " + Provider.Stops.CODE_COL + " = ?",
+                new String[] {String.valueOf(code)});
+
+        // Guardamos el objeto que obtenemos a través del método en la variable.
+        Stop stop = createStopFromCursor(c, true);
+
+        //Cerramos
+        c.close();
+
+        return stop;
     }
 
     public static boolean isFavorite(final Context context, Stop stop) {
@@ -128,12 +208,12 @@ public class Stop {
         db.update("stops_favorites", values, "stop_route = ?", new String[] {String.valueOf(id)});
     }
 
-    public Stop(int id, double longitude, double latitude, String direction, String name, int code, String route) {
+    public Stop(int id, double longitude, double latitude, int order, String name, int code, int route) {
         this.id = id;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.direccion = direction;
 
+        this.order = order;
         this.name = name;
         this.code = code;
         this.route = route;
@@ -179,11 +259,19 @@ public class Stop {
         this.code = code;
     }
 
-    public String getRoute() {
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public int getRoute() {
         return route;
     }
 
-    public void setRoute(String route) {
+    public void setRoute(int route) {
         this.route = route;
     }
 

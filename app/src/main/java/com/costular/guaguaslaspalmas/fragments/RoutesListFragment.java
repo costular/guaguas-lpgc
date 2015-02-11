@@ -89,7 +89,7 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
                 Cursor cursor = (Cursor) mAdapter.getItem(position);
 
                 Intent intent = new Intent(getActivity(), RouteDetailActivity.class);
-                intent.putExtra("id", cursor.getInt(cursor.getColumnIndex(Provider.Routes.ID_COL)));
+                intent.putExtra("id", cursor.getInt(cursor.getColumnIndex(Provider.Routes.NUMBER_COL)));
 
                 getActivity().startActivity(intent);
             }
@@ -134,11 +134,9 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
         switch(i) {
 
             case 0:
-                Log.d("Here", "¿Ocurre esto? - Normal");
                 return new CursorLoader(getActivity(), Provider.CONTENT_URI_ROUTES, null, null, null, null);
 
             case 1:
-                Log.d("Here", "¿Ocurre esto? - Favorite");
                 String[] ids = getIdOfFavoriteStops();
 
                 if (ids.length < 1) {
@@ -194,4 +192,5 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
     private ActionBar getBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
     }
+
 }

@@ -1,5 +1,6 @@
 package com.costular.guaguaslaspalmas.fragments;
 
+import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
@@ -34,22 +35,36 @@ import com.costular.guaguaslaspalmas.widget.adapters.StopsListAdapter;
  */
 public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbacks<Cursor> {
 
-    private int mId;
-    private int mRouteId;
 
+    /*
+     * Variable que guarda la id de la línea.
+     */
+    private int mId;
+
+    /*
+     * Variable que guarda si la dirección es ida o vuelta.
+     */
+    private int type;
+
+    /*
+     * Objeto de la clase Route.
+     */
     private Route mRoute;
+
 
     private ListView mListView;
     private StopsListAdapter mAdapter;
 
-    public static RoutesDetailStopsFragment newInstance(final Context context, final int id) {
+    public static RoutesDetailStopsFragment newInstance(final Context context, final int id, int type) {
 
         Bundle bundle = new Bundle();
         bundle.putInt("id", id);
+        bundle.putInt("type", type);
 
         Fragment fragment = Fragment.instantiate(context, RoutesDetailStopsFragment.class.getName(), bundle);
         return (RoutesDetailStopsFragment) fragment;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
@@ -61,6 +76,10 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
         super.onStart();
 
         mId = getArguments().getInt("id");
+        type = getArguments().getInt("type");
+
+        Log.d(getClass().getSimpleName(), "mId: " + mId);
+
         mRoute = Route.createFromCursor(Utils.getCursorFromRouteId(getActivity(), mId));
 
         //cargamos la lista y eso
@@ -94,11 +113,46 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
         }
     }
 
+    public void changeDirection() {
+
+        if(type == RouteDetailActivity.IDA) {
+            type = RouteDetailActivity.VUELTA;
+        } else {
+            type = RouteDetailActivity.IDA;
+        }
+
+        // Actualizamos
+        getLoaderManager().restartLoader(0, null, this);
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
-            return new CursorLoader(getActivity(), Provider.CONTENT_URI_STOPS, null, "(" + Provider.Stops.ROUTE_COL + "= ?) AND (" + Provider.Stops.DIRECTION_COL + " LIKE 'ida%')",
-                    new String[] {mRoute.getNumber()}, null);
+        DatabaseHelper helper = DatabaseHelper.getInstance(getActivity());
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT id FROM VARIANTES WHERE concesion = '"+mRoute.getId()+"' LIMIT 2", null);
+
+        int mVarianteId = -1;
+        // Solo cogemos la ida, OJO!!!
+
+        if(type == RouteDetailActivity.IDA) {
+            if(cursor.moveToFirst()) {
+                mVarianteId = cursor.getInt(0);
+            }
+        } else {
+            if(cursor.moveToFirst()) {
+                // Pasamos al siguiente
+                cursor.moveToNext();
+
+                mVarianteId = cursor.getInt(0);
+            }
+
+        }
+
+
+            return new CursorLoader(getActivity(), Provider.CONTENT_URI_STOPS, null, "(" + Provider.Stops.ROUTE_COL + "= ?)",
+                    new String[] {String.valueOf(mVarianteId)}, null);
     }
 
     @Override
@@ -110,4 +164,5 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         mAdapter.swapCursor(null);
     }
+
 }

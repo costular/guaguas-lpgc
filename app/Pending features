@@ -1,5 +1,5 @@
 -Avisar cuando falten tantos minutos para una guagua
--Elegir la dirección de la ruta (aún no sé cómo)
+#####Elegir la dirección de la ruta (aún no sé cómo)
 -Drawable para las paradas de las rutas en RouteDetailActivity.
 -Apartado "contacta con nosotros" del NavigationDrawer.
 -Búsqueda de paradas y de líneas.
@@ -9,3 +9,8 @@
 
 -Actualizar automáticamente los horarios de las rutas a través del programa que se ejecuta en el servidor.
 
+--------FUTURAS VERSIONES---------
+
+-Hacer que el servidor se encargue de todas las peticiones de internet. Tanto de
+las próximas guaguas devolviendo los datos en un JSON, como tener un thread por cada
+usuario con la información de las guaguas que quieran saber su info. 
