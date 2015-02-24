@@ -39,7 +39,7 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
     /*
      * Variable que guarda la id de la línea.
      */
-    private int mId;
+    private String number;
 
     /*
      * Variable que guarda si la dirección es ida o vuelta.
@@ -55,10 +55,10 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
     private ListView mListView;
     private StopsListAdapter mAdapter;
 
-    public static RoutesDetailStopsFragment newInstance(final Context context, final int id, int type) {
+    public static RoutesDetailStopsFragment newInstance(final Context context, final String number, int type) {
 
         Bundle bundle = new Bundle();
-        bundle.putInt("id", id);
+        bundle.putString("number", number);
         bundle.putInt("type", type);
 
         Fragment fragment = Fragment.instantiate(context, RoutesDetailStopsFragment.class.getName(), bundle);
@@ -75,18 +75,18 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
     public void onStart() {
         super.onStart();
 
-        mId = getArguments().getInt("id");
+        number = getArguments().getString("number");
         type = getArguments().getInt("type");
 
-        Log.d(getClass().getSimpleName(), "mId: " + mId);
+        Log.d(getClass().getSimpleName(), "number: " + number);
 
-        mRoute = Route.createFromCursor(Utils.getCursorFromRouteId(getActivity(), mId));
+        mRoute = Route.createRouteFromNumber(getActivity(), number);
 
         //cargamos la lista y eso
         mListView = (ListView) getActivity().findViewById(R.id.stops_list);
         mAdapter = new StopsListAdapter(getActivity(), R.layout.route_detail_stops_list, null,
                 new String[] {Provider.Stops.NAME_COL, Provider.Stops.NAME_COL, Provider.Stops.NAME_COL},
-                new int[] {R.id.name, R.id.is_favorite},
+                new int[] {R.id.name},
                 0, mRoute.getColor());
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new ListViewListener());
@@ -131,7 +131,7 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
         DatabaseHelper helper = DatabaseHelper.getInstance(getActivity());
         SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT id FROM VARIANTES WHERE concesion = '"+mRoute.getId()+"' LIMIT 2", null);
+        Cursor cursor = db.rawQuery("SELECT id FROM VARIANTES WHERE concesion = '"+mRoute.getNumber()+"' LIMIT 2", null);
 
         int mVarianteId = -1;
         // Solo cogemos la ida, OJO!!!
@@ -149,7 +149,7 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
             }
 
         }
-
+        cursor.close();
 
             return new CursorLoader(getActivity(), Provider.CONTENT_URI_STOPS, null, "(" + Provider.Stops.ROUTE_COL + "= ?)",
                     new String[] {String.valueOf(mVarianteId)}, null);

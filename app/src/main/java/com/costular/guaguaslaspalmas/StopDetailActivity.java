@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.costular.guaguaslaspalmas.model.Stop;
@@ -101,6 +102,8 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
         mAdapter = new StopsTimeListAdapter(getApplicationContext());
 
         mListView.setAdapter(mAdapter);
+
+        mListView.setEmptyView(((RelativeLayout) findViewById(R.id.empty_view)));
 
         checkInternet();
 

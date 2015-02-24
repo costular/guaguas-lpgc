@@ -4,7 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
+import com.costular.guaguaslaspalmas.RouteDetailActivity;
 import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
 import com.costular.guaguaslaspalmas.utils.Provider;
 
@@ -27,19 +29,38 @@ public class Route {
         Route route = new Route(cursor.getInt(cursor.getColumnIndex(Provider.Routes.ID_COL)), cursor.getString(cursor.getColumnIndex(Provider.Routes.NAME_COL)),
                 cursor.getString(cursor.getColumnIndex(Provider.Routes.NUMBER_COL)), cursor.getString(cursor.getColumnIndex(Provider.Routes.COLOR_COL)));
 
+        // Cerramos el cursor
+        cursor.close();
+
         return route;
     }
 
-    public static int getConcesionFromRouteNumber(final Context context, int id) {
+    public static Route createRouteFromNumber(final Context context, final String number) {
+
+        // Inicializamos la base de datos
+        DatabaseHelper helper = DatabaseHelper.getInstance(context);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Provider.TABLE_ROUTES + " WHERE "+Provider.Routes.NUMBER_COL+" = '"+number+"'", null);
+
+        return createFromCursor(cursor);
+    }
+
+    public static int getConcesionFromRouteNumber(final Context context, String number, int type) {
 
         DatabaseHelper helper = DatabaseHelper.getInstance(context);
         SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT id FROM VARIANTES WHERE concesion = '"+id+"'", null);
+        Cursor cursor = db.rawQuery("SELECT id FROM VARIANTES WHERE concesion = '"+number+"' LIMIT 2", null);
 
         int concesion = 0;
 
         if(cursor.moveToFirst()) {
+
+            if(type == RouteDetailActivity.VUELTA) {
+                cursor.moveToNext();
+            }
+
             concesion = cursor.getInt(0);
         }
 
@@ -156,7 +177,7 @@ public class Route {
         return addToFavorite(context, getId());
     }
 
-    public int getConcesion(final Context  context) {
-        return getConcesionFromRouteNumber(context, getId());
+    public int getConcesion(final Context  context, int type) {
+        return getConcesionFromRouteNumber(context, getNumber(), type);
     }
 }

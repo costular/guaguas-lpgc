@@ -2,6 +2,7 @@ package com.costular.guaguaslaspalmas.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.util.Log;
 
@@ -13,11 +14,19 @@ import com.costular.guaguaslaspalmas.utils.PrefUtils;
  */
 public class Preferences extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private Preference notificationSound;
+    private Preference notificationVibrate;
+    private Preference notificationPriority;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.screen);
+
+        notificationSound = getPreferenceScreen().findPreference("notification_sound");
+        notificationVibrate = getPreferenceScreen().findPreference("notification_vibrate");
+        notificationPriority = getPreferenceScreen().findPreference("notification_priority");
     }
 
     @Override
@@ -32,18 +41,13 @@ public class Preferences extends PreferenceFragment implements SharedPreferences
 
             if(sharedPreferences.getBoolean("notifications", true)) {
                 // Activamos la categoría de notificaciones
-                getPreferenceScreen().findPreference("notification_sound").setEnabled(true);
-                getPreferenceScreen().findPreference("notification_vibrate").setEnabled(true);
+                enableNotifications();
 
             } else {
                 // Desactivamos la categoría de notificaciones
-                getPreferenceScreen().findPreference("notification_sound").setEnabled(false);
-                getPreferenceScreen().findPreference("notification_vibrate").setEnabled(false);
+                disableNotifications();
             }
 
-        } else if("theme".equals(key)) {
-            PrefUtils.setTheme(sharedPreferences.getString("theme", "indigo"));
-            Log.d("Preferences", sharedPreferences.getString("theme", ""));
         }
     }
 
@@ -56,15 +60,25 @@ public class Preferences extends PreferenceFragment implements SharedPreferences
         // Comprobamos que esté desactivado o no
         if(getPreferenceScreen().getSharedPreferences().getBoolean("notifications", true)) {
             // Activamos la categoría de notificaciones
-            getPreferenceScreen().findPreference("notification_sound").setEnabled(true);
-            getPreferenceScreen().findPreference("notification_vibrate").setEnabled(true);
+            enableNotifications();
 
         } else {
             // Desactivamos la categoría de notificaciones
-            getPreferenceScreen().findPreference("notification_sound").setEnabled(false);
-            getPreferenceScreen().findPreference("notification_vibrate").setEnabled(false);
+            disableNotifications();
         }
 
+    }
+
+    private void enableNotifications() {
+        notificationPriority.setEnabled(true);
+        notificationSound.setEnabled(true);
+        notificationVibrate.setEnabled(true);
+    }
+
+    private  void disableNotifications() {
+        notificationPriority.setEnabled(false);
+        notificationSound.setEnabled(false);
+        notificationVibrate.setEnabled(false);
     }
 
     @Override

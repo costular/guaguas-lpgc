@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
 import com.costular.guaguaslaspalmas.utils.Provider;
@@ -89,10 +90,8 @@ public class Stop {
 
         if(cursor.moveToFirst()) {
 
-            do{
+            do {
                 stops.add(createStopFromCursor(cursor, false));
-                cursor.moveToNext();
-
             }while(cursor.moveToNext());
         }
         cursor.close();

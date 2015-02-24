@@ -1,15 +1,21 @@
 apply plugin: 'com.android.application'
 
+String APK_NAME = "GuaguasLPGC"
+int VERSION_CODE = 1
+String VERSION_NAME = "0.1.0"
+
+project.archivesBaseName = APK_NAME + "-" + VERSION_NAME;
+
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "com.costular.guaguaslaspalmas"
         minSdkVersion 10
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode VERSION_CODE
+        versionName VERSION_NAME
     }
     buildTypes {
         release {

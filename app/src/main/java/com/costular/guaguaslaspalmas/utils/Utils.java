@@ -52,7 +52,7 @@ public class Utils {
         DatabaseHelper helper = DatabaseHelper.getInstance(context);
         SQLiteDatabase database = helper.getReadableDatabase();
 
-        Cursor cursor = database.query(Provider.TABLE_ROUTES, Provider.Routes.COLUMNS, "_id = ?", new String[]{String.valueOf(id)}, null, null, null);
+        Cursor cursor = database.query(Provider.TABLE_ROUTES, Provider.Routes.COLUMNS, Provider.Routes.NUMBER_COL + " = ?", new String[]{String.valueOf(id)}, null, null, null);
 
         return cursor;
     }

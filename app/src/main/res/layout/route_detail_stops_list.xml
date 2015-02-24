@@ -4,36 +4,48 @@
     android:layout_width="match_parent" android:layout_height="54dp"
     android:minHeight="54dp">
 
-        <TextView
-            android:id="@+id/letter"
-            android:layout_width="wrap_content"
-            android:layout_height="54dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="16dp"
-            android:gravity="center_vertical"
-            android:text="·"/>
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="2dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="30dp"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="30dp"
+        android:layout_below="@+id/imageView1"
+        android:background="@android:color/darker_gray" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="23dp"
+        android:contentDescription="@null"
+        android:layout_below="@+id/textView1"
+        android:src="@drawable/circle" />
 
 
 
-        <TextView
+
+    <TextView
             android:id="@+id/name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="54dp"
             android:gravity="center_vertical"
             style="@style/TextAppearance.Body1"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="2"
             android:singleLine="true"
-            android:layout_marginLeft="56dp"
-            />
-
-        <ImageView
-            android:id="@+id/is_favorite"
-            android:gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="54dp"
-            android:src="@drawable/ic_toggle_star_outline"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"/>
+            android:layout_marginLeft="72dp"
+            android:layout_marginRight="16dp"
+            android:text="Error al cargar parada"/>
 
 </RelativeLayout>

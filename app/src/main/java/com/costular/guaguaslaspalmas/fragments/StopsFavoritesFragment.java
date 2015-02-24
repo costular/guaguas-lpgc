@@ -9,6 +9,9 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -35,15 +38,19 @@ import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.AddToFavoriteDialog;
 import com.costular.guaguaslaspalmas.widget.CheckStopCodeDialog;
 import com.costular.guaguaslaspalmas.widget.adapters.FavoriteStopsListAdapter;
+import com.costular.guaguaslaspalmas.widget.adapters.FavoriteStopsRecyclerAdapter;
 import com.melnykov.fab.FloatingActionButton;
 
 /**
  * Created by Diego on 30/11/2014.
  */
-public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<Cursor>, AbsListView.MultiChoiceModeListener{
+public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<Cursor>{
 
     private ListView mListView;
     private FavoriteStopsListAdapter mAdapter;
+
+    //private RecyclerView mRecycler;
+    //private FavoriteStopsRecyclerAdapter mRecyclerAdapter;
 
     private ActionBar bar;
 
@@ -61,6 +68,33 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
         super.onStart();
 
         bar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+
+        /*
+        mRecycler = (RecyclerView) getActivity().findViewById(R.id.recyclerView);
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+
+        fab.attachToRecyclerView(mRecycler);
+        fab.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                new AddToFavoriteDialog().show(getActivity().getSupportFragmentManager(), "");
+            }
+        });
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager.scrollToPosition(0);
+        mRecycler.setLayoutManager(layoutManager);
+
+        // Que tenga el mismo tamaño
+        mRecycler.setHasFixedSize(false);
+
+        mRecyclerAdapter = new FavoriteStopsRecyclerAdapter(getActivity(), null);
+
+        mRecycler.setAdapter(mRecyclerAdapter);
+        mRecycler.setItemAnimator(new DefaultItemAnimator());
+        */
 
         mListView = (ListView) getActivity().findViewById(R.id.listview);
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
@@ -94,9 +128,6 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
 
             }
         });
-
-        mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        mListView.setMultiChoiceModeListener(this);
 
         getActivity().getSupportLoaderManager().initLoader(0, null, this);
         started = true;
@@ -141,17 +172,21 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         mAdapter.swapCursor(cursor);
+        //mRecyclerAdapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         mAdapter.swapCursor(null);
+        //mRecyclerAdapter.swapCursor(null);
     }
 
 
     /*
      * Métodos para las acciones cuando se deja pulsado un elemento de la lista para editar o borrar...
      */
+
+    /*
     @Override
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
 
@@ -211,6 +246,7 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
     public void onDestroyActionMode(ActionMode mode) {
 
     }
+    */
 
     private void deleteStop(final Cursor cursor) {
         Stop.removeFromFavorites(getActivity(), cursor.getInt(cursor.getColumnIndex(Provider.FavoritesStops.ID_COL)));

@@ -1,5 +1,6 @@
 package com.costular.guaguaslaspalmas.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,11 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.costular.guaguaslaspalmas.R;
+import com.costular.guaguaslaspalmas.RouteDetailActivity;
 import com.costular.guaguaslaspalmas.model.Route;
 import com.costular.guaguaslaspalmas.model.Stop;
 import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
 import com.costular.guaguaslaspalmas.utils.Provider;
 import com.costular.guaguaslaspalmas.utils.Utils;
+import com.costular.guaguaslaspalmas.widget.adapters.PopUpMapAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -27,6 +30,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * Created by Diego on 16/01/2015.
  */
 public class RouteMapFragment extends Fragment {
+
+    /*
+     * Activity
+     */
+    private RouteDetailActivity activity;
 
     /*
      * Mapa de Google
@@ -44,9 +52,9 @@ public class RouteMapFragment extends Fragment {
     private Stop[] stops;
 
     /*
-     * Id de la ruta
+     * Número de la ruta
      */
-    private int mId;
+    private String number;
 
     private static View view;
 
@@ -55,10 +63,10 @@ public class RouteMapFragment extends Fragment {
     /*
      * Método para crear una nueva instancia.
      */
-    public static RouteMapFragment newInstance(Context context, final int id) {
+    public static RouteMapFragment newInstance(Context context, final String number) {
 
         Bundle bundle = new Bundle();
-        bundle.putInt("id", id);
+        bundle.putString("number", number);
 
         Fragment fragment = Fragment.instantiate(context, RouteMapFragment.class.getName(), bundle);
         return (RouteMapFragment) fragment;
@@ -94,12 +102,18 @@ public class RouteMapFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // Asignamos la id guardada en el Bundle a la variable "mId"
-        mId = getArguments().getInt("id");
+        number = getArguments().getString("number");
 
         //Cargamos la ruta
-        mRoute = Route.createFromCursor(Utils.getCursorFromRouteId(getActivity(), mId));
+        mRoute = Route.createRouteFromNumber(getActivity(), number);
 
 
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.activity = (RouteDetailActivity) activity;
     }
 
 
@@ -112,16 +126,21 @@ public class RouteMapFragment extends Fragment {
         if(map != null) {
             setupMap();
         }
+        map.setInfoWindowAdapter(new PopUpMapAdapter(getLayoutInflater(getArguments())));
     }
 
     private void setupMap() {
+
+        if(mRoute == null) {
+            return;
+        }
 
         // Activamos la posición
         map.setMyLocationEnabled(true);
 
         Stop last = null;
 
-        for(Stop stop : Stop.getStopsByConcesion(getActivity(), mRoute.getConcesion(getActivity()))) {
+        for(Stop stop : Stop.getStopsByConcesion(getActivity(), mRoute.getConcesion(getActivity(), activity.type))) {
 
             map.addMarker(new MarkerOptions().title(stop.getName()).position(new LatLng(stop.getLatitude(), stop.getLongitude())));
             last = stop;

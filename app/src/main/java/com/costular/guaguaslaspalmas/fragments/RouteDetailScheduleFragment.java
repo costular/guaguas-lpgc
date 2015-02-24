@@ -1,5 +1,6 @@
 package com.costular.guaguaslaspalmas.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.costular.guaguaslaspalmas.R;
+import com.costular.guaguaslaspalmas.RouteDetailActivity;
 import com.costular.guaguaslaspalmas.model.Route;
 import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
 
@@ -25,14 +27,31 @@ import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
  */
 public class RouteDetailScheduleFragment extends Fragment{
 
+    TextView week;
+    TextView weekend;
+    TextView weekendcontent;
+    TextView saturday;
+    TextView saturdayContent;
 
-    public static RouteDetailScheduleFragment newInstance(final Context context, final int id) {
+    private String number;
+    private boolean hasSaturday = false;
+
+    private RouteDetailActivity activity;
+
+    public static RouteDetailScheduleFragment newInstance(final Context context, final String number) {
 
         Bundle bundle = new Bundle();
-        bundle.putInt("id", id);
+        bundle.putString("number", number);
 
         Fragment fragment = Fragment.instantiate(context, RouteDetailScheduleFragment.class.getName(), bundle);
         return (RouteDetailScheduleFragment) fragment;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        this.activity = (RouteDetailActivity) activity;
     }
 
     @Override
@@ -44,28 +63,71 @@ public class RouteDetailScheduleFragment extends Fragment{
     public void onStart() {
         super.onStart();
 
-        TextView week = (TextView) getActivity().findViewById(R.id.week);
-        TextView weekend = (TextView) getActivity().findViewById(R.id.weekend);
+        week = (TextView) getActivity().findViewById(R.id.week_content);
+        weekend = (TextView) getActivity().findViewById(R.id.weekend);
+        weekendcontent = (TextView) getActivity().findViewById(R.id.weekend_content);
+        saturday = (TextView) getActivity().findViewById(R.id.saturday);
+        saturdayContent = (TextView) getActivity().findViewById(R.id.saturday_content);
 
-        new ScheduleLoader(getActivity(), week, weekend, Route.getConcesionFromRouteNumber(getActivity(), getArguments().getInt("id"))).execute();
+        number = getArguments().getString("number");
+
+        // Comprobamos si los sábados tiene un horario diferente.
+        checkSaturday();
+
+        if(hasSaturday) {
+            saturday.setVisibility(View.VISIBLE);
+            saturdayContent.setVisibility(View.VISIBLE);
+
+            weekend.setText("Domingos y festivos.");
+        }
+
+        new ScheduleLoader(getActivity(), week, saturdayContent, weekendcontent, Route.getConcesionFromRouteNumber(getActivity(), number, activity.type)).execute();
     }
 
-    public void changeDirection() {
+    private void checkSaturday() {
+        DatabaseHelper helper = DatabaseHelper.getInstance(getActivity());
+        SQLiteDatabase db = helper.getReadableDatabase();
 
+        Cursor c = db.rawQuery("SELECT schedule_saturday FROM schedules WHERE route_id = '"+Route.getConcesionFromRouteNumber(getActivity(), number, activity.type)+"'", null);
+
+        String saturday = "";
+
+        if(c.moveToFirst()) {
+
+           saturday = c.getString(0);
+        }
+
+        // Dejamos de usarlo
+        c.close();
+
+        // Comprobamos
+        if(saturday == null) {
+            hasSaturday = false;
+        } else {
+            hasSaturday = true;
+        }
+    }
+
+    /*
+     * Cambiamos la dirección de la línea
+     */
+    public void changeDirection(int type) {
+        new ScheduleLoader(getActivity(), week, saturdayContent, weekendcontent, Route.getConcesionFromRouteNumber(getActivity(), number, type)).execute();
     }
 
    class ScheduleLoader extends AsyncTask<Void, Void, String[]> {
 
        private Context mContext;
 
-       private TextView week, weekend;
+       private TextView week, saturday, weekend;
 
        private int mId;
 
-       public ScheduleLoader(Context context, TextView week, TextView weekend, int id) {
+       public ScheduleLoader(Context context, TextView week, TextView saturday, TextView weekend, int id) {
            mContext = context;
 
            this.week = week;
+           this.saturday = saturday;
            this.weekend = weekend;
 
            this.mId = id;
@@ -79,11 +141,12 @@ public class RouteDetailScheduleFragment extends Fragment{
 
            Cursor cursor = db.rawQuery("SELECT * FROM schedules WHERE route_id = ?", new String[] {String.valueOf(mId)});
 
-           String[] schedules = new String[2];
+           String[] schedules = new String[3];
 
            if(cursor.moveToFirst()) {
                schedules[0] = cursor.getString(cursor.getColumnIndex("schedule_week"));
-               schedules[1] = cursor.getString(cursor.getColumnIndex("schedule_weekend"));
+               schedules[1] = cursor.getString(cursor.getColumnIndex("schedule_saturday"));
+               schedules[2] = cursor.getString(cursor.getColumnIndex("schedule_weekend"));
            }
 
            cursor.close();
@@ -96,7 +159,11 @@ public class RouteDetailScheduleFragment extends Fragment{
            super.onPostExecute(result);
 
            week.setText(result[0]);
-           weekend.setText(result[1]);
+           weekend.setText(result[2]);
+
+           if(hasSaturday) {
+               saturday.setText(result[1]);
+           }
        }
 
    }

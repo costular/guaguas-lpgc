@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
 
     <ListView
         android:id="@+id/listview"
+        android:dividerHeight="1dp"
+        android:divider="@drawable/navigation_list_separator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_action_content_add"
-        fab:fab_colorNormal="@color/main_indigo"
-        fab:fab_colorPressed="@color/main_indigo_dark"
-        fab:fab_colorRipple="@color/main_indigo" />
+    <!--
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/list_stop_favorites"
+            />
+            -->
 
-</FrameLayout>
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_action_content_add"
+            fab:fab_colorNormal="@color/main_indigo"
+            fab:fab_colorPressed="@color/main_indigo_dark"
+            fab:fab_colorRipple="@color/main_indigo" />
+
+    </FrameLayout>

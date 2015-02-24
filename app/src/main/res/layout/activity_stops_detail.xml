@@ -26,7 +26,9 @@
             android:dividerHeight="1dp"
             android:divider="@drawable/navigation_list_separator"/>
 
+
     </android.support.v4.widget.SwipeRefreshLayout>
+
 
     </LinearLayout>
 
@@ -42,5 +44,20 @@
         fab:fab_colorNormal="@color/main_red"
         fab:fab_colorPressed="@color/main_red_dark"
         fab:fab_colorRipple="@color/main_red_dark" />
+
+    <RelativeLayout
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_stops"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

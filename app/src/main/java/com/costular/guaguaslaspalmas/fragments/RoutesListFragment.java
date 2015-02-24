@@ -89,7 +89,7 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
                 Cursor cursor = (Cursor) mAdapter.getItem(position);
 
                 Intent intent = new Intent(getActivity(), RouteDetailActivity.class);
-                intent.putExtra("id", cursor.getInt(cursor.getColumnIndex(Provider.Routes.NUMBER_COL)));
+                intent.putExtra("number", cursor.getString(cursor.getColumnIndex(Provider.Routes.NUMBER_COL)));
 
                 getActivity().startActivity(intent);
             }

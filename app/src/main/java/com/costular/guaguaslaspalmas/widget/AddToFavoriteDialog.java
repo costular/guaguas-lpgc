@@ -27,25 +27,6 @@ import org.w3c.dom.Text;
  */
 public class AddToFavoriteDialog extends DialogFragment {
 
-
-    /*
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.dialog_add_stop_layout, container);
-
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.custompager);
-        viewPager.setAdapter(new MyPagerAdapter(getChildFragmentManager()));
-
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
-
-        return view;
-    }
-    */
-
-
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
@@ -78,7 +59,7 @@ public class AddToFavoriteDialog extends DialogFragment {
                 int id = Stop.getStopIdFromCode(getActivity(), code);
 
                 // Guardamos
-                Stop.addToFavorites(getActivity(), custom, code);
+                Stop.addToFavorites(getActivity(), custom, id);
 
                 dismiss();
                 Toast.makeText(getActivity(), "Guardada.", Toast.LENGTH_SHORT).show();
@@ -88,62 +69,8 @@ public class AddToFavoriteDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
 
-        /*builder.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                if(text.getText().toString().isEmpty()) {
-                    text.setHighlightColor(getResources().getColor(R.color.edit_text_error_color));
-
-                    // Mostramos el TextView
-                    error.setVisibility(View.VISIBLE);
-                    error.setAlpha(0f);
-
-                    error.animate().setDuration(300).alpha(.9f).start();
-                    return;
-                }
-
-                // Guardamos
-                Toast.makeText(getActivity(), "Guardado.", Toast.LENGTH_SHORT).show();
-            }
-        })
-        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });*/
-
         return builder.create();
     }
 
-    private class MyPagerAdapter extends FragmentPagerAdapter {
 
-        public MyPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int i) {
-            switch(i) {
-                case 0:
-                    return AddStopByCodeFragment.newInstance();
-
-                case 1:
-                    return AddStopByCodeFragment.newInstance();
-            }
-
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return position == 0 ? "Por código" : "Por ruta";
-        }
-    }
 }

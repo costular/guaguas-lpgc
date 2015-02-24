@@ -3,6 +3,7 @@ package com.costular.guaguaslaspalmas;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,10 +14,12 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
@@ -34,11 +37,13 @@ import com.melnykov.fab.FloatingActionButton;
  */
 public class RouteDetailActivity extends ActionBarActivity {
 
+    public static final String TAG = "RouteDetailActivity";
+
     // Constantes estáticas para decirle si es ida o vuelta·
     public static final int IDA = 1;
     public static final int VUELTA = 2;
 
-    private int type = IDA;
+    public int type = IDA;
 
     // Tab ids
     public static final int STOPS_TAB = 0;
@@ -54,7 +59,7 @@ public class RouteDetailActivity extends ActionBarActivity {
 
     private FloatingActionButton fab;
 
-    private int mId;
+    private String number;
     private Route mRoute;
 
     private String mGoing, mReturn;
@@ -66,6 +71,7 @@ public class RouteDetailActivity extends ActionBarActivity {
      * Fragments
      */
     RoutesDetailStopsFragment stopsFragment;
+    RouteDetailScheduleFragment schedulesFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,12 +81,22 @@ public class RouteDetailActivity extends ActionBarActivity {
         loadToolbar();
 
         // Obtenemos la id de la ruta.
-        mId = getIntent().getIntExtra("id", -1);
+        number = getIntent().getStringExtra("number");
 
-        Cursor cursor = Utils.getCursorFromRouteId(getApplicationContext(), mId);
-        mRoute = Route.createFromCursor(cursor);
-        // Y cerramos el cursor
-        cursor.close();
+        mRoute = Route.createRouteFromNumber(getApplicationContext(), number);
+
+        // Tabs y ViewPager
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        tabs = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        // Quitamos la elevación para que no se vea mal.
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setElevation(0);
+
+        // Ponemos el nombre de la Toolbar
+        getSupportActionBar().setTitle(mRoute.getNumber() + ": " + mRoute.getName());
 
         mDoubleDestiny = mRoute.getName().contains("-");
 
@@ -88,54 +104,49 @@ public class RouteDetailActivity extends ActionBarActivity {
             String[] destinies = mRoute.getName().split("-");
             mGoing = destinies[0];
             mReturn = destinies[1];
+
+            // Si tiene ida y vuelta ponemos el destino.
+            getSupportActionBar().setSubtitle(getResources().getString(R.string.destination) + " " + mGoing);
+
+            // El botón flotante para cambiar la dirección de la línea
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(showingAnimation) {
+                        return;
+                    }
+
+                    fab.animate()
+                            .rotationBy(360f)
+                            .setDuration(250)
+                            .setInterpolator(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? AnimationUtils.loadInterpolator(getApplicationContext(), R.interpolator.fast_out_slow_in)
+                                    : new AccelerateDecelerateInterpolator())
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    showingAnimation = false;
+                                }
+                            })
+                            .start();
+
+                    showingAnimation = true;
+
+                    // Cambiamos la dirección
+                    changeDirection();
+
+                }
+            });
+
+        } else {
+
+            // El botón de cambiar sentido no tiene SENTIDO jajaxd
+            fab.setVisibility(View.GONE);
         }
 
-        // Quitamos la elevación para que no se vea mal.
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setElevation(0);
-
-        getSupportActionBar().setTitle(mRoute.getNumber() + ": " + mRoute.getName());
-        getSupportActionBar().setSubtitle(getResources().getString(R.string.destination) + " " + mGoing);
-
-        // Tabs y ViewPager
-        tabs = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-        viewPager = (ViewPager) findViewById(R.id.pager);
-
-        // El botón flotante para cambiar la dirección de la línea
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(showingAnimation) {
-                    return;
-                }
-
-                fab.animate()
-                        .rotationBy(360f)
-                        .setDuration(250)
-                        .setInterpolator(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? AnimationUtils.loadInterpolator(getApplicationContext(), R.interpolator.fast_out_slow_in)
-                                : new LinearInterpolator())
-                        .setListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                showingAnimation = false;
-                            }
-                        })
-                        .start();
-
-                showingAnimation = true;
-
-                // Cambiamos la dirección
-                changeDirection();
-
-            }
-        });
-
-
-        viewPager.setAdapter(new MyPagerAdapter(this, getSupportFragmentManager(), mId));
+        viewPager.setAdapter(new MyPagerAdapter(this, getSupportFragmentManager(), number));
         tabs.setViewPager(viewPager);
 
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
@@ -161,6 +172,11 @@ public class RouteDetailActivity extends ActionBarActivity {
         // Actualizamos
         if(stopsFragment != null)
         stopsFragment.changeDirection();
+
+        if(schedulesFragment != null) {
+            schedulesFragment.changeDirection(type == IDA ? VUELTA : IDA);
+        }
+
     }
 
     private void loadToolbar() {
@@ -215,13 +231,13 @@ public class RouteDetailActivity extends ActionBarActivity {
         private int NUM_ITEMS = 3;
 
         private final Context mContext;
-        private int localId;
+        private String number;
 
-        public MyPagerAdapter(final Context context, FragmentManager fragmentManager, final int id) {
+        public MyPagerAdapter(final Context context, FragmentManager fragmentManager, final String number) {
             super(fragmentManager);
 
             mContext = context;
-            localId = id;
+            this.number = number;
         }
 
         // Returns total number of pages
@@ -236,14 +252,17 @@ public class RouteDetailActivity extends ActionBarActivity {
 
             switch (position) {
                 case STOPS_TAB: // Fragment # 0 - This will show FirstFragment
-                    if(stopsFragment == null) stopsFragment = RoutesDetailStopsFragment.newInstance(mContext, localId, type);
+                    if(stopsFragment == null) stopsFragment = RoutesDetailStopsFragment.newInstance(mContext, mRoute.getNumber(), type);
 
                     return stopsFragment;
 
                 case SCHEDULE_TAB:
-                    return RouteDetailScheduleFragment.newInstance(mContext, localId);
+                    if(schedulesFragment == null) schedulesFragment = RouteDetailScheduleFragment.newInstance(mContext, mRoute.getNumber());
+
+                    return schedulesFragment;
+
                 case MAP_TAB:
-                    return RouteMapFragment.newInstance(mContext, mRoute.getId());
+                    return RouteMapFragment.newInstance(mContext, mRoute.getNumber());
             }
 
             return null;

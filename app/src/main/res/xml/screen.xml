@@ -4,15 +4,7 @@
     <PreferenceCategory android:title="General"
         android:key="general">
 
-        <ListPreference
-            android:title="@string/theme"
-            android:summary="@string/theme_summary"
-            android:key="theme"
-            android:entryValues="@array/theme_array_values"
-            android:entries="@array/theme_array"
-            android:defaultValue="0">
 
-        </ListPreference>
 
     </PreferenceCategory>
 
@@ -26,17 +18,24 @@
             android:summary="@string/preferences_notification_message"
             android:defaultValue="true"/>
 
+        <ListPreference
+            android:title="@string/preferences_notification_priority"
+            android:summary="%s"
+            android:key="notification_priority"
+            android:entryValues="@array/notification_priority"
+            android:entries="@array/notification_priority"
+            android:defaultValue="Alta"/>
+
         <CheckBoxPreference
             android:title="@string/preferences_notification_sound_title"
-            android:summary="@string/preferences_notification_sound_message"
             android:key="notification_sound"
             android:defaultValue="true"/>
 
         <CheckBoxPreference
             android:title="@string/preferences_notification_vibrate_title"
-            android:summary="@string/preferences_notification_vibrate_message"
             android:key="notification_vibrate"
             android:defaultValue="true"/>
+
 
 
     </PreferenceCategory>
