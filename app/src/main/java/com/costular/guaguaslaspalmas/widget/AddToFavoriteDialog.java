@@ -3,12 +3,17 @@ package com.costular.guaguaslaspalmas.widget;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteAbortException;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import android.util.Log;
 import android.view.View;
 
 import android.widget.Button;
@@ -18,14 +23,21 @@ import android.widget.Toast;
 
 import com.costular.guaguaslaspalmas.R;
 import com.costular.guaguaslaspalmas.fragments.AddStopByCodeFragment;
+import com.costular.guaguaslaspalmas.model.FavoriteStop;
 import com.costular.guaguaslaspalmas.model.Stop;
-
-import org.w3c.dom.Text;
+import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
+import com.costular.guaguaslaspalmas.utils.Provider;
+import com.costular.guaguaslaspalmas.widget.views.AddStop;
+import com.costular.guaguaslaspalmas.widget.views.ColorPickerPalette;
 
 /**
  * Created by Diego on 02/12/2014.
  */
 public class AddToFavoriteDialog extends DialogFragment {
+
+    public AddStop listener;
+
+    private int mSelected = 0;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -37,6 +49,28 @@ public class AddToFavoriteDialog extends DialogFragment {
         final EditText text = (EditText) view.findViewById(R.id.code);
         final TextView error = (TextView) view.findViewById(R.id.error_message);
         final Button button = (Button) view.findViewById(R.id.save_button);
+
+        // Color picker
+        final ColorPickerPalette palette = (ColorPickerPalette) view.findViewById(R.id.palette);
+
+        String[] colors = getResources().getStringArray(R.array.selectable_favorite_stop_colors);
+        final int[] colorsInt = new int[colors.length];
+
+        for(int i = 0; i < colorsInt.length; i++) {
+            colorsInt[i] = Color.parseColor(colors[i]);
+        }
+
+        // Establecemos el seleccionado por defecto
+        mSelected = colorsInt[0];
+
+        palette.init(colors.length, 3, new ColorPickerPalette.OnColorSelectedListener() {
+            @Override
+            public void onColorSelected(int color) {
+                mSelected = color;
+                palette.drawPalette(colorsInt, mSelected);
+            }
+        });
+        palette.drawPalette(colorsInt, colorsInt[0]);
 
         button.setOnClickListener(new View.OnClickListener() {
 
@@ -59,10 +93,26 @@ public class AddToFavoriteDialog extends DialogFragment {
                 int id = Stop.getStopIdFromCode(getActivity(), code);
 
                 // Guardamos
-                Stop.addToFavorites(getActivity(), custom, id);
+                int stopsCount = FavoriteStop.stopsCount(getActivity()) + 1;
+
+                Stop.addToFavorites(getActivity(), custom, mSelected, stopsCount,  id);
+
+                DatabaseHelper helper = DatabaseHelper.getInstance(getActivity());
+                SQLiteDatabase db = helper.getReadableDatabase();
+
+                Cursor c = db.rawQuery("SELECT * FROM " + Provider.TABLE_FAVORITES_STOPS, null);
+                c.moveToLast();
+
+                FavoriteStop stop = FavoriteStop.createFromCursor(getActivity(), c);
+
+                c.close();
 
                 dismiss();
                 Toast.makeText(getActivity(), "Guardada.", Toast.LENGTH_SHORT).show();
+
+                if(listener != null) {
+                    listener.onStopAdded(stop);
+                }
             }
         });
 
@@ -72,5 +122,9 @@ public class AddToFavoriteDialog extends DialogFragment {
         return builder.create();
     }
 
+    public void setListener(AddStop listener)
+    {
+        this.listener = listener;
+    }
 
 }

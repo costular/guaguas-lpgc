@@ -6,22 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-    <ListView
-        android:id="@+id/listview"
-        android:dividerHeight="1dp"
-        android:divider="@drawable/navigation_list_separator"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
     <!--
+        <ListView
+            android:id="@+id/listview"
+            android:dividerHeight="1dp"
+            android:divider="@drawable/navigation_list_separator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        -->
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/list_stop_favorites"
+            android:scrollbars="vertical"
+            android:focusable="true"
+            android:clickable="true"
             />
-            -->
+
 
         <com.melnykov.fab.FloatingActionButton
             android:id="@+id/fab"

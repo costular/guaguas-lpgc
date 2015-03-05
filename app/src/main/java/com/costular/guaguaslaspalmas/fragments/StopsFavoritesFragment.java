@@ -1,6 +1,9 @@
 package com.costular.guaguaslaspalmas.fragments;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.NinePatchDrawable;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -32,35 +35,46 @@ import com.costular.guaguaslaspalmas.R;
 import com.costular.guaguaslaspalmas.StopDetailActivity;
 import com.costular.guaguaslaspalmas.model.FavoriteStop;
 import com.costular.guaguaslaspalmas.model.Stop;
-import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
 import com.costular.guaguaslaspalmas.utils.Provider;
-import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.AddToFavoriteDialog;
 import com.costular.guaguaslaspalmas.widget.CheckStopCodeDialog;
-import com.costular.guaguaslaspalmas.widget.adapters.FavoriteStopsListAdapter;
+import com.costular.guaguaslaspalmas.widget.adapters.DragSortRecycler;
 import com.costular.guaguaslaspalmas.widget.adapters.FavoriteStopsRecyclerAdapter;
+import com.costular.guaguaslaspalmas.widget.adapters.FavoriteStopsTaskLoader;
+import com.costular.guaguaslaspalmas.widget.views.AddStop;
+
+import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
+import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
+import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 import com.melnykov.fab.FloatingActionButton;
+
+import java.util.List;
 
 /**
  * Created by Diego on 30/11/2014.
  */
-public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<Cursor>{
+public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<List<FavoriteStop>>{
 
-    private ListView mListView;
-    private FavoriteStopsListAdapter mAdapter;
+    private RecyclerViewDragDropManager mRecyclerViewDragDropManager;
+    private RecyclerViewSwipeManager mRecyclerViewSwipeManager;
+    private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
-    //private RecyclerView mRecycler;
-    //private FavoriteStopsRecyclerAdapter mRecyclerAdapter;
+    //private ListView mListView;
+    //private FavoriteStopsListAdapter mAdapter;
+
+    private RecyclerView mRecycler;
+    private FavoriteStopsRecyclerAdapter mRecyclerAdapter;
+
 
     private ActionBar bar;
 
     private boolean started = false;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        return inflater.inflate(R.layout.fragment_stops_favorites, null);
+        return inflater.inflate(R.layout.fragment_stops_favorites, container, false);
     }
 
     @Override
@@ -69,7 +83,6 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
 
         bar = ((ActionBarActivity)getActivity()).getSupportActionBar();
 
-        /*
         mRecycler = (RecyclerView) getActivity().findViewById(R.id.recyclerView);
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
 
@@ -78,60 +91,98 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
 
             @Override
             public void onClick(View v) {
-                new AddToFavoriteDialog().show(getActivity().getSupportFragmentManager(), "");
+                AddToFavoriteDialog dialog = new AddToFavoriteDialog();
+                dialog.setListener(new AddStop() {
+                    @Override
+                    public void onStopAdded(FavoriteStop stop) {
+                        addStop(stop);
+                    }
+                });
+
+                dialog.show(getActivity().getSupportFragmentManager(), "");
             }
         });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        layoutManager.scrollToPosition(0);
-        mRecycler.setLayoutManager(layoutManager);
-
-        // Que tenga el mismo tamaño
-        mRecycler.setHasFixedSize(false);
-
-        mRecyclerAdapter = new FavoriteStopsRecyclerAdapter(getActivity(), null);
-
-        mRecycler.setAdapter(mRecyclerAdapter);
-        mRecycler.setItemAnimator(new DefaultItemAnimator());
-        */
-
-        mListView = (ListView) getActivity().findViewById(R.id.listview);
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.attachToListView(mListView);
-        fab.setOnClickListener(new View.OnClickListener() {
-
+        mRecyclerAdapter = new FavoriteStopsRecyclerAdapter(getActivity());
+        mRecyclerAdapter.setListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AddToFavoriteDialog().show(getActivity().getSupportFragmentManager(), "");
-            }
-        });
+                int position = mRecycler.getChildPosition(v);
 
-        mAdapter = new FavoriteStopsListAdapter(getActivity(), R.layout.list_stop_favorites, null,
-                new String[] {Provider.FavoritesStops.STOP_ID, Provider.FavoritesStops.STOP_NAME},
-                new int[] {R.id.name_custom, R.id.name_default}, 0);
+                FavoriteStop stop = mRecyclerAdapter.stops.get(position);
 
-
-        mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor cursor = (Cursor) mAdapter.getItem(position);
-
-                int idd = cursor.getInt(cursor.getColumnIndex(Provider.FavoritesStops.STOP_ID));
+                int idd = stop.getStopId();
 
                 Intent intent = new Intent(getActivity(), StopDetailActivity.class);
                 intent.putExtra(StopDetailActivity.ID, idd);
                 intent.putExtra(StopDetailActivity.STOP, Stop.createStopFromId(getActivity(), idd).getCode());
 
                 startActivity(intent);
+            }
+        });
+
+        mRecycler.setAdapter(mRecyclerAdapter);
+        mRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecycler.setItemAnimator(null);
+
+        DragSortRecycler dragSortRecycler = new DragSortRecycler();
+        dragSortRecycler.setViewHandleId(R.id.drag);
+        dragSortRecycler.setFloatingAlpha(0.4f);
+        dragSortRecycler.setFloatingBgColor(Color.LTGRAY);
+        dragSortRecycler.setAutoScrollSpeed(0.25f);
+        dragSortRecycler.setAutoScrollWindow(0.1f);
+
+        dragSortRecycler.setOnItemMovedListener(new DragSortRecycler.OnItemMovedListener() {
+            @Override
+            public void onItemMoved(int from, int to) {
+
+                if(from == to) {
+                    return;
+                }
+
+                FavoriteStop item = mRecyclerAdapter.stops.remove(from);
+                mRecyclerAdapter.stops.add(to, item);
+                mRecyclerAdapter.notifyDataSetChanged();
+
+                item.changeOrder(getActivity(), from, to);
+            }
+        });
+
+        dragSortRecycler.setOnDragStateChangedListener(new DragSortRecycler.OnDragStateChangedListener() {
+            @Override
+            public void onDragStart() {
+
+            }
+
+            @Override
+            public void onDragStop() {
 
             }
         });
 
+        mRecycler.addItemDecoration(dragSortRecycler);
+        mRecycler.addOnItemTouchListener(dragSortRecycler);
+        mRecycler.setOnScrollListener(dragSortRecycler.getScrollListener());
+
         getActivity().getSupportLoaderManager().initLoader(0, null, this);
         started = true;
     }
+
+    /*
+    private void onItemViewClick(View v) {
+        int position = mRecycler.getChildPosition(v);
+
+        FavoriteStop stop = mRecyclerAdapter.stops.get(position);
+
+        int idd = stop.getStopId();
+
+        Intent intent = new Intent(getActivity(), StopDetailActivity.class);
+        intent.putExtra(StopDetailActivity.ID, idd);
+        intent.putExtra(StopDetailActivity.STOP, Stop.createStopFromId(getActivity(), idd).getCode());
+
+        startActivity(intent);
+    }
+    */
 
     @Override
     public void onResume() {
@@ -165,91 +216,24 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(getActivity(), Provider.CONTENT_URI_FAVORITE_STOPS, null, null, null, null);
+    public Loader<List<FavoriteStop>> onCreateLoader(int i, Bundle bundle) {
+        return new FavoriteStopsTaskLoader(getActivity());
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        mAdapter.swapCursor(cursor);
+    public void onLoadFinished(Loader<List<FavoriteStop>> cursorLoader, List<FavoriteStop> data) {
         //mRecyclerAdapter.swapCursor(cursor);
+        mRecyclerAdapter.swapData(data);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        mAdapter.swapCursor(null);
+    public void onLoaderReset(Loader<List<FavoriteStop>> data) {
         //mRecyclerAdapter.swapCursor(null);
+        //mRecyclerAdapter.swapData(null);
     }
 
-
-    /*
-     * Métodos para las acciones cuando se deja pulsado un elemento de la lista para editar o borrar...
-     */
-
-    /*
-    @Override
-    public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-
-        int size = mListView.getCheckedItemCount();
-        mode.setTitle(String.valueOf(size));
-
-        if(size == 1) {
-            mode.getMenu().clear();
-            mode.getMenuInflater().inflate(R.menu.stops_favorites_action, mode.getMenu());
-        } else if(size >= 2) {
-            mode.getMenu().clear();
-            mode.getMenuInflater().inflate(R.menu.stops_favorites_action_varios, mode.getMenu());
-        }
-
-        mode.invalidate();
-    }
-
-    @Override
-    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-        MenuInflater inflater = mode.getMenuInflater();
-        inflater.inflate(R.menu.stops_favorites_action, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-        return false;
-    }
-
-    @Override
-    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-
-        int id = item.getItemId();
-
-        SparseBooleanArray checkedItemPositions = mListView.getCheckedItemPositions();
-        mode.setTitle(String.valueOf(checkedItemPositions.size()));
-
-        if(id == R.id.action_delete) {
-
-            for(int i = mAdapter.getCount() - 1; i >= 0; i--) {
-                if(mListView.isItemChecked(i)) {
-                    Cursor cursor = (Cursor) mAdapter.getItem(i);
-                    deleteStop(cursor);
-                }
-            }
-            // Cerramos la ToolBar
-            mode.finish();
-            // Recargamos las paradas favoritas.
-            getLoaderManager().restartLoader(0, null, this);
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public void onDestroyActionMode(ActionMode mode) {
-
-    }
-    */
-
-    private void deleteStop(final Cursor cursor) {
-        Stop.removeFromFavorites(getActivity(), cursor.getInt(cursor.getColumnIndex(Provider.FavoritesStops.ID_COL)));
+    private void addStop(FavoriteStop stop) {
+        mRecyclerAdapter.addStop(stop);
     }
 
 }

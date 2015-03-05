@@ -168,6 +168,8 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
             Snackbar.with(getApplicationContext()) // context
                     .text("No hay conexión a internet.") // text to display
                     .actionLabel("Reintentar") // action button label
+                    .swipeToDismiss(true)
+                    .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
                     .actionListener(new ActionClickListener() {
                         @Override
                         public void onActionClicked(Snackbar snackbar) {

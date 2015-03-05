@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="api_key_googleplus">AIzaSyDF5dXMotwrX0c3gtxZk_-UBIqWCfA52sk</string>
+    <string name="api_key_googleplus" translatable="false">AIzaSyDxY-Yz9GbGLM0tai7W1N6x3RDHxM2r1GY</string>
 
-    <string name="app_name">Guaguas Las Palmas</string>
+    <string name="app_name">GuaguasLPGC</string>
 
     <!-- Menú drawer -->
     <string name="routes">Líneas</string>
@@ -43,5 +43,6 @@
     <string name="empty_stops">Parece que no van a pasar guaguas. Quizás sea tarde...</string>
     <string name="preferences_notification_priority_message">Selecciona la prioridad de las notificaciones.</string>
     <string name="preferences_notification_priority">Prioridad</string>
+    <string name="preferences_general_language_title">Idioma</string>
 
 </resources>

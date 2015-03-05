@@ -29,6 +29,7 @@ import com.costular.guaguaslaspalmas.fragments.MapStopsFragment;
 import com.costular.guaguaslaspalmas.fragments.RoutesFragment;
 import com.costular.guaguaslaspalmas.fragments.RoutesListFragment;
 import com.costular.guaguaslaspalmas.fragments.StopsFavoritesFragment;
+import com.costular.guaguaslaspalmas.model.FavoriteStop;
 import com.costular.guaguaslaspalmas.utils.PrefUtils;
 import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.DrawerListItem;
@@ -54,7 +55,6 @@ public class MainActivity extends ActionBarActivity {
 
     // Strict Mode
     StrictMode.ThreadPolicy.Builder builder = new StrictMode.ThreadPolicy.Builder().detectAll();
-
 
     // Navigation
     private DrawerLayout drawer;
@@ -115,7 +115,6 @@ public class MainActivity extends ActionBarActivity {
 
         // Tira algunos errores debido a ciertos fallos en nuestro código de la app.
         //StrictMode.setThreadPolicy(builder.build());
-
     }
 
     private void loadUserInfo() {

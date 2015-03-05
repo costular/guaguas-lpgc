@@ -4,7 +4,12 @@
     <PreferenceCategory android:title="General"
         android:key="general">
 
-
+    <ListPreference
+        android:title="@string/preferences_general_language_title"
+        android:summary="%s"
+        android:key="general_language"
+        android:entryValues="@array/general_language_values"
+        android:entries="@array/general_language"/>
 
     </PreferenceCategory>
 

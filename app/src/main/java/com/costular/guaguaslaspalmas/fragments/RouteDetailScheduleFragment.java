@@ -19,8 +19,11 @@ import android.widget.Toast;
 
 import com.costular.guaguaslaspalmas.R;
 import com.costular.guaguaslaspalmas.RouteDetailActivity;
+import com.costular.guaguaslaspalmas.events.RouteDirection;
 import com.costular.guaguaslaspalmas.model.Route;
 import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Diego on 23/11/2014.
@@ -55,8 +58,8 @@ public class RouteDetailScheduleFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_route_detail_schedule, null);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_route_detail_schedule, container, false);
     }
 
     @Override
@@ -82,6 +85,9 @@ public class RouteDetailScheduleFragment extends Fragment{
         }
 
         new ScheduleLoader(getActivity(), week, saturdayContent, weekendcontent, Route.getConcesionFromRouteNumber(getActivity(), number, activity.type)).execute();
+
+        //Registramos
+        EventBus.getDefault().register(this);
     }
 
     private void checkSaturday() {
@@ -111,8 +117,14 @@ public class RouteDetailScheduleFragment extends Fragment{
     /*
      * Cambiamos la dirección de la línea
      */
-    public void changeDirection(int type) {
-        new ScheduleLoader(getActivity(), week, saturdayContent, weekendcontent, Route.getConcesionFromRouteNumber(getActivity(), number, type)).execute();
+    public void onEvent(RouteDirection type) {
+        new ScheduleLoader(getActivity(), week, saturdayContent, weekendcontent, Route.getConcesionFromRouteNumber(getActivity(), number, type.getDirection())).execute();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
    class ScheduleLoader extends AsyncTask<Void, Void, String[]> {

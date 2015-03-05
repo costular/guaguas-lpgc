@@ -65,5 +65,26 @@
         <item name="low">Baja</item>
     </string-array>
 
+    <string-array name="general_language">
+        <item name="spanish">Español</item>
+        <item name="english">Inglés</item>
+        <item anme="german">Alemán</item>
+    </string-array>
+
+    <string-array name="general_language_values">
+        <item name="es">es</item>
+        <item name="en">en</item>
+        <item anme="de">al</item>
+    </string-array>
+
+    <string-array name="selectable_favorite_stop_colors" translatable="false">
+        <item>#F44336</item>
+        <item>#9c27b0</item>
+        <item>#42A5F5</item>
+        <item>#009688</item>
+        <item>#8bc34a</item>
+        <item>#607d8b</item>
+    </string-array>
+
 
 </resources>

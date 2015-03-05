@@ -24,6 +24,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
+import com.costular.guaguaslaspalmas.events.RouteDirection;
 import com.costular.guaguaslaspalmas.fragments.RouteMapFragment;
 import com.costular.guaguaslaspalmas.fragments.RouteDetailScheduleFragment;
 import com.costular.guaguaslaspalmas.fragments.RoutesDetailStopsFragment;
@@ -31,6 +32,8 @@ import com.costular.guaguaslaspalmas.model.Route;
 import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.views.SlidingTabLayout;
 import com.melnykov.fab.FloatingActionButton;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Diego on 23/11/2014.
@@ -136,6 +139,8 @@ public class RouteDetailActivity extends ActionBarActivity {
 
                     // Cambiamos la dirección
                     changeDirection();
+                    // Enviamos el bus
+                    EventBus.getDefault().post(new RouteDirection(type));
 
                 }
             });
@@ -169,6 +174,7 @@ public class RouteDetailActivity extends ActionBarActivity {
             getSupportActionBar().setSubtitle(getResources().getString(R.string.destination) + " " + mGoing);
         }
 
+        /*
         // Actualizamos
         if(stopsFragment != null)
         stopsFragment.changeDirection();
@@ -176,6 +182,7 @@ public class RouteDetailActivity extends ActionBarActivity {
         if(schedulesFragment != null) {
             schedulesFragment.changeDirection(type == IDA ? VUELTA : IDA);
         }
+        */
 
     }
 

@@ -176,21 +176,24 @@ public class Stop {
 
     }
 
-    public static boolean addtoFavorites(final Context context, Stop stop, String name) {
-        return addToFavorites(context, name, stop.getId());
+    public static boolean addtoFavorites(final Context context, Stop stop, int color, int position, String name) {
+        return addToFavorites(context, name, color, position, stop.getId());
     }
 
-    public static boolean addToFavorites(final Context context, String name, int id) {
+    public static boolean addToFavorites(final Context context, String name, int color, int position, int id) {
         DatabaseHelper helper = DatabaseHelper.getInstance(context);
         SQLiteDatabase db = helper.getWritableDatabase();
 
         try{
             ContentValues values = new ContentValues();
-            values.put("stop_route", id);
             values.put("stop_name", name);
+            values.put("stop_route", id);
+            values.put("color", color);
+            values.put("orden", position);
 
             db.insert("stops_favorites", null, values);
             return true;
+
         }catch(Exception e) {
             return false;
         }
@@ -276,10 +279,6 @@ public class Stop {
 
     public boolean isFavorite(final Context context) {
        return isFavorite(context, getId());
-    }
-
-    public boolean addToFavorites(final Context context, String name) {
-        return addToFavorites(context, name, getId());
     }
 
     public boolean removeFromFavorites(final Context context) {

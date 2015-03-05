@@ -25,10 +25,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ScrollView;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.costular.guaguaslaspalmas.R;
 import com.costular.guaguaslaspalmas.utils.PrefUtils;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 /**
  * Created by Diego on 18/11/2014.

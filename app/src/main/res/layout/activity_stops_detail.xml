@@ -38,12 +38,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@id/toolbar"
-        android:layout_marginBottom="-28dp"
+        android:layout_marginBottom="-22dp"
         android:layout_marginRight="16dp"
         android:src="@drawable/ic_action_image_edit"
         fab:fab_colorNormal="@color/main_red"
         fab:fab_colorPressed="@color/main_red_dark"
-        fab:fab_colorRipple="@color/main_red_dark" />
+        fab:fab_colorRipple="@color/main_red_dark"
+        fab:fab_type="mini"/>
 
     <RelativeLayout
         android:id="@+id/empty_view"

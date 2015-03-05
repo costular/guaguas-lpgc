@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.costular.guaguaslaspalmas.R;
 import com.costular.guaguaslaspalmas.RouteDetailActivity;
+import com.costular.guaguaslaspalmas.events.RouteDirection;
 import com.costular.guaguaslaspalmas.model.Route;
 import com.costular.guaguaslaspalmas.model.Stop;
 import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
@@ -26,10 +28,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by Diego on 16/01/2015.
  */
 public class RouteMapFragment extends Fragment {
+
+    private static final String TAG = "RouteMapFragment";
 
     /*
      * Activity
@@ -83,6 +89,9 @@ public class RouteMapFragment extends Fragment {
         } catch (InflateException e) {
         /* map is already there, just return view as it is */
         }
+        // Register
+        EventBus.getDefault().register(this);
+
         return view;
     }
 
@@ -126,6 +135,11 @@ public class RouteMapFragment extends Fragment {
         if(map != null) {
             setupMap();
         }
+
+        if(map == null) {
+            return;
+        }
+
         map.setInfoWindowAdapter(new PopUpMapAdapter(getLayoutInflater(getArguments())));
     }
 
@@ -150,5 +164,15 @@ public class RouteMapFragment extends Fragment {
                 last.getLongitude()), 12.0f));
 
 
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    public void onEvent(RouteDirection direction) {
+        Log.d(TAG, "direction: " + (direction.getDirection() == RouteDirection.IDA ? "ida" : "vuelta"));
     }
 }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.costular.guaguaslaspalmas.R;
+import com.costular.guaguaslaspalmas.RouteDetailActivity;
 import com.costular.guaguaslaspalmas.model.Stop;
 import com.costular.guaguaslaspalmas.utils.Provider;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,7 +44,6 @@ public class MapStopsFragment extends Fragment implements OnMapReadyCallback{
 
         if(mapFragment != null)
         mapFragment.getMapAsync(this);
-
     }
 
 
@@ -87,4 +87,5 @@ public class MapStopsFragment extends Fragment implements OnMapReadyCallback{
             Log.d(getClass().getSimpleName(), "Esto ocurre?");
         }
     }
+
 }

@@ -22,6 +22,7 @@ import android.widget.ListView;
 import com.costular.guaguaslaspalmas.R;
 import com.costular.guaguaslaspalmas.RouteDetailActivity;
 import com.costular.guaguaslaspalmas.StopDetailActivity;
+import com.costular.guaguaslaspalmas.events.RouteDirection;
 import com.costular.guaguaslaspalmas.model.Route;
 import com.costular.guaguaslaspalmas.model.Stop;
 import com.costular.guaguaslaspalmas.model.StopTime;
@@ -29,6 +30,8 @@ import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
 import com.costular.guaguaslaspalmas.utils.Provider;
 import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.adapters.StopsListAdapter;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Diego on 25/11/2014.
@@ -91,8 +94,10 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new ListViewListener());
 
-
         getLoaderManager().initLoader(0, null, this);
+
+        //Subscribe
+        EventBus.getDefault().register(this);
     }
 
     private class ListViewListener implements AdapterView.OnItemClickListener {
@@ -113,9 +118,9 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
         }
     }
 
-    public void changeDirection() {
 
-        if(type == RouteDetailActivity.IDA) {
+    public void onEvent(RouteDirection direction) {
+        if(direction.getDirection() == RouteDirection.IDA) {
             type = RouteDetailActivity.VUELTA;
         } else {
             type = RouteDetailActivity.IDA;
@@ -165,4 +170,9 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
         mAdapter.swapCursor(null);
     }
 
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 }

@@ -1,43 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
-    >
+    android:layout_height="72dp">
+
+    <ImageView
+        android:id="@+id/drag"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:paddingRight="-10dp"
+        android:src="@drawable/ic_image_drag"/>
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="18dp"
         android:layout_gravity="center_vertical">
 
-    <com.costular.guaguaslaspalmas.widget.views.CircleView
-        android:id="@+id/stop_key"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:text="1"
-        app:circleRadius="21dp"
-        app:strokeWidth="0dp"
-        app:circleGap="0dp"
-        app:fillColor="@android:color/holo_orange_light"
-        app:strokeColor="@android:color/holo_purple"/>
+        <com.costular.guaguaslaspalmas.widget.views.CircleView
+            android:id="@+id/stop_key"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="1"
+            app:circleRadius="21dp"
+            app:strokeWidth="0dp"
+            app:circleGap="0dp"
+            app:fillColor="@android:color/holo_orange_light"
+            app:strokeColor="@android:color/holo_purple"/>
 
     </FrameLayout>
 
     <LinearLayout
-        android:layout_marginLeft="72dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:layout_centerVertical="true">
 
         <TextView
             android:id="@+id/name_custom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="72dp"
+            android:paddingRight="16dp"
+            android:maxLines="2"
             android:text="Título personalizado"
             style="@style/TextAppearance.Body1"
             />
@@ -47,9 +57,14 @@
             android:id="@+id/name_default"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="72dp"
+            android:paddingRight="16dp"
+            android:layout_below="@id/name_custom"
+            android:layout_centerVertical="true"
             android:text="Título personalizado"
             style="@style/TextAppearance.Body2"/>
 
-        </LinearLayout>
+    </LinearLayout>
+
 
 </RelativeLayout>

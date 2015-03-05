@@ -32,14 +32,11 @@ import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
 import com.costular.guaguaslaspalmas.utils.Provider;
 import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.adapters.RoutesListAdapter;
-import com.github.ksoichiro.android.observablescrollview.ObservableListView;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
-import com.github.ksoichiro.android.observablescrollview.ScrollState;
 
 /**
  * Created by Diego on 22/11/2014.
  */
-public class RoutesListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, ObservableScrollViewCallbacks {
+public class RoutesListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static int NORMAL_ROUTES = 0;
     private static int FAVORITE_ROUTES = 1;
@@ -164,30 +161,6 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
         mAdapter.swapCursor(null);
     }
 
-
-    @Override
-    public void onScrollChanged(int i, boolean b, boolean b2) {
-
-    }
-
-    @Override
-    public void onDownMotionEvent() {
-
-    }
-
-    @Override
-    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
-        ActionBar ab = getBar();
-        if (scrollState == ScrollState.UP) {
-            if (ab.isShowing()) {
-                ab.hide();
-            }
-        } else if (scrollState == ScrollState.DOWN) {
-            if (!ab.isShowing()) {
-                ab.show();
-            }
-        }
-    }
 
     private ActionBar getBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
