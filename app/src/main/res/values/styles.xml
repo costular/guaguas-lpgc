@@ -80,16 +80,7 @@
 
     </style>
 
-    <style name="AppTheme.Yellow" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorAccent">@color/main_yellow</item>
-        <item name="colorPrimary">@color/main_yellow</item>
-        <item name="colorPrimaryDark">@color/main_yellow_dark</item>
-        <item name="windowActionBar">false</item>
-
-    </style>
-
-    <style name="AppTheme.Gray" parent="ThemeOverlay.AppCompat.Dark">
+    <style name="AppTheme.Gray" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
         <item name="colorAccent">@android:color/white</item>
         <item name="colorPrimary">@color/main_gray</item>

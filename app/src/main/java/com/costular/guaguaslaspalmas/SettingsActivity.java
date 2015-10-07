@@ -1,29 +1,39 @@
 package com.costular.guaguaslaspalmas;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
+import com.costular.guaguaslaspalmas.fragments.Preferences;
 import com.costular.guaguaslaspalmas.utils.PrefUtils;
+import com.costular.guaguaslaspalmas.utils.ThemeUtils;
+
+import java.util.prefs.PreferenceChangeEvent;
+import java.util.prefs.PreferenceChangeListener;
 
 /**
  * Created by Diego on 18/11/2014.
  */
-public class SettingsActivity extends ActionBarActivity {
+public class SettingsActivity extends BaseActivity implements Preferences.IThemeChangeListener{
+
+    public static final String TAG = "SettingsActivity";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        //PrefUtils.loadTheme(this);
-
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Inicializamos toolbar
+        setUpToolbar(true);
+    }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+    @Override
+    public void onThemeChanged(String theme) {
+        super.onThemeChanged(theme);
+        finish();
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 }

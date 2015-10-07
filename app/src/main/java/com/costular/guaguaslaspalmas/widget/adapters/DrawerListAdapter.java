@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.costular.guaguaslaspalmas.R;
 import com.costular.guaguaslaspalmas.utils.PrefUtils;
+import com.costular.guaguaslaspalmas.utils.ThemeUtils;
 import com.costular.guaguaslaspalmas.widget.DrawerListItem;
 
 import java.util.ArrayList;
@@ -79,9 +80,9 @@ public class DrawerListAdapter extends BaseAdapter {
         title.setText(item.getTitle());
 
         if (position == mSelectedItem && select) {
-            title.setTextColor(context.getResources().getColor(PrefUtils.color));
+            title.setTextColor(ThemeUtils.getInstance(parent.getContext()).getPrimaryDarkColor());
             title.setTypeface(Typeface.DEFAULT_BOLD);
-            icon.setColorFilter(context.getResources().getColor(PrefUtils.color));
+            icon.setColorFilter(ThemeUtils.getInstance(parent.getContext()).getPrimaryDarkColor());
 
 
         } else {

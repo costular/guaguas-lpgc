@@ -29,6 +29,7 @@ import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
 import com.costular.guaguaslaspalmas.utils.Provider;
 import com.costular.guaguaslaspalmas.widget.views.AddStop;
 import com.costular.guaguaslaspalmas.widget.views.ColorPickerPalette;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 /**
  * Created by Diego on 02/12/2014.
@@ -45,9 +46,8 @@ public class AddToFavoriteDialog extends DialogFragment {
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_dialog_add_by_code, null);
 
-        final EditText customName = (EditText) view.findViewById(R.id.custom_name);
-        final EditText text = (EditText) view.findViewById(R.id.code);
-        final TextView error = (TextView) view.findViewById(R.id.error_message);
+        final MaterialEditText customName = (MaterialEditText) view.findViewById(R.id.custom_name);
+        final MaterialEditText code = (MaterialEditText) view.findViewById(R.id.code);
         final Button button = (Button) view.findViewById(R.id.save_button);
 
         // Color picker
@@ -76,21 +76,16 @@ public class AddToFavoriteDialog extends DialogFragment {
 
             @Override
             public void onClick(View v) {
-                if(text.getText().toString().isEmpty()) {
-                    text.setHighlightColor(getResources().getColor(R.color.edit_text_error_color));
+                if(code.getText().toString().isEmpty()) {
 
-                    // Mostramos el TextView
-                    error.setVisibility(View.VISIBLE);
-                    error.setAlpha(0f);
-
-                    error.animate().setDuration(270).alpha(.9f).start();
+                    code.setError("No puede estar vacío.");
                     return;
                 }
-                int code = Integer.parseInt(text.getText().toString());
+                int stopCode = Integer.parseInt(code.getText().toString());
                 String custom = customName.getText().toString();
 
                 // Id de la parada
-                int id = Stop.getStopIdFromCode(getActivity(), code);
+                int id = Stop.getStopIdFromCode(getActivity(), stopCode);
 
                 // Guardamos
                 int stopsCount = FavoriteStop.stopsCount(getActivity()) + 1;

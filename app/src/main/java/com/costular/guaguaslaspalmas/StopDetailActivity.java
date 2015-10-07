@@ -3,9 +3,11 @@ package com.costular.guaguaslaspalmas;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
@@ -16,36 +18,45 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.cocosw.bottomsheet.BottomSheet;
 import com.costular.guaguaslaspalmas.model.Stop;
+import com.costular.guaguaslaspalmas.model.StopAlert;
 import com.costular.guaguaslaspalmas.model.StopTime;
 import com.costular.guaguaslaspalmas.utils.PrefUtils;
 import com.costular.guaguaslaspalmas.utils.StopsTimeLoader;
 import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.utils.ViewUtils;
 import com.costular.guaguaslaspalmas.widget.EditFavoriteStop;
+import com.costular.guaguaslaspalmas.widget.GuaguaAlertDialog;
 import com.costular.guaguaslaspalmas.widget.RouteFavoriteDialog;
 import com.costular.guaguaslaspalmas.widget.adapters.StopsTimeListAdapter;
 import com.melnykov.fab.FloatingActionButton;
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.listeners.ActionClickListener;
 
 import java.util.List;
 
 /**
  * Created by Diego on 26/11/2014.
  */
-public class StopDetailActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<List<StopTime>>, SwipeRefreshLayout.OnRefreshListener,
-        RouteFavoriteDialog.FavoriteStopListener, EditFavoriteStop.EditFavoriteListener {
+public class StopDetailActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<List<StopTime>>, SwipeRefreshLayout.OnRefreshListener,
+        RouteFavoriteDialog.FavoriteStopListener, EditFavoriteStop.EditFavoriteListener, GuaguaAlertDialog.GuaguaAlertInterface{
+
+    public static final String TAG = "StopDetailActivity";
 
     public static final String STOP = "STOP_CODE";
     public static final String ID = "ID";
 
     public static final int FAVORITE_MENU = 1;
+
+    /**
+     * Application
+     */
+    GuaguasApp mApp;
 
     private FloatingActionButton fab;
 
@@ -53,6 +64,7 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
     private StopsTimeListAdapter mAdapter;
 
     private Stop mStop;
+    private StopTime currentSelectedStop;
     private int mStopCode;
 
     private MenuItem star;
@@ -64,24 +76,20 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stops_detail);
 
+        mApp = (GuaguasApp) getApplication();
         // Cargamos el toolbar
-        loadToolbar();
+        setUpToolbar(true);
 
         mStopCode = getIntent().getIntExtra(STOP, 0);
         int id = getIntent().getIntExtra(ID, 0);
 
         mStop = Stop.createStopFromId(getApplicationContext(), id);
-
-        // Quitamos la elevación para que no se vea mal.
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(mStop.getFavoriteNameStop(getApplicationContext()));
+        setToolbarTitle(mStop.getFavoriteNameStop(getApplicationContext()));
 
         // Si es favorita adjuntamos el nombre de la parada real.
         if(mStop.isFavorite(getApplicationContext())) {
             getSupportActionBar().setSubtitle(mStop.getName());
         }
-
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -104,18 +112,13 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
         mListView.setAdapter(mAdapter);
 
         mListView.setEmptyView(((RelativeLayout) findViewById(R.id.empty_view)));
+        mListView.setOnItemClickListener(stopListClickListener);
 
         checkInternet();
 
         // Empezamos a cargar
         getSupportLoaderManager().initLoader(0, null, this);
         swipeLayout.setRefreshing(true);
-
-    }
-
-    private void loadToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
     }
 
     private void refresh() {
@@ -124,13 +127,14 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
                 @Override
                 public void run() {
                     refreshLoader();
-                }}, 1000);
+                }
+            }, 1000);
 
     }
 
     private void refreshLoader() {
         getSupportLoaderManager().restartLoader(0, null, this);
-            }
+    }
 
     @Override
     public void onRefresh() {
@@ -160,34 +164,58 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
         return true;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
     private boolean checkInternet() {
 
         boolean internet = Utils.haveInternet(getApplicationContext());
 
         if(!internet) {
-            Snackbar.with(getApplicationContext()) // context
-                    .text("No hay conexión a internet.") // text to display
-                    .actionLabel("Reintentar") // action button label
-                    .swipeToDismiss(true)
-                    .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE)
-                    .actionListener(new ActionClickListener() {
+            final Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "No hay conexión a internet.", Snackbar.LENGTH_LONG)
+                    .setAction("Reintentar", new View.OnClickListener() {
                         @Override
-                        public void onActionClicked(Snackbar snackbar) {
+                        public void onClick(View v) {
                             refresh();
-                            snackbar.dismiss();
+
                         }
-                    }) // action button's ActionClickListener
-                    .show(this); // activity where it is displayed
+                    });
+
+            snackbar.show();
         }
 
         return internet;
     }
 
+    private AdapterView.OnItemClickListener stopListClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            currentSelectedStop = (StopTime) mAdapter.getItem(position);
+
+            new BottomSheet.Builder(StopDetailActivity.this).sheet(R.menu.menu_stop_detail).listener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    switch (which) {
+
+                        case R.id.tell_me_when:
+                            new GuaguaAlertDialog().show(getSupportFragmentManager(), "");
+                            break;
+                    }
+                }
+            }).show();
+        }
+    };
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch(id) {
 
@@ -220,7 +248,6 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
 
     @Override
     public void onStopFavorited() {
-        // Jeje
         star.setIcon(R.drawable.ic_action_star);
 
         getSupportActionBar().setTitle(mStop.getFavoriteNameStop(getApplicationContext()));
@@ -252,9 +279,11 @@ public class StopDetailActivity extends ActionBarActivity implements LoaderManag
     @Override
     public void onLoaderReset(Loader<List<StopTime>> listLoader) {
         swipeLayout.setRefreshing(true);
-
         mListView.setAdapter(null);
     }
 
-
+    @Override
+    public void onTimeSelected(int minutes) {
+        mApp.addAlert(new StopAlert(mStop.getId(), mStop.getLongitude(), mStop.getLatitude(), mStop.getOrder(), mStop.getName(), mStop.getCode(), mStop.getRoute(), minutes));
+    }
 }

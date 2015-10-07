@@ -7,7 +7,6 @@
         <include android:id="@+id/toolbar" layout="@layout/extend_toolbar"/>
 
     <LinearLayout
-    android:paddingTop="8dp"
     android:layout_below="@id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,6 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dividerHeight="1dp"
+            android:paddingTop="8dp"
+            android:clipToPadding="false"
             android:divider="@drawable/navigation_list_separator"/>
 
 
@@ -59,6 +60,7 @@
             android:layout_height="wrap_content"
             android:text="@string/empty_stops"/>
 
-    </RelativeLayout>
+
+   </RelativeLayout>
 
 </RelativeLayout>

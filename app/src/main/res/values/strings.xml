@@ -44,5 +44,8 @@
     <string name="preferences_notification_priority_message">Selecciona la prioridad de las notificaciones.</string>
     <string name="preferences_notification_priority">Prioridad</string>
     <string name="preferences_general_language_title">Idioma</string>
+    <string name="tell_me_when">Avísame de la guagua</string>
+    <string name="dialog_guagua_alert_description">Escoge los minutos de antelación con los que te avisamos.</string>
+    <string name="cancel">Cancelar</string>
 
 </resources>

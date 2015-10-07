@@ -43,10 +43,8 @@ import com.costular.guaguaslaspalmas.widget.adapters.FavoriteStopsRecyclerAdapte
 import com.costular.guaguaslaspalmas.widget.adapters.FavoriteStopsTaskLoader;
 import com.costular.guaguaslaspalmas.widget.views.AddStop;
 
-import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
-import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
-import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 import com.melnykov.fab.FloatingActionButton;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.List;
 
@@ -54,10 +52,6 @@ import java.util.List;
  * Created by Diego on 30/11/2014.
  */
 public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<List<FavoriteStop>>{
-
-    private RecyclerViewDragDropManager mRecyclerViewDragDropManager;
-    private RecyclerViewSwipeManager mRecyclerViewSwipeManager;
-    private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
     //private ListView mListView;
     //private FavoriteStopsListAdapter mAdapter;
@@ -121,9 +115,14 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
             }
         });
 
+        HorizontalDividerItemDecoration separator = new HorizontalDividerItemDecoration.Builder(getActivity())
+                .color(R.color.light_gray)
+                .margin(72, 0).build();
+
         mRecycler.setAdapter(mRecyclerAdapter);
         mRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecycler.setItemAnimator(null);
+        mRecycler.addItemDecoration(separator);
 
         DragSortRecycler dragSortRecycler = new DragSortRecycler();
         dragSortRecycler.setViewHandleId(R.id.drag);

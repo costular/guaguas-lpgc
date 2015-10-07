@@ -26,34 +26,6 @@
     <item>@drawable/ic_action_action_settings</item>
     </string-array>
 
-    <!-- Theme array -->
-    <string-array name="theme_array">
-        <item>@string/indigo</item>
-        <item>@string/pink</item>
-        <item>@string/purple</item>
-        <item>@string/red</item>
-        <item>@string/blue</item>
-        <item>@string/green</item>
-        <item>@string/orange</item>
-        <item>@string/yellow</item>
-        <item>@string/gray</item>
-    </string-array>
-
-    <string-array name="theme_array_values">
-        <item name="indigo">Indigo</item>
-        <item name="pink">Pink</item>
-        <item name="purple">purple</item>
-        <item name="red">Red</item>
-        <item name="blue">Blue</item>
-        <item name="green">Green</item>
-        <item name="orange">Orange</item>
-        <item name="yellow">Yellow</item>
-        <item name="gray">Gray</item>
-
-
-    </string-array>
-
-
     <string-array name="notification_priority">
         <item name="high">Alta</item>
         <item name="default">Normal</item>

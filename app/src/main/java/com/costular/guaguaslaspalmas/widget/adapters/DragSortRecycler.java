@@ -32,7 +32,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.support.annotation.Nullable;
 
-import java.lang.reflect.Modifier;
 
 
 public class DragSortRecycler extends RecyclerView.ItemDecoration implements RecyclerView.OnItemTouchListener {
@@ -395,6 +394,11 @@ public class DragSortRecycler extends RecyclerView.ItemDecoration implements Rec
         rv.scrollBy(0, (int)scrollAmount);
 
         rv.invalidateItemDecorations();// Redraw
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
     }
 
     private void setIsDragging(final boolean dragging) {

@@ -32,7 +32,7 @@ public class RouteDetailScheduleFragment extends Fragment{
 
     TextView week;
     TextView weekend;
-    TextView weekendcontent;
+    TextView weekendContent;
     TextView saturday;
     TextView saturdayContent;
 
@@ -68,7 +68,7 @@ public class RouteDetailScheduleFragment extends Fragment{
 
         week = (TextView) getActivity().findViewById(R.id.week_content);
         weekend = (TextView) getActivity().findViewById(R.id.weekend);
-        weekendcontent = (TextView) getActivity().findViewById(R.id.weekend_content);
+        weekendContent = (TextView) getActivity().findViewById(R.id.weekend_content);
         saturday = (TextView) getActivity().findViewById(R.id.saturday);
         saturdayContent = (TextView) getActivity().findViewById(R.id.saturday_content);
 
@@ -84,7 +84,7 @@ public class RouteDetailScheduleFragment extends Fragment{
             weekend.setText("Domingos y festivos.");
         }
 
-        new ScheduleLoader(getActivity(), week, saturdayContent, weekendcontent, Route.getConcesionFromRouteNumber(getActivity(), number, activity.type)).execute();
+        new ScheduleLoader(getActivity(), week, saturdayContent, weekendContent, Route.getConcesionFromRouteNumber(getActivity(), number, activity.type)).execute();
 
         //Registramos
         EventBus.getDefault().register(this);
@@ -118,7 +118,7 @@ public class RouteDetailScheduleFragment extends Fragment{
      * Cambiamos la dirección de la línea
      */
     public void onEvent(RouteDirection type) {
-        new ScheduleLoader(getActivity(), week, saturdayContent, weekendcontent, Route.getConcesionFromRouteNumber(getActivity(), number, type.getDirection())).execute();
+        new ScheduleLoader(getActivity(), week, saturdayContent, weekendContent, Route.getConcesionFromRouteNumber(getActivity(), number, type.getDirection())).execute();
     }
 
     @Override

@@ -5,31 +5,46 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.DisplayMetrics;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.TypedValue;
-import android.view.WindowManager;
-import android.widget.Toast;
+import com.costular.guaguaslaspalmas.R;
 
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.listeners.ActionClickListener;
 
 /**
  * Created by Diego on 24/11/2014.
  */
 public class Utils {
 
-    public static boolean haveInternet(final Context context) {
+    private static int notificationId = 0;
 
-        ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean haveInternet(final Context context){
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
+    public static int notify(Context context, String title, String message, Bitmap fullImage) {
 
-        return isConnected;
+        NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
+        style.bigText(message);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setContentTitle(title)
+                .setContentText(message)
+                .setStyle(style)
+                .setSmallIcon(R.drawable.ic_stat_maps_directions_bus);
+
+        if(fullImage != null) {
+            builder.setLargeIcon(fullImage);
+        }
+
+        NotificationManagerCompat.from(context).notify(notificationId++, builder.build());
+        return notificationId;
     }
 
     public static String getColorFromNumber(final Context context, final String number) {

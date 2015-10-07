@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import org.apache.http.auth.AUTH;
-
 import java.net.URI;
 import java.text.RuleBasedCollator;
 

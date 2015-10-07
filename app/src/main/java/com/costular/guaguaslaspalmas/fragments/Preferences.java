@@ -1,7 +1,9 @@
 package com.costular.guaguaslaspalmas.fragments;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.util.Log;
@@ -14,9 +16,21 @@ import com.costular.guaguaslaspalmas.utils.PrefUtils;
  */
 public class Preferences extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    public interface IThemeChangeListener {
+        void onThemeChanged(String theme);
+    }
+
     private Preference notificationSound;
     private Preference notificationVibrate;
     private Preference notificationPriority;
+
+    private IThemeChangeListener listener;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        listener = (IThemeChangeListener) activity;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +62,12 @@ public class Preferences extends PreferenceFragment implements SharedPreferences
                 disableNotifications();
             }
 
+        } else if("general_theme".equals(key)) {
+            ListPreference listPreference = (ListPreference) findPreference(key);
+
+            if(listener != null) {
+                listener.onThemeChanged(listPreference.getValue());
+            }
         }
     }
 

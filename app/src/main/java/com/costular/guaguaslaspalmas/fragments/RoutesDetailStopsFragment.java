@@ -87,6 +87,7 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
 
         //cargamos la lista y eso
         mListView = (ListView) getActivity().findViewById(R.id.stops_list);
+
         mAdapter = new StopsListAdapter(getActivity(), R.layout.route_detail_stops_list, null,
                 new String[] {Provider.Stops.NAME_COL, Provider.Stops.NAME_COL, Provider.Stops.NAME_COL},
                 new int[] {R.id.name},

@@ -105,7 +105,7 @@ public class SlidingTabLayout extends HorizontalScrollView{
         setCustomTabColorizer(new TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.main_red);
+                return getResources().getColor(android.R.color.white);
             }
         });
     }

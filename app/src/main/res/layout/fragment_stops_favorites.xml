@@ -32,8 +32,8 @@
             android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
             android:src="@drawable/ic_action_content_add"
-            fab:fab_colorNormal="@color/main_indigo"
-            fab:fab_colorPressed="@color/main_indigo_dark"
-            fab:fab_colorRipple="@color/main_indigo" />
+            fab:fab_colorNormal="?attr/colorPrimary"
+            fab:fab_colorPressed="?attr/colorPrimaryDark"
+            fab:fab_colorRipple="?attr/colorPrimaryDark" />
 
     </FrameLayout>

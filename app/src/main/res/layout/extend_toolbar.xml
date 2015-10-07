@@ -6,5 +6,6 @@
     android:background="?attr/colorPrimary"
     android:minHeight="?attr/actionBarSize"
     android:gravity="bottom"
+    android:elevation="4dp"
     app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar"
     app:theme="@style/Toolbar"/>

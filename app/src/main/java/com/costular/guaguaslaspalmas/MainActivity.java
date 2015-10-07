@@ -30,6 +30,7 @@ import com.costular.guaguaslaspalmas.fragments.RoutesFragment;
 import com.costular.guaguaslaspalmas.fragments.RoutesListFragment;
 import com.costular.guaguaslaspalmas.fragments.StopsFavoritesFragment;
 import com.costular.guaguaslaspalmas.model.FavoriteStop;
+import com.costular.guaguaslaspalmas.tutorial.TutorialActivity;
 import com.costular.guaguaslaspalmas.utils.PrefUtils;
 import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.DrawerListItem;
@@ -43,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends BaseActivity{
 
     private static final int ROUTES = 0;
     private static final int FAVORITES = 1;
@@ -52,9 +53,6 @@ public class MainActivity extends ActionBarActivity {
 
     private static final int CONTACT = 0;
     private static final int SETTINGS = 1;
-
-    // Strict Mode
-    StrictMode.ThreadPolicy.Builder builder = new StrictMode.ThreadPolicy.Builder().detectAll();
 
     // Navigation
     private DrawerLayout drawer;
@@ -74,51 +72,19 @@ public class MainActivity extends ActionBarActivity {
     private int mPosition = -1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        //PrefUtils.loadTheme(this);
-
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        if(toolbar != null) {
-            setSupportActionBar(toolbar);
-        }
-
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().setElevation(0);
-        }
-
-
+        setUpToolbar(false);
         setupNavigation();
-        loadUserInfo();
 
         // Si lo acaba de abrir.
         if(savedInstanceState == null) {
             selectItem(ROUTES);
         }
 
-        /*
-        if(Utils.haveInternet(getApplicationContext())) {
-            Log.d("here", "Vamos a intentar conectar");
-            new serverService().execute();
-        }
-        */
-
-        // Cargamos el log para ver si hacemos alguna tarea pesada, que debería de hacerse en segundo plano, y la hacemos en el UI THREAD
-        if(BuildConfig.DEBUG) {
-            builder.penaltyDeath();
-        } else {
-            builder.penaltyLog();
-        }
-
-        // Tira algunos errores debido a ciertos fallos en nuestro código de la app.
-        //StrictMode.setThreadPolicy(builder.build());
-    }
-
-    private void loadUserInfo() {
-        // https://www.googleapis.com/plus/v1/people/115950284...320?fields=image&key={YOUR_API_KEY} para obtener la imagen del user
+        //startActivity(new Intent(this, TutorialActivity.class));
     }
 
     private void setupNavigation() {

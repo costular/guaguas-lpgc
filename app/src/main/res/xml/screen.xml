@@ -11,6 +11,13 @@
         android:entryValues="@array/general_language_values"
         android:entries="@array/general_language"/>
 
+        <ListPreference
+            android:title="@string/theme"
+            android:summary="@string/theme_summary"
+            android:key="general_theme"
+            android:entryValues="@array/theme_array_values"
+            android:entries="@array/theme_array"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

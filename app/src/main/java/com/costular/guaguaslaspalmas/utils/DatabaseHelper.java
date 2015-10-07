@@ -1,7 +1,9 @@
 package com.costular.guaguaslaspalmas.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -11,6 +13,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Diego on 19/11/2014.
@@ -155,6 +159,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 db.close();
             }
         }
+    }
+
+    public List<String> checkStopsHistory() {
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.query("stop_checker_history", null, null, null, null, null, "_id DESC", "4");
+
+        //Array
+        List<String> history = new ArrayList<String>();
+
+        if(c.moveToFirst()) {
+
+            do {
+                String str = c.getString(c.getColumnIndex("query"));
+
+                if(str.isEmpty() || str == null) {
+                    continue;
+                }
+
+                if(history.contains(str)) {
+                    continue;
+                }
+
+                history.add(str);
+                c.moveToNext();
+
+            }while(c.moveToNext());
+
+            c.close();
+
+        }
+
+        return history;
+    }
+
+    public void insertHistory(String str) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("query", str);
+
+        db.insert("stop_checker_history", null, values);
     }
 }
 

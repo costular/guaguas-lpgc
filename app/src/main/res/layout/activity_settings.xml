@@ -4,7 +4,7 @@
     tools:context="com.costular.guaguas.SettingsActivity"
     android:orientation="vertical">
 
-    <include android:id="@+id/toolbar" layout="@layout/toolbar"/>
+    <include android:id="@+id/toolbar" layout="@layout/toolbar_elevation"/>
 
     <fragment android:name="com.costular.guaguaslaspalmas.fragments.Preferences"
         android:layout_width="match_parent"

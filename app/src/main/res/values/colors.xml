@@ -30,8 +30,8 @@
     <item name="main_yellow" type="color">#3F51B5</item>
     <item name="main_yellow_dark" type="color">#FF8F00</item>
 
-    <item name="main_gray" type="color">#616161</item>
-    <item name="main_gray_dark" type="color">#424242</item>
+    <item name="main_gray" type="color">#212121</item>
+    <item name="main_gray_dark" type="color">#000000</item>
 
     <color name="bg_swipe_item_neutral">#ffffffff</color>
     <color name="bg_swipe_item_left">#fff9930d</color>

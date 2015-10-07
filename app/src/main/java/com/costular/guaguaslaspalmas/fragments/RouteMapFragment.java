@@ -116,7 +116,6 @@ public class RouteMapFragment extends Fragment {
         //Cargamos la ruta
         mRoute = Route.createRouteFromNumber(getActivity(), number);
 
-
     }
 
     @Override

@@ -7,16 +7,26 @@ String VERSION_NAME = "0.1.1"
 project.archivesBaseName = APK_NAME + "-" + VERSION_NAME;
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    signingConfigs {
+        debug {
+            keyAlias 'costular'
+            keyPassword 'tekiero1'
+            storeFile file('/home/diego/Android/Sdk/release.jks')
+            storePassword 'tekiero1'
+        }
+    }
+
+    compileSdkVersion 23
+    buildToolsVersion "23.0.0"
 
     defaultConfig {
         applicationId "com.costular.guaguaslaspalmas"
-        minSdkVersion 10
-        targetSdkVersion 21
+        minSdkVersion 14
+        targetSdkVersion 23
         versionCode VERSION_CODE
         versionName VERSION_NAME
     }
+
     buildTypes {
         release {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -24,20 +34,20 @@ android {
     }
 }
 
-apply plugin: 'android-unit-test'
-
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:support-v4:23.0.1'
+    compile 'com.android.support:design:23.0.1'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
-    compile 'com.nispok:snackbar:2.10.1'
     compile 'com.rengwuxian.materialedittext:library:1.8.3'
-    compile 'com.android.support:recyclerview-v7:+'
-    compile 'com.google.android.gms:play-services:6.5.87'
+    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.google.android.gms:play-services:8.1.0'
     compile 'de.greenrobot:eventbus:2.4.0'
-
-    testCompile 'junit:junit:4.10'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.yqritc:recyclerview-flexibledivider:1.1.0'
+    compile 'com.cocosw:bottomsheet:1.2.0@aar'
+    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 }
 

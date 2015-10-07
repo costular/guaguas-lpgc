@@ -5,6 +5,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,6 +33,7 @@ import com.costular.guaguaslaspalmas.fragments.RouteDetailScheduleFragment;
 import com.costular.guaguaslaspalmas.fragments.RoutesDetailStopsFragment;
 import com.costular.guaguaslaspalmas.model.Route;
 import com.costular.guaguaslaspalmas.utils.Utils;
+import com.costular.guaguaslaspalmas.widget.views.CircleView;
 import com.costular.guaguaslaspalmas.widget.views.SlidingTabLayout;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -38,9 +42,11 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by Diego on 23/11/2014.
  */
-public class RouteDetailActivity extends ActionBarActivity {
+public class RouteDetailActivity extends BaseActivity {
 
     public static final String TAG = "RouteDetailActivity";
+
+    private Toolbar toolbar;
 
     // Constantes estáticas para decirle si es ida o vuelta·
     public static final int IDA = 1;
@@ -81,25 +87,22 @@ public class RouteDetailActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_detail);
 
-        loadToolbar();
+        setUpToolbar(true);
 
         // Obtenemos la id de la ruta.
         number = getIntent().getStringExtra("number");
-
         mRoute = Route.createRouteFromNumber(getApplicationContext(), number);
+
+        //Cargamos el número en el círculo
+        CircleView circleView = new CircleView(this, String.valueOf(mRoute.getNumber()), mRoute.getColor());
 
         // Tabs y ViewPager
         viewPager = (ViewPager) findViewById(R.id.pager);
         tabs = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        // Quitamos la elevación para que no se vea mal.
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setElevation(0);
-
         // Ponemos el nombre de la Toolbar
-        getSupportActionBar().setTitle(mRoute.getNumber() + ": " + mRoute.getName());
+        setToolbarTitle(mRoute.getNumber() + ": " + mRoute.getName());
 
         mDoubleDestiny = mRoute.getName().contains("-");
 
@@ -151,6 +154,7 @@ public class RouteDetailActivity extends ActionBarActivity {
             fab.setVisibility(View.GONE);
         }
 
+        tabs.setDistributeEvenly(true);
         viewPager.setAdapter(new MyPagerAdapter(this, getSupportFragmentManager(), number));
         tabs.setViewPager(viewPager);
 
@@ -187,7 +191,7 @@ public class RouteDetailActivity extends ActionBarActivity {
     }
 
     private void loadToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
@@ -275,7 +279,7 @@ public class RouteDetailActivity extends ActionBarActivity {
             return null;
         }
 
-        // Returns the page title for the top indicator
+        // Returns the page titldee for the top indicator
         @Override
         public CharSequence getPageTitle(int position) {
            switch(position) {

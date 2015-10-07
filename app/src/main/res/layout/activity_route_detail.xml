@@ -13,13 +13,14 @@
     -->
 
 
-<include android:id="@+id/toolbar" layout="@layout/toolbar" />
+<include android:id="@+id/toolbar" layout="@layout/toolbar_elevation" />
 
 <com.costular.guaguaslaspalmas.widget.views.SlidingTabLayout
     android:id="@+id/sliding_tabs"
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:layout_below="@id/toolbar"
+    android:elevation="4dp"
     android:background="?attr/colorPrimary"/>
 
 
@@ -35,13 +36,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignBottom="@id/sliding_tabs"
-        android:layout_marginBottom="-24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
         android:src="@drawable/ic_action_action_swap_horiz"
-        fab:fab_colorNormal="@color/main_red"
-        fab:fab_colorPressed="@color/main_red_dark"
-        fab:fab_colorRipple="@color/main_red_dark" />
+        fab:fab_colorNormal="?attr/colorPrimary"
+        fab:fab_colorPressed="?attr/colorPrimaryDark"
+        fab:fab_colorRipple="?attr/colorPrimaryDark" />
 
 
 

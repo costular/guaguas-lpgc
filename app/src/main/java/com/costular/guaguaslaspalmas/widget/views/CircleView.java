@@ -30,6 +30,14 @@ public class CircleView extends AbstractBaseView
         init();
     }
 
+    public CircleView(Context context, String number, String color) {
+        super(context);
+
+        this.number = number;
+        this.fillColor = Color.parseColor(color);
+        init();
+    }
+
     public CircleView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
 
