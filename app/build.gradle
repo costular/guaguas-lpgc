@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.tmiyamon.mdicons'
 
 String APK_NAME = "GuaguasLPGC"
 int VERSION_CODE = 2
@@ -17,7 +18,7 @@ android {
     }
 
     compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "com.costular.guaguaslaspalmas"
@@ -50,4 +51,13 @@ dependencies {
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 }
+
+
+// ------------------------------ ICONOS ------------------------------------
+
+mdicons {
+    asset name: ["directions_bus", "favorite", "nature_people", "settings", "email", "map"], color: ["grey600"], size: ["24dp"]
+    asset name: ["search"], color: "white", size: "24dp"
+}
+
 

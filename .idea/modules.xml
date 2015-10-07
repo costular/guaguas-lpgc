@@ -5,9 +5,11 @@
       <module fileurl="file://$PROJECT_DIR$/GuaguasLasPalmas.iml" filepath="$PROJECT_DIR$/GuaguasLasPalmas.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tabs-library/tabs-library.iml" filepath="$PROJECT_DIR$/tabs-library/tabs-library.iml" />
       <module fileurl="file://$PROJECT_DIR$/tabs-library/tabs-library.iml" filepath="$PROJECT_DIR$/tabs-library/tabs-library.iml" />
     </modules>
   </component>
 </project>
-
