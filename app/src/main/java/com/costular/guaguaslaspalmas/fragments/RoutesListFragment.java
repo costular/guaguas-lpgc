@@ -33,6 +33,9 @@ import com.costular.guaguaslaspalmas.utils.Provider;
 import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.adapters.RoutesListAdapter;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by Diego on 22/11/2014.
  */
@@ -50,24 +53,25 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
         return (RoutesListFragment) fragment;
     }
 
+    @InjectView(R.id.list) ListView mListView;
     private RoutesListAdapter mAdapter;
-    private ListView mListView;
 
     private boolean isFavorite;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_routes, null);
+        View root = inflater.inflate(R.layout.fragment_routes, null);
+        ButterKnife.inject(this, root);
+        return root;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setRetainInstance(true); // Guardamos la configuración
 
         isFavorite = getArguments().getBoolean("favorites");
-
-        mListView = (ListView) getActivity().findViewById(R.id.list);
 
         //Cuando hacemos scroll se esconde el toolbar, pero lo hemos quitado ya que no es necesario.
         //mListView.setScrollViewCallbacks(this);
