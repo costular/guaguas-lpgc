@@ -2,8 +2,6 @@ package com.costular.guaguaslaspalmas.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,16 +9,12 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.costular.guaguaslaspalmas.R;
 import com.costular.guaguaslaspalmas.RouteDetailActivity;
 import com.costular.guaguaslaspalmas.events.RouteDirection;
 import com.costular.guaguaslaspalmas.model.Route;
 import com.costular.guaguaslaspalmas.model.Stop;
-import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
-import com.costular.guaguaslaspalmas.utils.Provider;
-import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.adapters.PopUpMapAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

@@ -47,5 +47,7 @@
     <string name="tell_me_when">Avísame de la guagua</string>
     <string name="dialog_guagua_alert_description">Escoge los minutos de antelación con los que te avisamos.</string>
     <string name="cancel">Cancelar</string>
+    <string name="open_this_route">Ir a esta línea</string>
+    <string name="highlight_arrive">Destacar</string>
 
 </resources>

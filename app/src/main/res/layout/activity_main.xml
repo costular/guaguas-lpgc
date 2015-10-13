@@ -1,53 +1,39 @@
-<LinearLayout
+<android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_parent_view"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
 
-    <include android:id="@+id/toolbar" layout="@layout/toolbar_elevation"/>
-
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
+    <LinearLayout
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:orientation="vertical">
 
-        <!-- Main layout -->
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_elevation"/>
+
+
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
 
-        <LinearLayout
-        android:layout_width="304dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
-
-        <ListView android:id="@+id/left_drawer"
-            android:paddingTop="8dp"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"
-            android:listSelector="@color/list_selected_color"/>
-
-        <include layout="@layout/navdrawer_separator"/>
-
-        <ListView
-            android:id="@+id/second_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"
-            android:background="#FFFFFF"/>
+        </FrameLayout>
 
     </LinearLayout>
 
+        <android.support.design.widget.NavigationView
+            android:id="@+id/navigation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/nav_header"
+            app:menu="@menu/menu_drawer"/>
+
 </android.support.v4.widget.DrawerLayout>
-</LinearLayout>

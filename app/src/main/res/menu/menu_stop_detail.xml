@@ -2,7 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/highlight_arrive"
+        android:icon="@drawable/ic_new_releases_grey600_24dp"
+        android:title="@string/highlight_arrive"/>
+
+    <item
         android:id="@+id/tell_me_when"
-        android:icon="@drawable/ic_action_action_alarm"
+        android:icon="@drawable/ic_alarm_grey600_24dp"
         android:title="@string/tell_me_when"/>
+
+    <item
+        android:id="@+id/open_route"
+        android:icon="@drawable/ic_directions_bus_grey600_24dp"
+        android:title="@string/open_this_route"/>
+
 </menu>

@@ -55,7 +55,6 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
 
     @InjectView(R.id.list) ListView mListView;
     private RoutesListAdapter mAdapter;
-
     private boolean isFavorite;
 
 

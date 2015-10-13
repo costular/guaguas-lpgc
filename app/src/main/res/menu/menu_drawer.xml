@@ -5,21 +5,45 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/drawer_home"
+            android:id="@+id/drawer_routes"
             android:checked="true"
-            android:icon="@drawable/ic_action_maps_directions_bus"
+            android:icon="@drawable/ic_directions_bus_grey600_24dp"
             android:title="@string/routes"/>
 
         <item
-            android:id="@+id/drawer_favourite"
-            android:icon="@drawable/ic_favorite_black_24dp"
-            android:title="@string/favourite"/>
-        ...
+            android:id="@+id/drawer_favorites"
+            android:icon="@drawable/ic_favorite_grey600_24dp"
+            android:title="@string/favorites"/>
+
+        <item
+            android:id="@+id/drawer_stops"
+            android:icon="@drawable/ic_nature_people_grey600_24dp"
+            android:title="@string/stops"/>
+
+        <item
+            android:id="@+id/drawer_map"
+            android:icon="@drawable/ic_map_grey600_24dp"
+            android:title="@string/map"/>
+
+
+
+    </group>
+
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/drawer_contact"
+            android:checked="true"
+            android:icon="@drawable/ic_email_grey600_24dp"
+            android:title="@string/contact_with_us"/>
 
         <item
             android:id="@+id/drawer_settings"
-            android:icon="@drawable/ic_settings_black_24dp"
+            android:icon="@drawable/ic_settings_grey600_24dp"
             android:title="@string/settings"/>
+
+
 
     </group>
 

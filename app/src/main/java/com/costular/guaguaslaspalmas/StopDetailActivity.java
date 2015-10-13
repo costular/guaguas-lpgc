@@ -199,12 +199,12 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             currentSelectedStop = (StopTime) mAdapter.getItem(position);
 
-            new BottomSheet.Builder(StopDetailActivity.this).sheet(R.menu.menu_stop_detail).listener(new DialogInterface.OnClickListener() {
+            new BottomSheet.Builder(StopDetailActivity.this)
+                    .sheet(R.menu.menu_stop_detail)
+                    .listener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
                     switch (which) {
-
                         case R.id.tell_me_when:
                             new GuaguaAlertDialog().show(getSupportFragmentManager(), "");
                             break;
