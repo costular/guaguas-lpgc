@@ -222,7 +222,7 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
 
             case FAVORITE_MENU:
                 if(mStop.isFavorite(getApplicationContext())) {
-                    Utils.confirmDialog(this, "¿Estás seguro de eliminar la parada de favoritos?",
+                    Utils.confirmDialog(this, getResources().getString(R.string.delete_stop_from_favorite),
                             new DialogListener() {
                                 @Override
                                 public void onAccept() {

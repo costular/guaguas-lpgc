@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dividerHeight="1dp"
-            android:paddingTop="8dp"
+            android:paddingTop="12dp"
             android:clipToPadding="false"
             android:divider="@drawable/navigation_list_separator"/>
 
@@ -37,10 +37,10 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignBottom="@id/toolbar"
-        android:layout_marginBottom="-22dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginBottom="-20dp"
+        android:layout_marginLeft="16dp"
         android:src="@drawable/ic_action_image_edit"
         fab:fab_colorNormal="@color/main_red"
         fab:fab_colorPressed="@color/main_red_dark"
