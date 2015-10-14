@@ -1,6 +1,7 @@
 package com.costular.guaguaslaspalmas;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -21,6 +22,8 @@ public class SettingsActivity extends BaseActivity implements Preferences.ITheme
 
     public static final String TAG = "SettingsActivity";
 
+    private boolean scheduledRestart;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +36,10 @@ public class SettingsActivity extends BaseActivity implements Preferences.ITheme
     @Override
     public void onThemeChanged(String theme) {
         super.onThemeChanged(theme);
+
+        //Decimos que el tema ha cambiado
+        ((GuaguasApp) getApplication()).needReloadTheme();
+
         finish();
         startActivity(new Intent(this, SettingsActivity.class));
     }

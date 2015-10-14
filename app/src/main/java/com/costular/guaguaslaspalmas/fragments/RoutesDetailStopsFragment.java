@@ -31,13 +31,14 @@ import com.costular.guaguaslaspalmas.utils.Provider;
 import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.adapters.StopsListAdapter;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 /**
  * Created by Diego on 25/11/2014.
  */
 public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbacks<Cursor> {
-
 
     /*
      * Variable que guarda la id de la línea.
@@ -55,7 +56,7 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
     private Route mRoute;
 
 
-    private ListView mListView;
+    @InjectView(R.id.stops_list) ListView mListView;
     private StopsListAdapter mAdapter;
 
     public static RoutesDetailStopsFragment newInstance(final Context context, final String number, int type) {
@@ -70,8 +71,10 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_route_detail_stops, null);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_route_detail_stops, container, false);
+        ButterKnife.inject(this, root);
+        return root;
     }
 
     @Override
@@ -82,11 +85,7 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
         type = getArguments().getInt("type");
 
         Log.d(getClass().getSimpleName(), "number: " + number);
-
         mRoute = Route.createRouteFromNumber(getActivity(), number);
-
-        //cargamos la lista y eso
-        mListView = (ListView) getActivity().findViewById(R.id.stops_list);
 
         mAdapter = new StopsListAdapter(getActivity(), R.layout.route_detail_stops_list, null,
                 new String[] {Provider.Stops.NAME_COL, Provider.Stops.NAME_COL, Provider.Stops.NAME_COL},
@@ -164,6 +163,10 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         mAdapter.swapCursor(cursor);
+
+        //Quitamos la línea superior del primer item y la inferior del último para la lista de paradas.
+        //mListView.getChildAt(0).findViewById(R.id.top_line).setVisibility(View.GONE);
+        //mListView.getChildAt(mListView.getCount() - 1).findViewById(R.id.bottom_line).setVisibility(View.GONE);
     }
 
     @Override

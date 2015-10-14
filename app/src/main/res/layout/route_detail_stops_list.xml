@@ -5,7 +5,7 @@
     android:minHeight="54dp">
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/top_line"
         android:layout_width="2dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -14,7 +14,7 @@
         android:background="@android:color/darker_gray" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/bottom_line"
         android:layout_width="2dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
@@ -29,10 +29,8 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="23dp"
         android:contentDescription="@null"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/top_line"
         android:src="@drawable/circle" />
-
-
 
 
     <TextView

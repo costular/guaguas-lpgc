@@ -40,6 +40,9 @@ import com.melnykov.fab.FloatingActionButton;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by Diego on 26/11/2014.
  */
@@ -58,9 +61,8 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
      */
     GuaguasApp mApp;
 
-    private FloatingActionButton fab;
-
-    private ListView mListView;
+    @InjectView(R.id.fab) FloatingActionButton fab;
+    @InjectView(R.id.stops_hour_list) ListView mListView;
     private StopsTimeListAdapter mAdapter;
 
     private Stop mStop;
@@ -69,12 +71,13 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
 
     private MenuItem star;
 
-    private SwipeRefreshLayout swipeLayout;
+    @InjectView(R.id.swipe_container) SwipeRefreshLayout swipeLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stops_detail);
+        ButterKnife.inject(this);
 
         mApp = (GuaguasApp) getApplication();
         // Cargamos el toolbar
@@ -91,7 +94,6 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
             getSupportActionBar().setSubtitle(mStop.getName());
         }
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,11 +104,9 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
             }
         });
 
-        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.setColorSchemeColors(R.color.main_indigo, R.color.main_red);
 
-        mListView = (ListView) findViewById(R.id.stops_hour_list);
         mAdapter = new StopsTimeListAdapter(getApplicationContext());
 
         mListView.setAdapter(mAdapter);
@@ -202,15 +202,15 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
             new BottomSheet.Builder(StopDetailActivity.this)
                     .sheet(R.menu.menu_stop_detail)
                     .listener(new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
-                        case R.id.tell_me_when:
-                            new GuaguaAlertDialog().show(getSupportFragmentManager(), "");
-                            break;
-                    }
-                }
-            }).show();
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case R.id.tell_me_when:
+                                    new GuaguaAlertDialog().show(getSupportFragmentManager(), "");
+                                    break;
+                            }
+                        }
+                    }).show();
         }
     };
 

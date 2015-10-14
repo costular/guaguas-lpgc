@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class GuaguasApp extends Application {
 
+    private boolean needReloadTheme;
     private List<StopAlert> mStopAlertList;
 
     public List<StopAlert> getStopAlerts() {
@@ -27,6 +28,7 @@ public class GuaguasApp extends Application {
     public void onCreate() {
         super.onCreate();
         mStopAlertList = new ArrayList<>();
+        needReloadTheme = false;
     }
 
     protected void addAlert(StopAlert stopAlert) {
@@ -35,5 +37,17 @@ public class GuaguasApp extends Application {
 
     protected void deleteAlert(int id) {
 
+    }
+
+    public void needReloadTheme() {
+        needReloadTheme = true;
+    }
+
+    public void notNeedReloadTheme() {
+        needReloadTheme = false;
+    }
+
+    public boolean isNeededReloadTheme() {
+        return needReloadTheme;
     }
 }

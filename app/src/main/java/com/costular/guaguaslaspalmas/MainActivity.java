@@ -94,6 +94,18 @@ public class MainActivity extends BaseActivity{
         mapStopsFragment = new MapStopsFragment();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(((GuaguasApp)getApplication()).isNeededReloadTheme()) {
+            ((GuaguasApp)getApplication()).notNeedReloadTheme(); // Decimos que ya no es necesario actualizar el tema
+
+            finish();
+            startActivity(new Intent(MainActivity.this, MainActivity.class));
+        }
+    }
+
     private void setupNavigation() {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -117,6 +129,10 @@ public class MainActivity extends BaseActivity{
                     case MAP:
                         menuItem.setChecked(true);
                         loadFragment(mapStopsFragment);
+                        break;
+                    case SETTINGS:
+                        Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+                        startActivity(i);
                         break;
                 }
                 return true;
