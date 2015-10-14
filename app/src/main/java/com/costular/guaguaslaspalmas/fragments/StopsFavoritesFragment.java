@@ -12,6 +12,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -75,7 +76,7 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
     public void onStart() {
         super.onStart();
 
-        bar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+        bar = ((AppCompatActivity)getActivity()).getSupportActionBar();
 
         mRecycler = (RecyclerView) getActivity().findViewById(R.id.recyclerView);
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);

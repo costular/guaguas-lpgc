@@ -2,6 +2,7 @@ package com.costular.guaguaslaspalmas.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,6 +11,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.internal.view.ContextThemeWrapper;
 import android.util.TypedValue;
 import com.costular.guaguaslaspalmas.R;
 
@@ -98,5 +101,26 @@ public class Utils {
     public static float getPixelsByDP(int dp, Resources resources) {
          return (float) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                  dp, resources.getDisplayMetrics());
+    }
+
+    public static void confirmDialog(final Activity activity, String message, final DialogListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+        builder
+                .setMessage(message)
+                .setPositiveButton("Sí",  new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        listener.onAccept();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,int id) {
+                        listener.onCancel();
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 }

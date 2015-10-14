@@ -28,6 +28,7 @@ import com.cocosw.bottomsheet.BottomSheet;
 import com.costular.guaguaslaspalmas.model.Stop;
 import com.costular.guaguaslaspalmas.model.StopAlert;
 import com.costular.guaguaslaspalmas.model.StopTime;
+import com.costular.guaguaslaspalmas.utils.DialogListener;
 import com.costular.guaguaslaspalmas.utils.PrefUtils;
 import com.costular.guaguaslaspalmas.utils.StopsTimeLoader;
 import com.costular.guaguaslaspalmas.utils.Utils;
@@ -215,31 +216,42 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
     };
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         int id = item.getItemId();
         switch(id) {
 
             case FAVORITE_MENU:
                 if(mStop.isFavorite(getApplicationContext())) {
+                    Utils.confirmDialog(this, "¿Estás seguro de eliminar la parada de favoritos?",
+                            new DialogListener() {
+                                @Override
+                                public void onAccept() {
+                                    if(mStop.removeFromFavorites(getApplicationContext())) {
+                                        mStop.removeFromFavorites(getApplicationContext());
+                                        item.setIcon(R.drawable.ic_action_star_outline);
 
-                if(mStop.removeFromFavorites(getApplicationContext())) {
-                    mStop.removeFromFavorites(getApplicationContext());
-                    item.setIcon(R.drawable.ic_action_star_outline);
 
+                                        //Ocultamos el FAB de editar parada
+                                        ViewUtils.hideViewByScale(getApplicationContext(), fab);
 
-                    //Ocultamos el FAB de editar parada
-                    ViewUtils.hideViewByScale(getApplicationContext(), fab);
+                                        //Escondemos el subtítulo del Toolbar
+                                        getSupportActionBar().setSubtitle(null);
+                                        getSupportActionBar().setTitle(mStop.getName());
 
-                    //Escondemos el subtítulo del Toolbar
-                    getSupportActionBar().setSubtitle(null);
-                    getSupportActionBar().setTitle(mStop.getName());
+                                        Toast.makeText(getApplicationContext(), "Eliminada de favoritos", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
 
-                    Toast.makeText(getApplicationContext(), "Eliminada de favoritos", Toast.LENGTH_SHORT).show();
+                                @Override
+                                public void onCancel() {
+
+                                }
+                            });
+
+                }else {
+                    // Mostramos el diálogo para obtener el nombre de la línea favorita
+                    RouteFavoriteDialog.newInstance(mStop).show(getSupportFragmentManager(), "");
                 }
-            }else {
-                // Mostramos el diálogo para obtener el nombre de la línea favorita
-                RouteFavoriteDialog.newInstance(mStop).show(getSupportFragmentManager(), "");
-            }
                 break;
         }
 
