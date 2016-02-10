@@ -41,8 +41,8 @@ import com.melnykov.fab.FloatingActionButton;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by Diego on 26/11/2014.
@@ -62,8 +62,8 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
      */
     GuaguasApp mApp;
 
-    @InjectView(R.id.fab) FloatingActionButton fab;
-    @InjectView(R.id.stops_hour_list) ListView mListView;
+    @Bind(R.id.fab) FloatingActionButton fab;
+    @Bind(R.id.stops_hour_list) ListView mListView;
     private StopsTimeListAdapter mAdapter;
 
     private Stop mStop;
@@ -72,13 +72,13 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
 
     private MenuItem star;
 
-    @InjectView(R.id.swipe_container) SwipeRefreshLayout swipeLayout;
+    @Bind(R.id.swipe_container) SwipeRefreshLayout swipeLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stops_detail);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         mApp = (GuaguasApp) getApplication();
         // Cargamos el toolbar

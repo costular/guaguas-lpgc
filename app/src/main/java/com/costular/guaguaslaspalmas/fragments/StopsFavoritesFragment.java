@@ -1,66 +1,46 @@
 package com.costular.guaguaslaspalmas.fragments;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.drawable.NinePatchDrawable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.SparseBooleanArray;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ListView;
-
 import com.costular.guaguaslaspalmas.R;
 import com.costular.guaguaslaspalmas.StopDetailActivity;
 import com.costular.guaguaslaspalmas.model.FavoriteStop;
 import com.costular.guaguaslaspalmas.model.Stop;
-import com.costular.guaguaslaspalmas.utils.Provider;
 import com.costular.guaguaslaspalmas.widget.AddToFavoriteDialog;
 import com.costular.guaguaslaspalmas.widget.CheckStopCodeDialog;
 import com.costular.guaguaslaspalmas.widget.adapters.DragSortRecycler;
 import com.costular.guaguaslaspalmas.widget.adapters.FavoriteStopsRecyclerAdapter;
 import com.costular.guaguaslaspalmas.widget.adapters.FavoriteStopsTaskLoader;
 import com.costular.guaguaslaspalmas.widget.views.AddStop;
-
-import com.melnykov.fab.FloatingActionButton;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
-
 import java.util.List;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by Diego on 30/11/2014.
  */
 public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<List<FavoriteStop>>{
 
-    //private ListView mListView;
-    //private FavoriteStopsListAdapter mAdapter;
-
-    private RecyclerView mRecycler;
     private FavoriteStopsRecyclerAdapter mRecyclerAdapter;
 
-
+    @Bind(R.id.fab) FloatingActionButton fab;
+    @Bind(R.id.recyclerView) RecyclerView recyclerView;
     private ActionBar bar;
 
     private boolean started = false;
@@ -68,8 +48,9 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-
-        return inflater.inflate(R.layout.fragment_stops_favorites, container, false);
+        View root = inflater.inflate(R.layout.fragment_stops_favorites, container, false);
+        ButterKnife.bind(this, root);
+        return root;
     }
 
     @Override
@@ -77,11 +58,6 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
         super.onStart();
 
         bar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-
-        mRecycler = (RecyclerView) getActivity().findViewById(R.id.recyclerView);
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-
-        fab.attachToRecyclerView(mRecycler);
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -102,7 +78,7 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
         mRecyclerAdapter.setListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = mRecycler.getChildPosition(v);
+                int position = recyclerView.getChildPosition(v);
 
                 FavoriteStop stop = mRecyclerAdapter.stops.get(position);
 
@@ -117,13 +93,14 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
         });
 
         HorizontalDividerItemDecoration separator = new HorizontalDividerItemDecoration.Builder(getActivity())
-                .color(R.color.light_gray)
-                .margin(72, 0).build();
+                .colorResId(R.color.dividerColor)
+                .marginResId(R.dimen.left_margin, R.dimen.zero)
+                .build();
 
-        mRecycler.setAdapter(mRecyclerAdapter);
-        mRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecycler.setItemAnimator(null);
-        mRecycler.addItemDecoration(separator);
+        recyclerView.setAdapter(mRecyclerAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setItemAnimator(null);
+        recyclerView.addItemDecoration(separator);
 
         DragSortRecycler dragSortRecycler = new DragSortRecycler();
         dragSortRecycler.setViewHandleId(R.id.drag);
@@ -135,7 +112,6 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
         dragSortRecycler.setOnItemMovedListener(new DragSortRecycler.OnItemMovedListener() {
             @Override
             public void onItemMoved(int from, int to) {
-
                 if(from == to) {
                     return;
                 }
@@ -143,7 +119,6 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
                 FavoriteStop item = mRecyclerAdapter.stops.remove(from);
                 mRecyclerAdapter.stops.add(to, item);
                 mRecyclerAdapter.notifyDataSetChanged();
-
                 item.changeOrder(getActivity(), from, to);
             }
         });
@@ -160,9 +135,9 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
             }
         });
 
-        mRecycler.addItemDecoration(dragSortRecycler);
-        mRecycler.addOnItemTouchListener(dragSortRecycler);
-        mRecycler.setOnScrollListener(dragSortRecycler.getScrollListener());
+        recyclerView.addItemDecoration(dragSortRecycler);
+        recyclerView.addOnItemTouchListener(dragSortRecycler);
+        recyclerView.setOnScrollListener(dragSortRecycler.getScrollListener());
 
         getActivity().getSupportLoaderManager().initLoader(0, null, this);
         started = true;
@@ -170,7 +145,7 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
 
     /*
     private void onItemViewClick(View v) {
-        int position = mRecycler.getChildPosition(v);
+        int position = recyclerView.getChildPosition(v);
 
         FavoriteStop stop = mRecyclerAdapter.stops.get(position);
 
@@ -195,8 +170,6 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        // Limpiamos el ActionBar
         menu.clear();
 
         inflater.inflate(R.menu.stops_favorites_default, menu);
@@ -205,13 +178,10 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if(item.getItemId() == R.id.check_stop_by_code) {
-
             new CheckStopCodeDialog().show(getActivity().getSupportFragmentManager(), "");
             return true;
         }
-
         return false;
     }
 
@@ -222,7 +192,6 @@ public class StopsFavoritesFragment extends Fragment implements LoaderCallbacks<
 
     @Override
     public void onLoadFinished(Loader<List<FavoriteStop>> cursorLoader, List<FavoriteStop> data) {
-        //mRecyclerAdapter.swapCursor(cursor);
         mRecyclerAdapter.swapData(data);
     }
 

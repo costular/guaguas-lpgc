@@ -15,8 +15,8 @@ import android.widget.ImageButton;
 import com.costular.guaguaslaspalmas.R;
 import com.costular.guaguaslaspalmas.widget.views.CirclePageIndicator;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**
@@ -25,14 +25,14 @@ import butterknife.OnClick;
 public class TutorialFragment extends Fragment {
 
     private static final String TAG = "TutorialFragment";
-    @InjectView(R.id.view_pager) ViewPager viewPager;
-    @InjectView(R.id.indicator) CirclePageIndicator indicator;
-    @InjectView(R.id.button_next) ImageButton nextFragmentButton;
+    @Bind(R.id.view_pager) ViewPager viewPager;
+    @Bind(R.id.indicator) CirclePageIndicator indicator;
+    @Bind(R.id.button_next) ImageButton nextFragmentButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tutorial_root, container, false);
-        ButterKnife.inject(this, v);
+        ButterKnife.bind(this, v);
 
         return v;
     }

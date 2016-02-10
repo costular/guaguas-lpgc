@@ -3,6 +3,7 @@
 
     <color name="primary_text_default_material_light" type="color">#de000000</color> <!-- Black 87% -->
     <color name="secondary_text_material_light" type="color">#8a000000</color> <!-- Black 54% -->
+    <color name="dividerColor">#B6B6B6</color>
 
     <color name="list_selected_color" type="color">#e8e8e8</color>
 
@@ -61,6 +62,7 @@
     <color name="blue_grey_500">#607d8b</color>
 
     <color name="edit_text_error_color">#e53935</color>
+    <color name="secondaryBackgroundColor">#eeeeee</color>
 
     <drawable name="drawable_gray_background">@color/light_gray</drawable>
     <drawable name="drawable_normal_state">@android:color/white</drawable>

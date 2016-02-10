@@ -50,5 +50,6 @@
     <string name="open_this_route">Ir a esta línea</string>
     <string name="highlight_arrive">Destacar</string>
     <string name="delete_stop_from_favorite">¿Está seguro de que desea eliminar la parada de favoritos?</string>
+    <string name="save">Guardar</string>
 
 </resources>

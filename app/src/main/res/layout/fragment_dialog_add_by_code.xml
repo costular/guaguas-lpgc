@@ -18,50 +18,42 @@
         android:textSize="16sp"
         android:paddingBottom="16dp"/>
 
-    <com.rengwuxian.materialedittext.MaterialEditText
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <EditText
         android:id="@+id/custom_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        app:primaryColor="@color/main_indigo"
-        app:errorColor="#ddaa00"
-        app:floatingLabel="highlight"
         android:hint="Nombre para la parada."/>
 
-    <com.rengwuxian.materialedittext.MaterialEditText
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/code_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <EditText
         android:id="@+id/code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:inputType="number"
-        app:primaryColor="@color/main_indigo"
-        app:errorColor="@color/edit_text_error_color"
-        app:floatingLabel="highlight"
         android:hint="Código de la parada"/>
+
+    </android.support.design.widget.TextInputLayout>
 
 
     <com.costular.guaguaslaspalmas.widget.views.ColorPickerPalette
         android:id="@+id/palette"
         android:paddingTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content"/>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right">
-
-        <Button
-            android:id="@+id/save_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:text="Guardar"/>
-
-        </RelativeLayout>
 
 </LinearLayout>
 

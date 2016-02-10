@@ -31,8 +31,8 @@ import com.costular.guaguaslaspalmas.utils.Provider;
 import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.adapters.StopsListAdapter;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -56,7 +56,7 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
     private Route mRoute;
 
 
-    @InjectView(R.id.stops_list) ListView mListView;
+    @Bind(R.id.stops_list) ListView mListView;
     private StopsListAdapter mAdapter;
 
     public static RoutesDetailStopsFragment newInstance(final Context context, final String number, int type) {
@@ -73,7 +73,7 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_route_detail_stops, container, false);
-        ButterKnife.inject(this, root);
+        ButterKnife.bind(this, root);
         return root;
     }
 

@@ -34,8 +34,8 @@ import com.costular.guaguaslaspalmas.utils.Provider;
 import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.widget.adapters.RoutesListAdapter;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by Diego on 22/11/2014.
@@ -54,7 +54,7 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
         return (RoutesListFragment) fragment;
     }
 
-    @InjectView(R.id.list) ListView mListView;
+    @Bind(R.id.list) ListView mListView;
     private RoutesListAdapter mAdapter;
     private boolean isFavorite;
 
@@ -62,7 +62,7 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_routes, null);
-        ButterKnife.inject(this, root);
+        ButterKnife.bind(this, root);
         return root;
     }
 

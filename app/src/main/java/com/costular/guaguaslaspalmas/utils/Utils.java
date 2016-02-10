@@ -12,7 +12,6 @@ import android.net.NetworkInfo;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.internal.view.ContextThemeWrapper;
 import android.util.TypedValue;
 import com.costular.guaguaslaspalmas.R;
 

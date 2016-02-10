@@ -37,18 +37,16 @@ public class CheckStopCodeDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        final AutoCompleteTextView input = new AutoCompleteTextView(getActivity());
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_check_stop_code, null);
+        final AutoCompleteTextView input = (AutoCompleteTextView) view.findViewById(R.id.auto_complete);
 
         ArrayList<String> history = new ArrayList<String>();
         history.addAll(DatabaseHelper.getInstance(getActivity()).checkStopsHistory());
 
         if(history.size() > 0) {
-
             BurtuAdapter adapter = new BurtuAdapter(getActivity(), android.R.layout.simple_dropdown_item_1line, history);
             input.setAdapter(adapter);
         }
-
-
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
         input.setHint(getResources().getString(R.string.dialog_hint_message_check_stop_by_code));
         input.requestFocus();
@@ -56,7 +54,7 @@ public class CheckStopCodeDialog extends DialogFragment {
 
         builder.setTitle(getResources().getString(R.string.dialog_title_check_stop_by_code))
                 .setMessage(getResources().getString(R.string.dialog_message_check_stop_by_code))
-                .setView(input)
+                .setView(view)
                 .setPositiveButton(getResources().getString(R.string.dialog_positive_check_stop_by_code), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

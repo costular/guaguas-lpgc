@@ -45,8 +45,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 
 public class MainActivity extends BaseActivity{
@@ -65,14 +65,14 @@ public class MainActivity extends BaseActivity{
     MapStopsFragment mapStopsFragment;
 
     // Navigation
-    @InjectView(R.id.drawer_layout) DrawerLayout mDrawer;
-    @InjectView(R.id.navigation_view) NavigationView mNavigationView;
+    @Bind(R.id.drawer_layout) DrawerLayout mDrawer;
+    @Bind(R.id.navigation_view) NavigationView mNavigationView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         // Iniciamos la toolbar activando HomeAsUpIndicator para el hamburger menu
         setUpToolbar(true);
 

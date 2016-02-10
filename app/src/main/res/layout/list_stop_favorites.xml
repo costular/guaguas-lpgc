@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:layout_width="match_parent"
-    android:background="?android:attr/selectableItemBackground"
     android:foreground="?android:attr/selectableItemBackground"
+    android:focusable="true"
     android:layout_height="72dp">
 
     <ImageView
@@ -14,8 +14,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:paddingRight="-10dp"
-        android:src="@drawable/ic_image_drag"/>
+        android:layout_marginRight="16dp"
+        android:src="@drawable/ic_reorder"/>
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -51,8 +51,7 @@
             android:paddingRight="16dp"
             android:maxLines="2"
             android:text="Título personalizado"
-            style="@style/TextAppearance.Body1"
-            />
+            style="@style/TextAppearance.Body1"/>
 
 
         <TextView
