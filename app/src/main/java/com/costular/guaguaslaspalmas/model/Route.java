@@ -21,15 +21,12 @@ public class Route {
     private String color;
 
     public static Route createFromCursor(Cursor cursor) {
-
         if(!cursor.moveToFirst()) {
             return null;
         }
-
         Route route = new Route(cursor.getInt(cursor.getColumnIndex(Provider.Routes.ID_COL)), cursor.getString(cursor.getColumnIndex(Provider.Routes.NAME_COL)),
                 cursor.getString(cursor.getColumnIndex(Provider.Routes.NUMBER_COL)), cursor.getString(cursor.getColumnIndex(Provider.Routes.COLOR_COL)));
 
-        // Cerramos el cursor
         cursor.close();
 
         return route;
@@ -42,7 +39,6 @@ public class Route {
         SQLiteDatabase db = helper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM " + Provider.TABLE_ROUTES + " WHERE "+Provider.Routes.NUMBER_COL+" = '"+number+"'", null);
-
         return createFromCursor(cursor);
     }
 

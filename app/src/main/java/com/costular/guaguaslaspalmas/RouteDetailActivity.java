@@ -93,6 +93,10 @@ public class RouteDetailActivity extends BaseActivity {
         number = getIntent().getStringExtra("number");
         mRoute = Route.createRouteFromNumber(getApplicationContext(), number);
 
+        if(mRoute != null) {
+            Log.d("TAG", "mRoute name: " + mRoute.getName());
+        }
+
         //Cargamos el número en el círculo
         CircleView circleView = new CircleView(this, String.valueOf(mRoute.getNumber()), mRoute.getColor());
 

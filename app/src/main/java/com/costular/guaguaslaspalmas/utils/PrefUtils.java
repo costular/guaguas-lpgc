@@ -54,4 +54,8 @@ public class PrefUtils {
     public static void setTheme(final Context context, String theme) {
         getSharedPreferences(context).edit().putString("theme", theme).commit();
     }
+
+    public static int getScheduleTextsize(final Context context) {
+        return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("schedules_textsize", "16"));
+    }
 }

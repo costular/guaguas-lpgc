@@ -130,4 +130,8 @@
         <item name="windowActionBar">false</item>
     </style>
 
+    <style name="Subheader" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
 </resources>

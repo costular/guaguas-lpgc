@@ -4,12 +4,12 @@
     <PreferenceCategory android:title="General"
         android:key="general">
 
-    <ListPreference
+    <!--<ListPreference
         android:title="@string/preferences_general_language_title"
         android:summary="%s"
         android:key="general_language"
         android:entryValues="@array/general_language_values"
-        android:entries="@array/general_language"/>
+        android:entries="@array/general_language"/>-->
 
         <ListPreference
             android:title="@string/theme"
@@ -17,6 +17,17 @@
             android:key="general_theme"
             android:entryValues="@array/theme_array_values"
             android:entries="@array/theme_array"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/preferences_personalization_title">
+
+        <ListPreference
+            android:title="@string/preferences_personalization_schedule_text_size"
+            android:summary="@string/preferences_personalization_schedule_text_size_summary"
+            android:key="schedules_textsize"
+            android:entryValues="@array/schedules_textsizes"
+            android:entries="@array/schedules_textsizes"/>
 
     </PreferenceCategory>
 

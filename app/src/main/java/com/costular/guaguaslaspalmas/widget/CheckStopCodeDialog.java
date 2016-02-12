@@ -51,14 +51,12 @@ public class CheckStopCodeDialog extends DialogFragment {
         input.setHint(getResources().getString(R.string.dialog_hint_message_check_stop_by_code));
         input.requestFocus();
 
-
         builder.setTitle(getResources().getString(R.string.dialog_title_check_stop_by_code))
                 .setMessage(getResources().getString(R.string.dialog_message_check_stop_by_code))
                 .setView(view)
                 .setPositiveButton(getResources().getString(R.string.dialog_positive_check_stop_by_code), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         if (input.getText().toString().isEmpty()) {
                             return;
                         }
@@ -68,7 +66,6 @@ public class CheckStopCodeDialog extends DialogFragment {
                         if (id == -1) {
                             Snackbar.make(getActivity().findViewById(android.R.id.content), "No hay ninguna parada con ese código", Snackbar.LENGTH_LONG)
                                     .show();
-
                             dismiss();
                             return;
                         }

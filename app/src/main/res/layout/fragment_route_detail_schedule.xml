@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="De Lunes a Viernes"
-        style="@style/TextAppearance.Body1"/>
+        style="@style/Subheader"/>
 
     <TextView
         android:id="@+id/week_content"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="Horarios de entre semana"
-        android:inputType="textMultiLine"
+        android:textSize="18sp"
         style="@style/TextAppearance.Body2"/>
 
 
@@ -32,7 +32,7 @@
         android:text="Sábados"
         android:visibility="gone"
         android:paddingTop="16dp"
-        style="@style/TextAppearance.Body1"/>
+        style="@style/Subheader"/>
 
     <TextView
         android:id="@+id/saturday_content"
@@ -40,6 +40,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:paddingTop="8dp"
+        android:textSize="18sp"
         style="@style/TextAppearance.Body2"/>
 
 
@@ -49,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sábados, Domingos y festivos"
-        style="@style/TextAppearance.Body1"
+        style="@style/Subheader"
         android:paddingTop="16dp"/>
 
     <TextView
@@ -58,7 +59,7 @@
         android:layout_height="wrap_content"
         android:text="Horarios de finde"
         android:paddingTop="8dp"
-        android:inputType="textMultiLine"
+        android:textSize="18sp"
         style="@style/TextAppearance.Body2"/>
 
 

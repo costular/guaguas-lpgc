@@ -51,5 +51,8 @@
     <string name="highlight_arrive">Destacar</string>
     <string name="delete_stop_from_favorite">¿Está seguro de que desea eliminar la parada de favoritos?</string>
     <string name="save">Guardar</string>
+    <string name="preferences_personalization_title">Personalización</string>
+    <string name="preferences_personalization_schedule_text_size">Tamaño de letra de horarios</string>
+    <string name="preferences_personalization_schedule_text_size_summary">Selecciona el tamaño de la letra de los horarios de las líneas para una visualización adaptada a ti.</string>
 
 </resources>

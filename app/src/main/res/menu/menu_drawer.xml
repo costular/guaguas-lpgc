@@ -30,6 +30,7 @@
     </group>
 
     <group
+        android:id="@+id/second_drawer"
         android:checkableBehavior="single">
 
         <item

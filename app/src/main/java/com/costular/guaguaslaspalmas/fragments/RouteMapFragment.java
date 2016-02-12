@@ -156,7 +156,6 @@ public class RouteMapFragment extends Fragment {
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(last.getLatitude(),
                 last.getLongitude()), 12.0f));
 
-
     }
 
     @Override

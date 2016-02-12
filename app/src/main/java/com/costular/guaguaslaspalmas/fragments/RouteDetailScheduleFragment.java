@@ -22,6 +22,7 @@ import com.costular.guaguaslaspalmas.RouteDetailActivity;
 import com.costular.guaguaslaspalmas.events.RouteDirection;
 import com.costular.guaguaslaspalmas.model.Route;
 import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
+import com.costular.guaguaslaspalmas.utils.PrefUtils;
 
 import de.greenrobot.event.EventBus;
 
@@ -65,14 +66,17 @@ public class RouteDetailScheduleFragment extends Fragment{
     @Override
     public void onStart() {
         super.onStart();
-
         week = (TextView) getActivity().findViewById(R.id.week_content);
         weekend = (TextView) getActivity().findViewById(R.id.weekend);
         weekendContent = (TextView) getActivity().findViewById(R.id.weekend_content);
         saturday = (TextView) getActivity().findViewById(R.id.saturday);
         saturdayContent = (TextView) getActivity().findViewById(R.id.saturday_content);
-
         number = getArguments().getString("number");
+
+        int textSize = PrefUtils.getScheduleTextsize(getContext());
+        week.setTextSize(textSize);
+        weekendContent.setTextSize(textSize);
+        saturdayContent.setTextSize(textSize);
 
         // Comprobamos si los sábados tiene un horario diferente.
         checkSaturday();
