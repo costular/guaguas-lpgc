@@ -54,5 +54,6 @@
     <string name="preferences_personalization_title">Personalización</string>
     <string name="preferences_personalization_schedule_text_size">Tamaño de letra de horarios</string>
     <string name="preferences_personalization_schedule_text_size_summary">Selecciona el tamaño de la letra de los horarios de las líneas para una visualización adaptada a ti.</string>
+    <string name="schedules">Horarios</string>
 
 </resources>

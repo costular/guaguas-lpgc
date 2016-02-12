@@ -114,20 +114,15 @@ public class RouteDetailActivity extends BaseActivity {
             String[] destinies = mRoute.getName().split("-");
             mGoing = destinies[0];
             mReturn = destinies[1];
-
-            // Si tiene ida y vuelta ponemos el destino.
             getSupportActionBar().setSubtitle(getResources().getString(R.string.destination) + " " + mGoing);
-
-            // El botón flotante para cambiar la dirección de la línea
 
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     if(showingAnimation) {
+                        Log.d("TRACK", "Retornamos porque se está haciendo la animación");
                         return;
                     }
-
                     fab.animate()
                             .rotationBy(360f)
                             .setDuration(250)
@@ -141,20 +136,12 @@ public class RouteDetailActivity extends BaseActivity {
                                 }
                             })
                             .start();
-
                     showingAnimation = true;
-
-                    // Cambiamos la dirección
-                    changeDirection();
-                    // Enviamos el bus
                     EventBus.getDefault().post(new RouteDirection(type));
-
+                    changeDirection();
                 }
             });
-
         } else {
-
-            // El botón de cambiar sentido no tiene SENTIDO jajaxd
             fab.setVisibility(View.GONE);
         }
 
@@ -165,33 +152,18 @@ public class RouteDetailActivity extends BaseActivity {
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
                 .getDisplayMetrics());
         viewPager.setPageMargin(pageMargin);
-
     }
 
     private void changeDirection() {
         if(type == IDA) {
             type = VUELTA;
-
-            //Actualizamos el título
             getSupportActionBar().setSubtitle(getResources().getString(R.string.destination) + " " + mReturn);
-
+            Log.d("TRACK", "Pasamos a VUELTA");
         } else {
             type = IDA;
-
-            //Actualizamos el título
             getSupportActionBar().setSubtitle(getResources().getString(R.string.destination) + " " + mGoing);
+            Log.d("TRACK", "Pasamos a IDA");
         }
-
-        /*
-        // Actualizamos
-        if(stopsFragment != null)
-        stopsFragment.changeDirection();
-
-        if(schedulesFragment != null) {
-            schedulesFragment.changeDirection(type == IDA ? VUELTA : IDA);
-        }
-        */
-
     }
 
     private void loadToolbar() {
@@ -204,13 +176,11 @@ public class RouteDetailActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         if(mRoute != null) {
-
             if(mRoute.isFavorite(getApplicationContext())) {
                 MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, FAVORITE_MENU, Menu.NONE, "Favorita").setIcon(R.drawable.ic_action_star), MenuItem.SHOW_AS_ACTION_IF_ROOM);
             }else {
                 MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, FAVORITE_MENU, Menu.NONE, "Favorita").setIcon(R.drawable.ic_action_star_outline), MenuItem.SHOW_AS_ACTION_IF_ROOM);
             }
-
         }else {
             MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, FAVORITE_MENU, Menu.NONE, "Favorita").setIcon(R.drawable.ic_action_star_outline), MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
@@ -220,7 +190,6 @@ public class RouteDetailActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if(item.getItemId() == FAVORITE_MENU) {
             if(mRoute != null) {
 
@@ -266,7 +235,7 @@ public class RouteDetailActivity extends BaseActivity {
         public Fragment getItem(int position) {
 
             switch (position) {
-                case STOPS_TAB: // Fragment # 0 - This will show FirstFragment
+                case STOPS_TAB:
                     if(stopsFragment == null) stopsFragment = RoutesDetailStopsFragment.newInstance(mContext, mRoute.getNumber(), type);
 
                     return stopsFragment;
@@ -288,13 +257,13 @@ public class RouteDetailActivity extends BaseActivity {
         public CharSequence getPageTitle(int position) {
            switch(position) {
                case STOPS_TAB:
-                   return "Paradas";
+                   return getString(R.string.stops);
 
                case SCHEDULE_TAB:
-                   return "Horarios";
+                   return getString(R.string.schedules);
 
                case MAP_TAB:
-                   return "Mapa";
+                   return getString(R.string.map);
 
                default: return "";
            }

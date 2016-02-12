@@ -60,7 +60,6 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
     private StopsListAdapter mAdapter;
 
     public static RoutesDetailStopsFragment newInstance(final Context context, final String number, int type) {
-
         Bundle bundle = new Bundle();
         bundle.putString("number", number);
         bundle.putInt("type", type);
@@ -82,7 +81,7 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
         super.onStart();
 
         number = getArguments().getString("number");
-        type = getArguments().getInt("type");
+        type = getArguments().getInt("type", RouteDetailActivity.IDA);
 
         Log.d(getClass().getSimpleName(), "number: " + number);
         mRoute = Route.createRouteFromNumber(getActivity(), number);
@@ -96,7 +95,6 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
 
         getLoaderManager().initLoader(0, null, this);
 
-        //Subscribe
         EventBus.getDefault().register(this);
     }
 
@@ -122,11 +120,11 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
     public void onEvent(RouteDirection direction) {
         if(direction.getDirection() == RouteDirection.IDA) {
             type = RouteDetailActivity.VUELTA;
+            Log.d("TRACK", "En el fragment pasó a Vuelta");
         } else {
             type = RouteDetailActivity.IDA;
+            Log.d("TRACK", "En el fragment pasó a Ida");
         }
-
-        // Actualizamos
         getLoaderManager().restartLoader(0, null, this);
     }
 
@@ -147,9 +145,7 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
             }
         } else {
             if(cursor.moveToFirst()) {
-                // Pasamos al siguiente
                 cursor.moveToNext();
-
                 mVarianteId = cursor.getInt(0);
             }
 
