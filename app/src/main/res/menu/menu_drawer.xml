@@ -20,13 +20,6 @@
             android:icon="@drawable/ic_nature_people"
             android:title="@string/stops"/>
 
-        <item
-            android:id="@+id/drawer_map"
-            android:icon="@drawable/ic_map"
-            android:title="@string/map"/>
-
-
-
     </group>
 
     <group

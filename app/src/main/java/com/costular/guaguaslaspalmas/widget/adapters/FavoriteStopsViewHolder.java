@@ -28,14 +28,10 @@ public class FavoriteStopsViewHolder extends RecyclerView.ViewHolder{
 
     public FavoriteStopsViewHolder(View itemView) {
         super(itemView);
-
         container = (ViewGroup) itemView.findViewById(R.id.container);
-        dragHandler = (ImageView) itemView.findViewById(R.id.drag);
-
         view = (CircleView) itemView.findViewById(R.id.stop_key);
         customNameView = (TextView) itemView.findViewById(R.id.name_custom);
         defaultNameView = (TextView) itemView.findViewById(R.id.name_default);
-
     }
 
 

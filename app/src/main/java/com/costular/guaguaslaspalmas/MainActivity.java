@@ -1,49 +1,17 @@
 package com.costular.guaguaslaspalmas;
 
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
 import com.costular.guaguaslaspalmas.fragments.MapStopsFragment;
-import com.costular.guaguaslaspalmas.fragments.RoutesFragment;
 import com.costular.guaguaslaspalmas.fragments.RoutesListFragment;
 import com.costular.guaguaslaspalmas.fragments.StopsFavoritesFragment;
-import com.costular.guaguaslaspalmas.model.FavoriteStop;
-import com.costular.guaguaslaspalmas.tutorial.TutorialActivity;
-import com.costular.guaguaslaspalmas.utils.PrefUtils;
-import com.costular.guaguaslaspalmas.utils.Utils;
-import com.costular.guaguaslaspalmas.widget.DrawerListItem;
-import com.costular.guaguaslaspalmas.widget.adapters.DrawerListAdapter;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,7 +22,6 @@ public class MainActivity extends BaseActivity{
     private static final int ROUTES = R.id.drawer_routes;
     private static final int FAVORITES = R.id.drawer_favorites;
     private static final int STOPS = R.id.drawer_stops;
-    private static final int MAP = R.id.drawer_map;
 
     private static final int CONTACT = R.id.drawer_contact;
     private static final int SETTINGS = R.id.drawer_settings;
@@ -125,10 +92,6 @@ public class MainActivity extends BaseActivity{
                     case STOPS:
                         menuItem.setChecked(true);
                         loadFragment(stopsFavoritesFragment);
-                        break;
-                    case MAP:
-                        menuItem.setChecked(true);
-                        loadFragment(mapStopsFragment);
                         break;
                     case SETTINGS:
                         Intent i = new Intent(MainActivity.this, SettingsActivity.class);

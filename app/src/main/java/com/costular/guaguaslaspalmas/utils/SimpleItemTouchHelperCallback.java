@@ -10,7 +10,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.SimpleCallbac
 
     private ItemTouchHelperAdapter adapter;
     private static final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-    private static final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+    private static final int swipeFlags = ItemTouchHelper.END;
 
     public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
         super(dragFlags, swipeFlags);
@@ -40,6 +40,6 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.SimpleCallbac
 
     @Override
     public boolean isItemViewSwipeEnabled() {
-        return false;
+        return true;
     }
 }

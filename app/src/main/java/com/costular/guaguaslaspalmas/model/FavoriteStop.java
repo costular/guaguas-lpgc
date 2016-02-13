@@ -76,35 +76,20 @@ public class FavoriteStop{
 
     }
 
-    public void changeOrder(Context context, int from, int to) {
-
-        // Al ser una lista empieza en 0, en cambio, en nuestra db empieza en 1.
-        from++;
-        to++;
-
+    public void updateOrder(Context context, int position) {
         DatabaseHelper helper = DatabaseHelper.getInstance(context);
         SQLiteDatabase db = helper.getWritableDatabase();
 
-        Cursor c = db.rawQuery("SELECT _id FROM " + Provider.TABLE_FAVORITES_STOPS + " WHERE orden = '"+to+"'", null);
-        boolean success = c.moveToFirst();
-
-        if(c.getCount() <= 0 && !success) {
-            return;
-        }
-
-        int idToChange = c.getInt(0);
-
         ContentValues values = new ContentValues();
-        values.put("orden", from);
+        values.put("orden", position);
+        db.update(Provider.TABLE_FAVORITES_STOPS, values, "_id = '"+getId()+"'", null);
+    }
 
-        ContentValues val = new ContentValues();
-        val.put("orden", to);
+    public void deleteFromDatabase(Context context) {
+        DatabaseHelper helper = DatabaseHelper.getInstance(context);
+        SQLiteDatabase db = helper.getWritableDatabase();
 
-        db.update(Provider.TABLE_FAVORITES_STOPS, values, "_id = '"+idToChange+"'", null);
-        db.update(Provider.TABLE_FAVORITES_STOPS, val, "_id = '"+getId()+"'", null);
-
-        // Cerramos
-        c.close();
+        db.delete(Provider.TABLE_FAVORITES_STOPS, "_id = " + String.valueOf(getId()), null);
     }
 
     private void setFirstChar(String from) {
