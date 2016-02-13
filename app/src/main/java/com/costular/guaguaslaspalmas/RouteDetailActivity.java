@@ -120,7 +120,6 @@ public class RouteDetailActivity extends BaseActivity {
                 @Override
                 public void onClick(View view) {
                     if(showingAnimation) {
-                        Log.d("TRACK", "Retornamos porque se está haciendo la animación");
                         return;
                     }
                     fab.animate()
@@ -158,11 +157,9 @@ public class RouteDetailActivity extends BaseActivity {
         if(type == IDA) {
             type = VUELTA;
             getSupportActionBar().setSubtitle(getResources().getString(R.string.destination) + " " + mReturn);
-            Log.d("TRACK", "Pasamos a VUELTA");
         } else {
             type = IDA;
             getSupportActionBar().setSubtitle(getResources().getString(R.string.destination) + " " + mGoing);
-            Log.d("TRACK", "Pasamos a IDA");
         }
     }
 

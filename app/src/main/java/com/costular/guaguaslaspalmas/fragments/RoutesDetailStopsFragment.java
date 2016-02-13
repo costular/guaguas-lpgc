@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.costular.guaguaslaspalmas.R;
 import com.costular.guaguaslaspalmas.RouteDetailActivity;
@@ -29,7 +30,10 @@ import com.costular.guaguaslaspalmas.model.StopTime;
 import com.costular.guaguaslaspalmas.utils.DatabaseHelper;
 import com.costular.guaguaslaspalmas.utils.Provider;
 import com.costular.guaguaslaspalmas.utils.Utils;
+import com.costular.guaguaslaspalmas.utils.ViewUtils;
 import com.costular.guaguaslaspalmas.widget.adapters.StopsListAdapter;
+
+import org.w3c.dom.Text;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -120,10 +124,8 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
     public void onEvent(RouteDirection direction) {
         if(direction.getDirection() == RouteDirection.IDA) {
             type = RouteDetailActivity.VUELTA;
-            Log.d("TRACK", "En el fragment pasó a Vuelta");
         } else {
             type = RouteDetailActivity.IDA;
-            Log.d("TRACK", "En el fragment pasó a Ida");
         }
         getLoaderManager().restartLoader(0, null, this);
     }
@@ -159,11 +161,7 @@ public class RoutesDetailStopsFragment extends Fragment implements LoaderCallbac
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         mAdapter.swapCursor(cursor);
-
-        //Quitamos la línea superior del primer item y la inferior del último para la lista de paradas.
-        //mListView.getChildAt(0).findViewById(R.id.top_line).setVisibility(View.GONE);
-        //mListView.getChildAt(mListView.getCount() - 1).findViewById(R.id.bottom_line).setVisibility(View.GONE);
-    }
+}
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {

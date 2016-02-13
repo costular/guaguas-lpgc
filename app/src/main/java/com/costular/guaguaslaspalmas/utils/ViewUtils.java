@@ -13,6 +13,7 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewParent;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AnimationUtils;
+import android.widget.ListView;
 
 import com.costular.guaguaslaspalmas.R;
 
@@ -123,5 +124,17 @@ public class ViewUtils {
             propertyAnimator.start();
         }
 
+    }
+
+    public static View getViewOfListViewByPosition(int pos, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
     }
 }

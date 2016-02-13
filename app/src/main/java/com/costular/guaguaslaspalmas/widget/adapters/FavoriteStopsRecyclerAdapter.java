@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.costular.guaguaslaspalmas.R;
 import com.costular.guaguaslaspalmas.model.FavoriteStop;
 import com.costular.guaguaslaspalmas.model.Stop;
+import com.costular.guaguaslaspalmas.utils.ItemTouchHelperAdapter;
 import com.costular.guaguaslaspalmas.utils.Provider;
 import com.costular.guaguaslaspalmas.utils.Utils;
 import com.costular.guaguaslaspalmas.utils.ViewUtils;
@@ -19,29 +20,23 @@ import com.costular.guaguaslaspalmas.utils.ViewUtils;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by diego on 24/02/15.
  */
-public class FavoriteStopsRecyclerAdapter extends RecyclerView.Adapter<FavoriteStopsViewHolder>{
+public class FavoriteStopsRecyclerAdapter extends RecyclerView.Adapter<FavoriteStopsViewHolder> implements ItemTouchHelperAdapter{
 
 
     private Context context;
-
     public FavoriteStopsViewHolder holder;
-
     public List<FavoriteStop> stops;
-
     private View.OnClickListener listener;
 
-
     public FavoriteStopsRecyclerAdapter(Context context) {
-
         this.context = context;
-
         stops = new ArrayList<FavoriteStop>();
-
         setHasStableIds(true);
     }
 
@@ -109,5 +104,24 @@ public class FavoriteStopsRecyclerAdapter extends RecyclerView.Adapter<FavoriteS
 
     public void setListener(View.OnClickListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(stops, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(stops, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        // Lo eliminamos
     }
 }
