@@ -113,7 +113,6 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
         mListView.setAdapter(mAdapter);
 
         mListView.setEmptyView(((RelativeLayout) findViewById(R.id.empty_view)));
-        mListView.setOnItemClickListener(stopListClickListener);
 
         checkInternet();
 
@@ -123,14 +122,12 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
     }
 
     private void refresh() {
-
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     refreshLoader();
                 }
             }, 1000);
-
     }
 
     private void refreshLoader() {
@@ -149,9 +146,7 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         star = menu.add(Menu.NONE, FAVORITE_MENU, Menu.NONE, "Favorita");
-
         if(mStop.isFavorite(getApplicationContext())) {
             MenuItemCompat.setShowAsAction(star.setIcon(R.drawable.ic_action_star), MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
@@ -160,8 +155,6 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
             fab.setVisibility(View.GONE);
 
         }
-
-
         return true;
     }
 
@@ -176,7 +169,6 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
     }
 
     private boolean checkInternet() {
-
         boolean internet = Utils.haveInternet(getApplicationContext());
 
         if(!internet) {
@@ -194,26 +186,6 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
 
         return internet;
     }
-
-    private AdapterView.OnItemClickListener stopListClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            currentSelectedStop = (StopTime) mAdapter.getItem(position);
-
-            new BottomSheet.Builder(StopDetailActivity.this)
-                    .sheet(R.menu.menu_stop_detail)
-                    .listener(new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which) {
-                                case R.id.tell_me_when:
-                                    new GuaguaAlertDialog().show(getSupportFragmentManager(), "");
-                                    break;
-                            }
-                        }
-                    }).show();
-        }
-    };
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
