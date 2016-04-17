@@ -4,15 +4,8 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
-import com.costular.guaguaslaspalmas.model.FavoriteStop;
 import com.costular.guaguaslaspalmas.model.StopTime;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -29,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
-
 /**
  * Created by Diego on 27/11/2014.
  */
@@ -46,32 +37,68 @@ public class StopsTimeLoader extends AsyncTaskLoader<List<StopTime>> {
 
     @Override
     public List<StopTime> loadInBackground() {
-        final List<StopTime> stopTimes = new ArrayList<>();
 
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://51.254.124.106/stop/"+mStop, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                // If the response is JSONObject instead of expected JSONArray
-            }
+        //Inicializamos
+        mData = new ArrayList<StopTime>();
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray jsonArray) {
-                // Pull out the first event on the public timeline
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    try {
-                        JSONObject jsonobject = jsonArray.getJSONObject(i);
-                        stopTimes.add(new StopTime(jsonobject.getString("destiny"),
-                                jsonobject.getString("route"), jsonobject.getString("minutes"),
-                                "#3F51B5"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL("http://paradas.guaguas.com/" + mStop).openConnection();
+            connection.connect();
+
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+
+                String html = readStringFromInputStream(connection.getInputStream());
+
+                Document doc = Jsoup.parse(html);
+                Elements tds = doc.select("td");
+
+                Element[] stops = new Element[tds.size()];
+                tds.toArray(stops);
+
+                int x = 3;  // chunk size
+                int len = stops.length;
+
+                for (int i = 0; i < len - x + 1; i += x) {
+                    Element[] temp = Arrays.copyOfRange(stops, i, i + x);
+
+                    String number = temp[0].text();
+                    String name = temp[1].text();
+                    String minutes = temp[2].text();
+
+                    if(minutes.contains(">>")) {
+                        minutes = minutes.replace(">>", "En parada");
                     }
-                }
-            }
-        });
 
-        return stopTimes;
+                    String color = Utils.getColorFromNumber(getContext(), number);
+
+                    mData.add(new StopTime(name, number, minutes, color));
+                }
+
+
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return mData;
+    }
+
+    private String readStringFromInputStream(InputStream stream) throws IOException{
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+
+        StringBuilder result = new StringBuilder();
+
+        String line;
+        while((line = reader.readLine()) != null) {
+            result.append(line).append("\n");
+        }
+        reader.close();
+
+        return result.toString();
     }
 
     @Override
