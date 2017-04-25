@@ -10,19 +10,19 @@ android {
     signingConfigs {
         /*debug {
             keyAlias 'costular'
-            keyPassword 'tekiero1'
-            storeFile file('/home/diego/Android/Sdk/release.jks')
-            storePassword 'tekiero1'
+            keyPassword 'tekiero""'
+            storeFile file('/Users/costular/AndroidProjects/release.jks')
+            storePassword 'tekiero""'
         }*/
     }
 
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
 
     defaultConfig {
         applicationId "com.costular.guaguaslaspalmas"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode VERSION_CODE
         versionName VERSION_NAME
     }
@@ -36,13 +36,13 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.2.1'
-    compile 'com.android.support:support-v4:23.2.1'
-    compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:support-v4:25.2.0'
+    compile 'com.android.support:design:25.2.0'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'com.rengwuxian.materialedittext:library:1.8.3'
-    compile 'com.android.support:recyclerview-v7:23.2.1'
-    compile 'com.google.android.gms:play-services:8.4.0'
+    compile 'com.android.support:recyclerview-v7:25.2.0'
+    compile 'com.google.android.gms:play-services:9.6.0'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.yqritc:recyclerview-flexibledivider:1.2.8'

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -106,13 +107,12 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
         });
 
         swipeLayout.setOnRefreshListener(this);
-        swipeLayout.setColorSchemeColors(R.color.main_indigo, R.color.main_red);
+        swipeLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.main_indigo),
+                ContextCompat.getColor(this, R.color.main_red));
 
         mAdapter = new StopsTimeListAdapter(getApplicationContext());
-
         mListView.setAdapter(mAdapter);
 
-        mListView.setEmptyView(((RelativeLayout) findViewById(R.id.empty_view)));
         mListView.setOnItemClickListener(stopListClickListener);
 
         checkInternet();
@@ -123,14 +123,12 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
     }
 
     private void refresh() {
-
-            new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     refreshLoader();
                 }
             }, 1000);
-
     }
 
     private void refreshLoader() {
@@ -296,6 +294,8 @@ public class StopDetailActivity extends BaseActivity implements LoaderManager.Lo
 
     @Override
     public void onTimeSelected(int minutes) {
-        mApp.addAlert(new StopAlert(mStop.getId(), mStop.getLongitude(), mStop.getLatitude(), mStop.getOrder(), mStop.getName(), mStop.getCode(), mStop.getRoute(), minutes));
+        mApp.addAlert(new StopAlert(mStop.getId(), mStop.getLongitude(), mStop.getLatitude(),
+                mStop.getOrder(), mStop.getName(), mStop.getCode(), mStop.getRoute(), minutes,
+                currentSelectedStop.getNumber()));
     }
 }

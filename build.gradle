@@ -5,9 +5,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0'
+        classpath 'com.android.tools.build:gradle:2.3.0'
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.1.1'
-        classpath 'com.tmiyamon:gradle-mdicons:0.2.7'
     }
 }
 

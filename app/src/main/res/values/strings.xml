@@ -57,4 +57,7 @@
     <string name="schedules">Horarios</string>
     <string name="stop_deleted">Parada eliminada de favoritos</string>
 
+    <string name="stop_alert_notification_title">Aviso de guagua</string>
+    <string name="stop_alert_notification">La línea %1$s pasará en %2$d minutos por %3$s</string>
+
 </resources>

@@ -26,7 +26,6 @@ public class Stop {
     private int route;
 
     public static Stop createStopFromId(final Context context, final int id) {
-
         DatabaseHelper helper = DatabaseHelper.getInstance(context);
         SQLiteDatabase db = helper.getReadableDatabase();
 

@@ -27,9 +27,12 @@ public class GuaguaAlertDialog extends DialogFragment {
     private GuaguaAlertInterface listener;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        listener = (GuaguaAlertInterface) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof Activity) {
+            listener = (GuaguaAlertInterface) context;
+        }
     }
 
     @Override

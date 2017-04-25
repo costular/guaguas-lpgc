@@ -25,7 +25,6 @@ public class StopsTimeListAdapter extends BaseAdapter {
 
     public StopsTimeListAdapter(final Context context) {
         mData = new ArrayList<StopTime>();
-
         mInflater = LayoutInflater.from(context);
     }
 
@@ -51,7 +50,6 @@ public class StopsTimeListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         if(convertView == null) {
             convertView = mInflater.inflate(R.layout.stop_detail_item, null);
         }

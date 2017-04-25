@@ -34,7 +34,6 @@ public class RoutesListAdapter extends SimpleCursorAdapter {
 
     @Override
     public void bindView(View v, Context context, Cursor cursor) {
-
         String number = String.valueOf(cursor.getString(cursor.getColumnIndex(Provider.Routes.NUMBER_COL)));
         String name = cursor.getString(cursor.getColumnIndex(Provider.Routes.NAME_COL));
 

@@ -143,7 +143,7 @@ public class RouteMapFragment extends Fragment {
         }
 
         // Activamos la posición
-        map.setMyLocationEnabled(true);
+        //map.setMyLocationEnabled(true);
 
         Stop last = null;
 

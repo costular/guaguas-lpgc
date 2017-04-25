@@ -24,6 +24,10 @@ public class GuaguasApp extends Application {
         return mStopAlertList.size() > 0;
     }
 
+    public void removeCheckAlert(StopAlert stopAlert) {
+        mStopAlertList.remove(stopAlert);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

@@ -16,6 +16,7 @@ public class PrefUtils {
      *  [Boolean] Contiene si es la primera vez que abre la app para dejarle abierto el navigation Drawer y darle un par de instrucciones.
      */
     public static final String FIRST_TIME = "first_time";
+    public static final String NOTIFICATION_PRIORITY = "notification_priority";
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -57,5 +58,9 @@ public class PrefUtils {
 
     public static int getScheduleTextsize(final Context context) {
         return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString("schedules_textsize", "16"));
+    }
+
+    public static String getNotificationPriority(final Context context) {
+        return getSharedPreferences(context).getString(NOTIFICATION_PRIORITY, "max");
     }
 }

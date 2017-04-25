@@ -42,8 +42,8 @@ import butterknife.ButterKnife;
  */
 public class RoutesListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static int NORMAL_ROUTES = 0;
-    private static int FAVORITE_ROUTES = 1;
+    private static final int NORMAL_ROUTES = 0;
+    private static final int FAVORITE_ROUTES = 1;
 
     public static RoutesListFragment newInstance(final Context context, boolean favorites) {
 
@@ -70,11 +70,7 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setRetainInstance(true); // Guardamos la configuración
-
         isFavorite = getArguments().getBoolean("favorites");
-
-        //Cuando hacemos scroll se esconde el toolbar, pero lo hemos quitado ya que no es necesario.
-        //mListView.setScrollViewCallbacks(this);
 
         getBar().setShowHideAnimationEnabled(true);
 
@@ -98,10 +94,8 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
 
         if(isFavorite) {
             getLoaderManager().initLoader(FAVORITE_ROUTES, null, this);
-
             // Mostramos cuando no tenga líneas
             mListView.setEmptyView(((RelativeLayout) getActivity().findViewById(R.id.empty_favorite_routes)));
-
         } else {
             getLoaderManager().initLoader(NORMAL_ROUTES, null, this);
         }
@@ -133,11 +127,10 @@ public class RoutesListFragment extends Fragment implements LoaderManager.Loader
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
         switch(i) {
-
-            case 0:
+            case NORMAL_ROUTES:
                 return new CursorLoader(getActivity(), Provider.CONTENT_URI_ROUTES, null, null, null, null);
 
-            case 1:
+            case FAVORITE_ROUTES:
                 String[] ids = getIdOfFavoriteStops();
 
                 if (ids.length < 1) {

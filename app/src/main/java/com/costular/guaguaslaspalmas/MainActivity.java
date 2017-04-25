@@ -1,6 +1,10 @@
 package com.costular.guaguaslaspalmas;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +16,8 @@ import android.view.MenuItem;
 import com.costular.guaguaslaspalmas.fragments.MapStopsFragment;
 import com.costular.guaguaslaspalmas.fragments.RoutesListFragment;
 import com.costular.guaguaslaspalmas.fragments.StopsFavoritesFragment;
+import com.costular.guaguaslaspalmas.guaguas_notifier.GuaguaAlertBroadcast;
+import com.costular.guaguaslaspalmas.services.ScheduleUpdater;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -58,18 +64,22 @@ public class MainActivity extends BaseActivity{
         routesListFragment = RoutesListFragment.newInstance(getApplicationContext(), false);
         favoritesFragment = RoutesListFragment.newInstance(getApplicationContext(), true);
         stopsFavoritesFragment = new StopsFavoritesFragment();
-        mapStopsFragment = new MapStopsFragment();
+
+        startService(new Intent(this, ScheduleUpdater.class));
+        // El service de fondo que se ve a dedicar a comprobar las líneas
+        scheduleAlertChecker();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    private void scheduleAlertChecker() {
+        Intent alarm = new Intent(this, GuaguaAlertBroadcast.class);
+        boolean alarmRunning = (PendingIntent.getBroadcast(this, 0, alarm,
+                PendingIntent.FLAG_NO_CREATE) != null);
 
-        if(((GuaguasApp)getApplication()).isNeededReloadTheme()) {
-            ((GuaguasApp)getApplication()).notNeedReloadTheme(); // Decimos que ya no es necesario actualizar el tema
-
-            finish();
-            startActivity(new Intent(MainActivity.this, MainActivity.class));
+        if(!alarmRunning) {
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarm, 0);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime(), 30000, pendingIntent);
         }
     }
 
